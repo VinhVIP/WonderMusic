@@ -27,7 +27,11 @@ class LyricAdapter(
     }
 
     fun currentLine(position: Int) {
-        current = position
+        if (position != current && position >= 0 && position < itemCount) {
+            notifyItemChanged(current)
+            current = position
+            notifyItemChanged(current)
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LyricViewHolder {

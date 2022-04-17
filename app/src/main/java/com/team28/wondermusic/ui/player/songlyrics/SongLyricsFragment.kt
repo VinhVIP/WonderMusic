@@ -2,6 +2,7 @@ package com.team28.wondermusic.ui.player.songlyrics
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,6 +18,7 @@ import com.team28.wondermusic.data.models.LineLyric
 import com.team28.wondermusic.databinding.FragmentSongLyricsBinding
 import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.player.PlayerViewModel
+import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 
 class SongLyricsFragment : Fragment(), LyricsClickListener {
@@ -31,6 +33,7 @@ class SongLyricsFragment : Fragment(), LyricsClickListener {
     private var currentLine: Int = -1;
     private var songLyrics: ArrayList<LineLyric> = arrayListOf()
 
+    private var scrollJob: Job? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,44 +72,40 @@ class SongLyricsFragment : Fragment(), LyricsClickListener {
 
     }
 
+    /*
+     * Scroll đén dòng lyric hiện tại
+     */
     private fun scrollLyrics(time: Int) {
         val indexLine = indexLine(time, songLyrics)
 
-        if (indexLine != -1 && indexLine != currentLine && indexLine < songLyrics.size) {
+        if (indexLine != currentLine && indexLine >= 0 && indexLine < songLyrics.size) {
             lyricAdapter.currentLine(indexLine)
-
-            // Bỏ in đậm dòng cũ
-            lyricAdapter.notifyItemChanged(currentLine)
-
-            // In đậm dòng mới
-            if (indexLine > 0) lyricAdapter.notifyItemChanged(indexLine)
-
-            // Lưu lại chỉ số dòng lyric đang hiển thị
-            currentLine = indexLine
 
             // Scroll đến dòng hiện tại
             binding.recyclerLyrics.smoothScrollToPosition(indexLine)
             binding.tvLyricsTop.visibility = View.GONE
 
-            viewModel.isUserTouchedSlider = false
+            currentLine = indexLine
 
+            if (scrollJob?.isActive == true) scrollJob?.cancel()
+            scrollJob = MainScope().launch {
+                delay(1000)
+                viewModel.isUserTouchedSlider = false
+                cancel()
+            }
+            scrollJob?.start()
         }
     }
 
+    /*
+     * Scroll đến dòng lyric hiện tại nếu dòng đó đang được hiển thị trên màn hình
+     * Nếu dòng đó không hiển thị thì sẽ hiển thị tvLyricsTop
+     */
     private fun smartScrollLyric(time: Int) {
         val indexLine = indexLine(time, songLyrics)
 
-        if (indexLine != -1 && indexLine != currentLine && indexLine < songLyrics.size) {
+        if (indexLine != currentLine && indexLine >= 0 && indexLine < songLyrics.size) {
             lyricAdapter.currentLine(indexLine)
-
-            // Bỏ in đậm dòng cũ
-            lyricAdapter.notifyItemChanged(currentLine)
-
-            // In đậm dòng mới
-            if (indexLine > 0) lyricAdapter.notifyItemChanged(indexLine)
-
-            // Lưu lại chỉ số dòng lyric đang hiển thị
-            currentLine = indexLine
 
             // Nếu nằm ngoài danh sách các item lyric đang hiển thị trên màn hình
             // thì ta hiển thị dòng lyric hiện tại ở trên cùng
@@ -120,6 +119,8 @@ class SongLyricsFragment : Fragment(), LyricsClickListener {
                 binding.recyclerLyrics.smoothScrollToPosition(indexLine)
                 binding.tvLyricsTop.visibility = View.GONE
             }
+
+            currentLine = indexLine
         }
     }
 
