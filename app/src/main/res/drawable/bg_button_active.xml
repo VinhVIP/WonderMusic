@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ripple xmlns:android="http://schemas.android.com/apk/res/android"
+    android:color="@color/button_submit_start_color">
+
+
+    <!--    <item android:state_pressed="true">
+            <shape>
+                <gradient android:endColor="#049dff" android:startColor="#00e0ce" />
+                <corners android:radius="30dp" />
+                <size android:width="100dp" android:height="20dp" />
+            </shape>
+        </item>-->
+
+    <item>
+        <shape>
+            <gradient
+                android:endColor="@color/button_submit_end_color"
+                android:startColor="@color/button_submit_start_color" />
+            <corners android:radius="30dp" />
+            <size
+                android:width="100dp"
+                android:height="20dp" />
+        </shape>
+    </item>
+</ripple>

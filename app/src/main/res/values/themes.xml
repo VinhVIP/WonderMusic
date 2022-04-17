@@ -1,0 +1,167 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.WonderMusic" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/purple_500</item>
+        <item name="colorPrimaryVariant">@color/main_bg_color</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/highlight</item>
+        <item name="colorSecondaryVariant">@color/teal_700</item>
+        <item name="colorOnSecondary">@color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="android:forceDarkAllowed" tools:targetApi="q">false</item>
+
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+
+        <item name="bottomSheetDialogTheme">@style/CustomBottomSheetDialog</item>
+
+    </style>
+
+    <!-- Splash theme style -->
+    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#3f1c5a</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/icon_music_splash</item>
+
+        <item name="postSplashScreenTheme">@style/Theme.WonderMusic</item>
+    </style>
+
+    <!--Style màu chữ (vd tên bài hát) -->
+    <style name="TextItemPrimary">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--Style màu chữ (vd tên ca sĩ) -->
+    <style name="TextItemSecondary">
+        <item name="android:textColor">@color/text_secondary</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+
+    <!--  Bottom/Simple Dialog Rounded Corner -->
+    <style name="CustomBottomSheetDialog" parent="@style/ThemeOverlay.MaterialComponents.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/CustomBottomSheet</item>
+        <item name="android:colorBackground">@android:color/transparent</item>
+    </style>
+
+    <style name="CustomBottomSheet" parent="Widget.MaterialComponents.BottomSheet">
+        <item name="shapeAppearanceOverlay">@style/CustomShapeAppearanceBottomSheetDialog</item>
+    </style>
+
+    <style name="CustomShapeAppearanceBottomSheetDialog" parent="">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/default_corner_radius</item>
+        <item name="cornerSizeTopLeft">@dimen/default_corner_radius</item>
+        <item name="cornerSizeBottomRight">@dimen/default_corner_radius</item>
+        <item name="cornerSizeBottomLeft">@dimen/default_corner_radius</item>
+    </style>
+
+    <style name="InputField">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
+        <item name="android:drawableTint">@color/icon_tint</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/edit_border</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:drawablePadding">12dp</item>
+    </style>
+
+    <style name="SelectField">
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textColorHint">@color/text_secondary</item>
+        <item name="android:drawableTint">@color/icon_tint</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/select_border</item>
+        <item name="android:textSize">17sp</item>
+        <item name="android:paddingStart">12dp</item>
+        <item name="android:drawablePadding">12dp</item>
+    </style>
+
+    <style name="TextViewTitle">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:layout_marginTop">8sp</item>
+        <item name="android:layout_marginBottom">8sp</item>
+    </style>
+
+    <style name="ButtonAction">
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/bg_button_action</item>
+        <item name="android:drawablePadding">4dp</item>
+        <item name="android:paddingEnd">12dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:textColor">@color/button_action_color</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="TitleMenuSong">
+        <item name="android:layout_width">@dimen/title_song_info_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_primary</item>
+    </style>
+
+    <style name="TitleMenuAccount">
+        <item name="android:layout_width">160dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
+    <style name="ContentMenuAccount">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="TitleDiscoverMenu">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:clickable">true</item>
+        <item name="android:focusable">true</item>
+        <item name="android:foreground">?attr/selectableItemBackgroundBorderless</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:layout_marginTop">6dp</item>
+        <item name="android:paddingBottom">8dp</item>
+        <item name="android:textColor">@color/text_primary</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:drawableTint">@color/icon_tint</item>
+    </style>
+
+    <style name="CustomSliderStyle" parent="Widget.MaterialComponents.Slider">
+        <item name="materialThemeOverlay">@style/slider_overlay</item>
+    </style>
+
+    <style name="slider_overlay">
+        <item name="colorPrimary">#AA00FF</item>
+        <item name="colorOnPrimary">@color/white</item>
+    </style>
+
+    <style name="tooltip" parent="Widget.MaterialComponents.Tooltip">
+        <item name="shapeAppearanceOverlay">@style/tooltipShOverlay</item>
+        <item name="backgroundTint">#AA00FF</item>
+    </style>
+
+    <style name="tooltipShOverlay">
+        <item name="cornerSize">50%</item>
+    </style>
+
+</resources>

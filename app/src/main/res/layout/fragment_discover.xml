@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TitleDiscoverMenu"
+            android:text="Nhạc mới"
+            app:drawableEndCompat="@drawable/ic_right" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerNewSong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_song_small" />
+
+        <TextView
+            style="@style/TitleDiscoverMenu"
+            android:text="Đang theo dõi"
+            app:drawableEndCompat="@drawable/ic_right" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerFollowSong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_song_small" />
+
+        <TextView
+            style="@style/TitleDiscoverMenu"
+            android:text="Top lượt nghe"
+            app:drawableEndCompat="@drawable/ic_right" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerTopSong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_song_top" />
+
+        <TextView
+            style="@style/TitleDiscoverMenu"
+            android:text="Playlist nổi bật"
+            app:drawableEndCompat="@drawable/ic_right" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_playlist_small" />
+
+        <TextView
+            style="@style/TitleDiscoverMenu"
+            android:text="Giọng hát nổi bật"
+            app:drawableEndCompat="@drawable/ic_right" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerTopSinger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_singer" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="60dp" />
+    </LinearLayout>
+</ScrollView>

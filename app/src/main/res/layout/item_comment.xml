@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingHorizontal="8dp"
+    android:paddingTop="8dp">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardViewCmtAvatar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="48dp">
+
+        <ImageView
+            android:id="@+id/imgAvatar"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:src="@drawable/phathuy" />
+    </androidx.cardview.widget.CardView>
+
+    <RelativeLayout
+        android:id="@+id/layoutCommentContent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@id/cardViewCmtAvatar"
+        android:background="@drawable/bg_comment_content"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="8dp">
+
+        <TextView
+            android:id="@+id/tvAccountName"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:gravity="center_vertical"
+            android:text="Quang Vinhh"
+            android:textColor="@color/text_primary"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dot"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="6dp"
+            android:layout_toEndOf="@id/tvAccountName"
+            android:gravity="center_vertical"
+            android:text="•"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvCommentTime"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginStart="6dp"
+            android:layout_toEndOf="@id/dot"
+            android:gravity="center_vertical"
+            android:text="1 giờ trước"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/tvCommentContent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tvAccountName"
+            android:gravity="center_vertical"
+            android:text="Bài hát rất hay, nhưng mà cần chỉnh chu hơn trong việc phát âm, như thế sẽ hay hơn nhiều! Nói chung là tuyệt với"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/btnReplyComment"
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"
+        android:layout_below="@id/layoutCommentContent"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="4dp"
+        android:layout_toEndOf="@id/cardViewCmtAvatar"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:text="Trả lời"
+        android:textColor="@color/text_action_color"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+
+</RelativeLayout>

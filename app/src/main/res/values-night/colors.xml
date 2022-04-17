@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="red">#ff0000</color>
+
+    <!-- Màu chữ -->
+    <color name="text_primary">#ffffff</color>
+    <color name="text_secondary">#9ca2ad</color>
+
+    <!-- Màu highlight -->
+    <color name="highlight">#F49B32</color>
+
+    <!-- Màu icon -->
+    <color name="icon_tint">#CCFFFFFF</color>
+
+    <!-- Màu ripple effect -->
+    <color name="ripple">#FF018786</color>
+
+    <!-- Màu nên trang chủ -->
+    <color name="main_bg_start_color">#7b37af</color>
+    <color name="main_bg_end_color">#3f1c5a</color>
+
+    <!-- Màu nền trang -->
+    <color name="main_bg_color">#1b1e3c</color>
+
+    <!-- Màu gradient trang player (chơi nhạc) -->
+    <color name="player_bg_start_color">#130e2c</color>
+    <color name="player_bg_end_color">#2e2d4b</color>
+
+    <!-- Màu Bottom Navigation Bar -->
+    <color name="bg_bottom_nav">#242633</color>
+    <color name="nav_item_checked">#9059da</color>
+    <color name="nav_item_unchecked">#a6a7b0</color>
+
+    <!-- Màu background thanh player mini (ở trang chủ) -->
+    <color name="bg_player_mini">#242633</color>
+
+    <!-- Màu background ô search -->
+    <color name="bg_search">#242635</color>
+
+    <!-- Màu menu item individual -->
+    <color name="bg_menu_individual">#3b3d4a</color>
+
+    <!-- Màu card thông tin bài hát -->
+    <color name="bg_card_song_info">#993F51B5</color>
+
+    <!-- Màu button có drawable -->
+    <color name="bg_button_drawable_pressed">#494D68</color>
+    <color name="bg_button_drawable_default">#242633</color>
+    <color name="text_button_drawable_pressed">#9059da</color>
+    <color name="text_button_drawable_default">#a6a7b0</color>
+
+    <!-- Màu gradient button submit -->
+    <color name="button_submit_start_color">#545dbb</color>
+    <color name="button_submit_end_color">#383f7d</color>
+
+    <!-- Màu nền edittext -->
+    <color name="bg_edittext">#3a3b3c</color>
+
+    <!-- Màu nền bình luận -->
+    <color name="bg_comment_content">#3b3d4a</color>
+
+    <!-- Màu nền circle button -->
+    <color name="bg_circle_button">#CC373737</color>
+
+    <!-- Màu nền lyrics top -->
+    <color name="bg_lyrics_top">#3a3b3c</color>
+
+</resources>
