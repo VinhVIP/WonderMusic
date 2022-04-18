@@ -56,8 +56,9 @@ class SongLyricsFragment : Fragment(), LyricsClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.song.observe(requireActivity()) {
-            songLyrics = getSongLyrics(it.lyrics)
-            lyricAdapter.setData(songLyrics)
+                songLyrics = getSongLyrics(it.lyrics)
+                lyricAdapter.setData(songLyrics)
+                binding.recyclerLyrics.adapter = lyricAdapter
         }
 
         viewModel.currentSongTime.observe(requireActivity()) { time ->
@@ -150,11 +151,15 @@ class SongLyricsFragment : Fragment(), LyricsClickListener {
     private fun getSongLyrics(text: String): ArrayList<LineLyric> {
         val lyrics = arrayListOf<LineLyric>()
 
-        lyrics.add(LineLyric(0, "..."))
+        if(text.isEmpty()){
+            lyrics.add(LineLyric(0, "Chưa có lời bài hát"))
+        }else{
+            lyrics.add(LineLyric(0, "..."))
 
-        val list = text.split('\n') as ArrayList<String>
-        for (line in list) {
-            lyrics.add(line.convertToLineLyric())
+            val list = text.split('\n') as ArrayList<String>
+            for (line in list) {
+                lyrics.add(line.convertToLineLyric())
+            }
         }
 
         return lyrics

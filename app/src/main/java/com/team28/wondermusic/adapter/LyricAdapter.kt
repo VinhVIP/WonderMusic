@@ -1,6 +1,5 @@
 package com.team28.wondermusic.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Typeface
 import android.view.LayoutInflater
@@ -20,9 +19,9 @@ class LyricAdapter(
 
     private var current: Int = -1;
 
-    @SuppressLint("NotifyDataSetChanged")
     fun setData(lyrics: ArrayList<LineLyric>) {
-        this.lyrics = lyrics
+        this.lyrics.clear()
+        this.lyrics.addAll(lyrics)
         notifyDataSetChanged()
     }
 

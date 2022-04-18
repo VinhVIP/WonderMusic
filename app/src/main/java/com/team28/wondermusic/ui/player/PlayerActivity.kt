@@ -68,7 +68,9 @@ class PlayerActivity : AppCompatActivity() {
             }
         }
 
-        binding.tvSongDuration.text = "..."
+        runOnUiThread {
+            binding.tvSongDuration.text = "..."
+        }
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true)
