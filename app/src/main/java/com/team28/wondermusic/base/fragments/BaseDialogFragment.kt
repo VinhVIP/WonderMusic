@@ -1,4 +1,4 @@
-package com.team28.wondermusic.base
+package com.team28.wondermusic.base.fragments
 
 import android.annotation.SuppressLint
 import android.app.Dialog

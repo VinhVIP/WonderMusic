@@ -1,8 +1,9 @@
 package com.team28.wondermusic.ui.player.songmain
 
 import android.animation.ObjectAnimator
+import android.content.Intent
+import android.media.audiofx.AudioEffect
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +16,6 @@ import com.team28.wondermusic.R
 import com.team28.wondermusic.databinding.FragmentSongMainBinding
 import com.team28.wondermusic.ui.player.PlayerViewModel
 import com.team28.wondermusic.ui.songplaylist.SongPlaylistFragment
-
 
 class SongMainFragment : Fragment() {
 
@@ -96,6 +96,20 @@ class SongMainFragment : Fragment() {
 
         binding.btnShowPlaylist.setOnClickListener {
             showPlaylistFragment()
+        }
+
+        equalizer()
+    }
+
+    private fun equalizer() {
+        binding.btnEqualizer.setOnClickListener {
+            Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL).apply {
+                putExtra(AudioEffect.EXTRA_AUDIO_SESSION, viewModel.audioSessionId.value)
+                putExtra(AudioEffect.EXTRA_PACKAGE_NAME, requireContext().packageName)
+                putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
+            }.also {
+                startActivityForResult(it, 113)
+            }
         }
     }
 

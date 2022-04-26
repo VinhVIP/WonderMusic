@@ -7,8 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import com.team28.wondermusic.R
-import com.team28.wondermusic.data.entities.singersToString
+import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ItemSongTopBinding
 

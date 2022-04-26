@@ -10,6 +10,8 @@ object Constants {
     const val Account = "Account"
     const val Playlist = "Playlist"
     const val Album = "Album"
+    const val Notification = "Notification"
 
     const val Singers = "Singers"
+    const val Position = "Position"
 }

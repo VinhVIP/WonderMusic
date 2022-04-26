@@ -41,6 +41,8 @@ class EventBusModel {
 
     data class SongInfoEvent(val song: Song)
 
+    data class AudioSessionIdEvent(val sessionId: Int)
+
     class RequestSongEvent()
 
     class ClearMusic()

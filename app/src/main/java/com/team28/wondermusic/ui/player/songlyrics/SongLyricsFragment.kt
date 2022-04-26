@@ -2,7 +2,6 @@ package com.team28.wondermusic.ui.player.songlyrics
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +12,7 @@ import com.team28.wondermusic.adapter.LyricAdapter
 import com.team28.wondermusic.adapter.LyricsClickListener
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.Helper
-import com.team28.wondermusic.data.entities.convertToLineLyric
+import com.team28.wondermusic.data.database.entities.convertToLineLyric
 import com.team28.wondermusic.data.models.LineLyric
 import com.team28.wondermusic.databinding.FragmentSongLyricsBinding
 import com.team28.wondermusic.service.MusicService

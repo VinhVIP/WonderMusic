@@ -10,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.media.AudioAttributes
 import android.media.MediaMetadata
 import android.media.MediaPlayer
+import android.media.metrics.Event
 import android.os.IBinder
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
@@ -25,7 +26,7 @@ import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.EventBusModel.*
 import com.team28.wondermusic.broadcast.MusicBroadcast
 import com.team28.wondermusic.common.Constants
-import com.team28.wondermusic.data.entities.singersToString
+import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.ui.player.PlayerActivity
 import kotlinx.coroutines.GlobalScope
@@ -250,6 +251,8 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
         timeSend(mediaPlayer)
 
         sendNotification()
+
+        EventBus.getDefault().postSticky(AudioSessionIdEvent(mediaPlayer.audioSessionId))
     }
 
     private fun getPendingIntent(context: Context, action: Int): PendingIntent {
@@ -265,15 +268,19 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
 
     private fun sendNotification() {
         GlobalScope.launch {
-            val bitmap: Bitmap
+            var bitmap: Bitmap
             val loader = ImageLoader(this@MusicService)
             val request = ImageRequest.Builder(this@MusicService)
                 .data(songList[currentSongIndex].image)
                 .allowHardware(false) // Disable hardware bitmaps.
                 .build()
 
-            val result = (loader.execute(request) as SuccessResult).drawable
-            bitmap = (result as BitmapDrawable).bitmap
+            bitmap = try {
+                val result = (loader.execute(request) as SuccessResult).drawable
+                (result as BitmapDrawable).bitmap
+            } catch (e: Exception) {
+                BitmapFactory.decodeResource(resources, R.drawable.icon_music)
+            }
 
             mediaPlayer?.let { mediaPlayer ->
                 val song = songList[currentSongIndex]

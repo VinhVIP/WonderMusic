@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "463854962982",
+    "project_id": "musicapiandroid",
+    "storage_bucket": "musicapiandroid.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:463854962982:android:79355ffb97cb9fcb5719e7",
+        "android_client_info": {
+          "package_name": "com.team28.wondermusic"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "463854962982-br4igje15dujpd8frur18hv723snnf8b.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.team28.wondermusic",
+            "certificate_hash": "4e909111f17836ffb99e7fbb6a0a73903cba5b81"
+          }
+        },
+        {
+          "client_id": "463854962982-45mr04iqvn7i3do8142ge1q54gu02455.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCVL-XSXje2S54DN7y8xUNfoORpTdG7FVQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "463854962982-45mr04iqvn7i3do8142ge1q54gu02455.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

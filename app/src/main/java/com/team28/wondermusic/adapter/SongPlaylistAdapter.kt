@@ -80,7 +80,7 @@ class SongPlaylistAdapter(
                 Picasso.get().load(song.image).fit().into(imgSongAvatar)
 
                 tvSongName.text = song.name
-                tvAccountName.text = song.account.accountName
+                tvAccountName.text = song.account?.accountName ?: ""
 
                 if (currentSong?.idSong == song.idSong) {
                     root.setBackgroundResource(R.drawable.bg_song_playlist_current)

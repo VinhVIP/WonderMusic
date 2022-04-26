@@ -1,7 +1,7 @@
 package com.team28.wondermusic.data.services
 
 import com.team28.wondermusic.data.apis.PostAPI
-import com.team28.wondermusic.data.entities.Post
+import com.team28.wondermusic.data.database.old_entities.Post
 import javax.inject.Inject
 
 class PostRemoteService @Inject constructor(private val postAPI: PostAPI) {

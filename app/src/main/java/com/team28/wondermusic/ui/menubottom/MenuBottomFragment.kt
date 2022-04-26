@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.MenuBottomAdapter
-import com.team28.wondermusic.base.BaseDialogFragment
+import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.data.models.*
 import com.team28.wondermusic.databinding.FragmentMenuBottomBinding
@@ -53,7 +53,7 @@ class MenuBottomFragment : BaseDialogFragment(), MenuBottomClickListener {
         song?.let { song ->
             Picasso.get().load(song.image).fit().into(binding.imgSongAvatar)
             binding.tvSongName.text = song.name
-            binding.tvAccountName.text = song.account.accountName
+            binding.tvAccountName.text = song.account?.accountName ?: ""
         }
 
     }
@@ -66,7 +66,7 @@ class MenuBottomFragment : BaseDialogFragment(), MenuBottomClickListener {
 
 
         song?.let { song ->
-            if (myAccount.idAccount == song.account.idAccount) {
+            if (myAccount.idAccount == song.account!!.idAccount) {
                 items.add(MenuBottom("Chỉnh sửa", R.drawable.ic_edit, MenuBottomType.EDIT))
             }
 
@@ -118,7 +118,10 @@ class MenuBottomFragment : BaseDialogFragment(), MenuBottomClickListener {
                 SingersFragment().apply {
                     arguments = Bundle().apply {
                         Log.d("vinh", "singers size: ${song?.singers?.size}")
-                        putParcelableArrayList(Constants.Singers, song?.singers)
+                        putParcelableArrayList(
+                            Constants.Singers,
+                            song?.singers as ArrayList
+                        )
                     }
                 }.show(requireActivity().supportFragmentManager, null)
             }

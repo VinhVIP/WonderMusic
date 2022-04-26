@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import com.team28.wondermusic.data.entities.singersToString
+import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.databinding.FragmentSongInfoBinding
 import com.team28.wondermusic.ui.player.PlayerViewModel
 

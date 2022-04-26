@@ -7,7 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.team28.wondermusic.adapter.AlbumAdapter
 import com.team28.wondermusic.adapter.AlbumClickListener
-import com.team28.wondermusic.base.BaseDialogFragment
+import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.data.TempData
 import com.team28.wondermusic.data.models.Album

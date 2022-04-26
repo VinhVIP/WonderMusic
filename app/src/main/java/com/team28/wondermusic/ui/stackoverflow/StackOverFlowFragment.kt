@@ -17,7 +17,7 @@ class StackOverFlowFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel.fetchData()
+//        viewModel.fetchData()
     }
 
     override fun onCreateView(
@@ -29,11 +29,11 @@ class StackOverFlowFragment : Fragment() {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        viewModel.listQuestions.observe(viewLifecycleOwner) { list ->
-            list.firstOrNull()?.let { question ->
-                binding.tvResult.text = question.toString()
-            }
-        }
+//        viewModel.listQuestions.observe(viewLifecycleOwner) { list ->
+//            list.firstOrNull()?.let { question ->
+//                binding.tvResult.text = question.toString()
+//            }
+//        }
 
 
         return binding.root

@@ -1,4 +1,4 @@
-package com.team28.wondermusic.data.entities
+package com.team28.wondermusic.data.database.old_entities
 
 data class Post(
     val userId: Int? = 0,

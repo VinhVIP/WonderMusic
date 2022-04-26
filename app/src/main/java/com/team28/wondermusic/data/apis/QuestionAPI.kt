@@ -1,6 +1,6 @@
 package com.team28.wondermusic.data.apis
 
-import com.team28.wondermusic.data.entities.QuestionList
+import com.team28.wondermusic.data.database.old_entities.QuestionList
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.HeaderMap

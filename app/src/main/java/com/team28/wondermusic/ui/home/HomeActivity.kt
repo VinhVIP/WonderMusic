@@ -10,6 +10,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.picasso.Picasso
 import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.EventBusModel
@@ -18,7 +20,7 @@ import com.team28.wondermusic.adapter.EventBusModel.SongInfoEvent
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.TempData
-import com.team28.wondermusic.data.entities.singersToString
+import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ActivityHomeBinding
 import com.team28.wondermusic.service.MusicService
@@ -28,10 +30,12 @@ import com.team28.wondermusic.ui.home.highlight.HighLightFragment
 import com.team28.wondermusic.ui.home.individual.IndividualFragment
 import com.team28.wondermusic.ui.notification.NotificationActivity
 import com.team28.wondermusic.ui.player.PlayerActivity
+import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
+@AndroidEntryPoint
 class HomeActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHomeBinding
 
@@ -41,6 +45,16 @@ class HomeActivity : AppCompatActivity() {
         super.onStart()
         Helper.setStatusBarGradiant(this, R.drawable.bg_main)
         EventBus.getDefault().register(this)
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.d("vinh", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            val token = task.result
+            Log.d("vinh", token)
+        })
     }
 
     override fun onStop() {

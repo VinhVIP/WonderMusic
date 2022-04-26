@@ -1,10 +1,12 @@
 package com.team28.wondermusic.ui.player
 
 import androidx.lifecycle.MutableLiveData
-import com.team28.wondermusic.base.BaseViewModel
+import com.team28.wondermusic.base.viewmodels.BaseViewModel
 import com.team28.wondermusic.data.models.Song
 
 class PlayerViewModel : BaseViewModel() {
+
+    var audioSessionId = MutableLiveData(0)
 
     var isClear: Boolean = false
 

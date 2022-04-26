@@ -13,7 +13,7 @@ import com.team28.wondermusic.adapter.OnStartDragListener
 import com.team28.wondermusic.adapter.ReorderHelperCallback
 import com.team28.wondermusic.adapter.SongPlaylistAdapter
 import com.team28.wondermusic.adapter.SongPlaylistListener
-import com.team28.wondermusic.base.BaseDialogFragment
+import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.models.Song

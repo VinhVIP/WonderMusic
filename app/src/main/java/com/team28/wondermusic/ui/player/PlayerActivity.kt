@@ -13,8 +13,8 @@ import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.EventBusModel.*
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.Helper
-import com.team28.wondermusic.data.entities.singersToString
-import com.team28.wondermusic.data.entities.toTimeFormat
+import com.team28.wondermusic.data.database.entities.singersToString
+import com.team28.wondermusic.data.database.entities.toTimeFormat
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ActivityPlayerBinding
 import com.team28.wondermusic.service.MusicService
@@ -47,6 +47,12 @@ class PlayerActivity : AppCompatActivity() {
     override fun onStop() {
         super.onStop()
         EventBus.getDefault().unregister(this)
+    }
+
+    @Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true)
+    fun onAudioSessionIdEvent(event: AudioSessionIdEvent) {
+        Log.d("vinh", "audio session id: ${event.sessionId}")
+        viewModel.audioSessionId.postValue(event.sessionId)
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true)

@@ -1,6 +1,6 @@
 package com.team28.wondermusic.data.repositories
 
-import com.team28.wondermusic.data.entities.Post
+import com.team28.wondermusic.data.database.old_entities.Post
 import com.team28.wondermusic.data.services.PostRemoteService
 import com.team28.wondermusic.di.IoDispatcher
 import kotlinx.coroutines.CoroutineDispatcher

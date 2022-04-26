@@ -1,4 +1,4 @@
-package com.team28.wondermusic.base
+package com.team28.wondermusic.base.viewmodels
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData

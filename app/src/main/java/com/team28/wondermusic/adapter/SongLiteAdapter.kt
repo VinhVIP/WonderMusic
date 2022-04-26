@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.team28.wondermusic.R
+import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ItemSongLiteBinding
 
@@ -43,7 +44,7 @@ class SongLiteAdapter(private val listener: SongClickListener) :
         holder.itemBinding.apply {
             Picasso.get().load(song.image).fit().into(imgSongAvatar)
             tvSongName.text = song.name
-            tvAccountName.text = song.account.accountName
+            tvAccountName.text = song.singersToString()
         }
 
         holder.itemView.setOnClickListener {

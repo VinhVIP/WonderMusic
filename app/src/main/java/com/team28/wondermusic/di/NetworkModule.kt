@@ -3,6 +3,7 @@ package com.team28.wondermusic.di
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.team28.wondermusic.common.Config
+import com.team28.wondermusic.data.apis.NotificationAPI
 import com.team28.wondermusic.data.apis.PostAPI
 import com.team28.wondermusic.data.apis.QuestionAPI
 import dagger.Module
@@ -70,6 +71,24 @@ object NetworkModule {
             .baseUrl(Config.JsonPlaceHolder)
             .client(okHttpClient)
             .build()
+    }
+
+    @Provides
+    @Singleton
+    @Named("MainSite")
+    fun provideRetrofitMainSite(
+        okHttpClient: OkHttpClient,
+        moshiConverterFactory: MoshiConverterFactory
+    ): Retrofit {
+        return Retrofit.Builder().addConverterFactory(moshiConverterFactory)
+            .baseUrl(Config.MainSite)
+            .client(okHttpClient)
+            .build()
+    }
+
+    @Provides
+    fun provideNotificationAPI(@Named("MainSite") retrofit: Retrofit): NotificationAPI {
+        return retrofit.create(NotificationAPI::class.java)
     }
 
     @Provides

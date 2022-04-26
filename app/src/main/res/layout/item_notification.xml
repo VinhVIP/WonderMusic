@@ -11,8 +11,8 @@
 
     <com.makeramen.roundedimageview.RoundedImageView
         android:id="@+id/imgAvatar"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         android:background="@drawable/profile"
         android:scaleType="center"
         app:layout_constraintBottom_toBottomOf="parent"

@@ -3,7 +3,9 @@ package com.team28.wondermusic.di
 import android.content.Context
 import androidx.room.Room
 import com.team28.wondermusic.data.database.AppDB
-import com.team28.wondermusic.data.database.question.QuestionDAO
+import com.team28.wondermusic.data.database.daos.AccountDAO
+import com.team28.wondermusic.data.database.daos.NotificationDAO
+import com.team28.wondermusic.data.database.daos.SongDAO
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -18,11 +20,21 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideAppDB(@ApplicationContext appContext: Context): AppDB {
-        return Room.databaseBuilder(appContext, AppDB::class.java, "appdp").build()
+        return Room.databaseBuilder(appContext, AppDB::class.java, "wonder_music_db").build()
     }
 
     @Provides
-    fun provideQuestionDao(appDB: AppDB): QuestionDAO {
-        return appDB.questionDao()
+    fun provideSongDao(appDB: AppDB): SongDAO {
+        return appDB.songDao()
+    }
+
+    @Provides
+    fun provideAccountDao(appDB: AppDB): AccountDAO {
+        return appDB.accountDao()
+    }
+
+    @Provides
+    fun provideNotificationDao(appDB: AppDB): NotificationDAO {
+        return appDB.notificationDao()
     }
 }

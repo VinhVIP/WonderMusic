@@ -32,10 +32,10 @@ data class Song(
     val songStatus: Int,
     val like: Int,
     val listen: Int,
-    val account: Account,
+    val account: Account?,
     val album: Album? = null,
     var loveStatus: Boolean = false,
-    val singers: ArrayList<Account>? = null
+    val singers: List<Account>? = null
 ) : Parcelable
 
 @Parcelize
@@ -44,7 +44,7 @@ data class Album(
     val name: String,
     val dateCreated: String,
     val account: Account,
-    val songs: ArrayList<Song>?
+    val songs: List<Song>?
 ) : Parcelable
 
 @Parcelize
@@ -55,7 +55,7 @@ data class Comment(
     val content: String,
     val dateTime: String,
     val idCommentParent: Int,
-    val children: ArrayList<Comment>? = null
+    val children: List<Comment>? = null
 ) : Parcelable
 
 @Parcelize
@@ -71,7 +71,7 @@ data class Playlist(
     val name: String,
     val account: Account,
     val playlistStatus: Int,
-    val songs: ArrayList<Song>?
+    val songs: List<Song>?
 ) : Parcelable
 
 @Parcelize
@@ -79,7 +79,7 @@ data class Notification(
     val idNotification: Int,
     val content: String,
     val action: String,
-    val notificationStatus: Int,
+    var notificationStatus: Int,
     val notificationTime: String,
     val account: Account? = null
 ) : Parcelable

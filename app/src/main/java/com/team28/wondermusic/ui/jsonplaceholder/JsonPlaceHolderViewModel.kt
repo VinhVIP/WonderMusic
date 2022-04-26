@@ -2,8 +2,8 @@ package com.team28.wondermusic.ui.jsonplaceholder
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.team28.wondermusic.base.BaseViewModel
-import com.team28.wondermusic.data.entities.Post
+import com.team28.wondermusic.base.viewmodels.BaseViewModel
+import com.team28.wondermusic.data.database.old_entities.Post
 import com.team28.wondermusic.data.repositories.PostRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch

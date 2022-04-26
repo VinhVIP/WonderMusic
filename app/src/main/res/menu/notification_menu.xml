@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/menuReadAllNotification"
+        android:icon="@drawable/ic_notification_readall"
+        android:title="Đọc tất cả"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/menuDeleteAllNotification"
+        android:icon="@drawable/ic_remove"
+        android:title="Xóa tất cả"
+        app:showAsAction="always" />
+</menu>

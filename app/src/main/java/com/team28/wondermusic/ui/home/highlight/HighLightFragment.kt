@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat.startForegroundService
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.team28.wondermusic.adapter.SongAdapter
 import com.team28.wondermusic.adapter.SongClickListener
@@ -18,12 +19,23 @@ import com.team28.wondermusic.databinding.FragmentHighLightBinding
 import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HighLightFragment : Fragment(), SongClickListener {
 
     private lateinit var binding: FragmentHighLightBinding
+    private val viewModel by viewModels<HighLightViewModel>()
 
     private lateinit var songAdapter: SongAdapter
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+
+        viewModel.genData()
+
+        viewModel.fetchData()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -42,8 +54,9 @@ class HighLightFragment : Fragment(), SongClickListener {
             layoutManager = LinearLayoutManager(this@HighLightFragment.context)
         }
 
-        songAdapter.differ.submitList(TempData.songs)
-
+        viewModel.topSongs.observe(viewLifecycleOwner){
+            songAdapter.differ.submitList(it)
+        }
     }
 
     private fun sendMusicAction(
