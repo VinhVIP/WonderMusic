@@ -15,8 +15,9 @@ class NotificationViewModel @Inject constructor(
     private val notificationRepository: NotificationRepository
 ) : BaseViewModel() {
 
-    var notifications = MutableLiveData<List<Notification>>()
     var message = MutableLiveData<String?>(null)
+
+    var notifications = MutableLiveData<List<Notification>>()
     var readStatus = MutableLiveData(false)
     var deleteStatus = MutableLiveData(false)
     var readAllStatus = MutableLiveData(false)

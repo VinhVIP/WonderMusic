@@ -95,6 +95,15 @@
         <item name="android:layout_marginBottom">8sp</item>
     </style>
 
+    <style name="TextViewError">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">@color/text_error</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:layout_marginStart">8sp</item>
+        <item name="android:layout_marginTop">4sp</item>
+    </style>
+
     <style name="ButtonAction">
         <item name="android:clickable">true</item>
         <item name="android:focusable">true</item>

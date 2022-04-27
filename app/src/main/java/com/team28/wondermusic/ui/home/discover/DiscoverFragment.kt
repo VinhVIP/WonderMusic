@@ -169,6 +169,10 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener,
         fragment.show(requireActivity().supportFragmentManager, null)
     }
 
+    override fun onPlaylistMoreMenuClick(playlist: Playlist, position: Int) {
+
+    }
+
     override fun onAccountClick(account: Account) {
         startActivity(Intent(context, AccountActivity::class.java).apply {
             putExtra(Constants.Account, account)

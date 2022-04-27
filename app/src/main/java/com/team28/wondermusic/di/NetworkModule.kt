@@ -4,6 +4,7 @@ import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.team28.wondermusic.common.Config
 import com.team28.wondermusic.data.apis.NotificationAPI
+import com.team28.wondermusic.data.apis.PlaylistAPI
 import com.team28.wondermusic.data.apis.PostAPI
 import com.team28.wondermusic.data.apis.QuestionAPI
 import dagger.Module
@@ -89,6 +90,11 @@ object NetworkModule {
     @Provides
     fun provideNotificationAPI(@Named("MainSite") retrofit: Retrofit): NotificationAPI {
         return retrofit.create(NotificationAPI::class.java)
+    }
+
+    @Provides
+    fun providePlaylistAPI(@Named("MainSite") retrofit: Retrofit): PlaylistAPI {
+        return retrofit.create(PlaylistAPI::class.java)
     }
 
     @Provides

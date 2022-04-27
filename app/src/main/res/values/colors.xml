@@ -20,6 +20,7 @@
     <!-- Màu chữ -->
     <color name="text_primary">#18191f</color>
     <color name="text_secondary">#9ca2ad</color>
+    <color name="text_error">#DC6262</color>
 
     <!-- Màu highlight -->
     <color name="highlight">#F49B32</color>

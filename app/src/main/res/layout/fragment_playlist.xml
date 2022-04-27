@@ -2,7 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:minHeight="120dp"
     android:background="@drawable/rounded_top_corners"
     android:orientation="vertical">
 
@@ -25,7 +27,26 @@
             android:textColor="@color/text_primary"
             android:textSize="16sp"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btnAddPlaylist"
+            style="@style/ButtonAction"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:drawableStart="@drawable/ic_add_circle"
+            android:gravity="center_vertical"
+            android:text="Thêm playlist" />
     </RelativeLayout>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/pbLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indicatorColor="@color/highlight" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerPlaylist"

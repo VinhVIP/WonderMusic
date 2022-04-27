@@ -14,6 +14,7 @@ interface SongPlaylistListener {
 
 interface PlaylistClickListener {
     fun onPlaylistClick(playlist: Playlist)
+    fun onPlaylistMoreMenuClick(playlist: Playlist, position: Int)
 }
 
 interface AccountClickListener {

@@ -14,7 +14,7 @@ import com.team28.wondermusic.data.TempData
 import com.team28.wondermusic.data.models.Playlist
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.FragmentPlaylistDetailBinding
-import com.team28.wondermusic.ui.form_playlist.FormPlaylistFragment
+import com.team28.wondermusic.ui.home.individual.playlist.FormPlaylistFragment
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
 
@@ -52,14 +52,6 @@ class PlaylistDetailFragment : BaseDialogFragment(), SongClickListener {
         binding.recyclerSong.apply {
             adapter = songAdapter
             layoutManager = LinearLayoutManager(this@PlaylistDetailFragment.context)
-        }
-
-        binding.btnEditPlaylist.setOnClickListener {
-            FormPlaylistFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(Constants.Playlist, playlist)
-                }
-            }.show(requireActivity().supportFragmentManager, null)
         }
     }
 

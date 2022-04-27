@@ -14,7 +14,7 @@ import com.team28.wondermusic.data.models.MenuClickListener
 import com.team28.wondermusic.data.models.MenuIndividual
 import com.team28.wondermusic.data.models.MenuIndividualType.*
 import com.team28.wondermusic.databinding.FragmentIndividualBinding
-import com.team28.wondermusic.ui.form_playlist.FormPlaylistFragment
+import com.team28.wondermusic.ui.home.individual.playlist.FormPlaylistFragment
 import com.team28.wondermusic.ui.formsong.FormSongActivity
 import com.team28.wondermusic.ui.formsong.album_form.FormAlbumDialogFragment
 import com.team28.wondermusic.ui.home.individual.album.AlbumFragment

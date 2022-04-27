@@ -222,6 +222,10 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
         fragment.show(supportFragmentManager, null)
     }
 
+    override fun onPlaylistMoreMenuClick(playlist: Playlist, position: Int) {
+
+    }
+
     override fun onAlbumClick(album: Album) {
         val fragment = AlbumDetailFragment()
         fragment.arguments = Bundle().apply {

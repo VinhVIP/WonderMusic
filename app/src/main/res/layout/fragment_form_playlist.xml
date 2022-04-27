@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@drawable/bg_rounded_corner"
     android:paddingHorizontal="12dp"
     android:paddingVertical="24dp">
@@ -34,8 +35,14 @@
             android:maxLines="1" />
 
         <TextView
+            android:id="@+id/tvError"
+            style="@style/TextViewError"
+            android:text="Tên playlist đã bị trùng"
+            android:visibility="gone" />
+
+        <TextView
             style="@style/TextViewTitle"
-            android:text="Trạng thái" />
+            android:text="Tên playlist" />
 
         <RadioGroup
             android:layout_width="match_parent"
@@ -44,6 +51,7 @@
             android:weightSum="2">
 
             <RadioButton
+                android:id="@+id/radioPublic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -51,20 +59,38 @@
                 android:text="Công khai" />
 
             <RadioButton
+                android:id="@+id/radioPrivate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="Riêng tư" />
         </RadioGroup>
 
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/btn_submit"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:background="@drawable/bg_button_active"
-            android:text="Thêm"
-            android:textColor="@color/text_primary" />
+            android:layout_marginTop="24dp">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnSubmit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_button_active"
+                android:text="Thêm"
+                android:textColor="@color/text_button_color" />
+
+            <com.google.android.material.progressindicator.CircularProgressIndicator
+                android:id="@+id/pbLoading"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerInParent="true"
+                android:layout_marginEnd="20dp"
+                android:indeterminate="true"
+                app:indicatorColor="@color/highlight"
+                app:indicatorSize="30dp" />
+
+        </RelativeLayout>
 
     </LinearLayout>
 

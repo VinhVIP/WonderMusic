@@ -68,9 +68,9 @@ data class Type(
 @Parcelize
 data class Playlist(
     val idPlaylist: Int,
-    val name: String,
+    var name: String,
     val account: Account,
-    val playlistStatus: Int,
+    var playlistStatus: Int,
     val songs: List<Song>?
 ) : Parcelable
 

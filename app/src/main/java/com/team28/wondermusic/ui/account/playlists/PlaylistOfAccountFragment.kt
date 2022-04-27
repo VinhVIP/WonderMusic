@@ -31,8 +31,8 @@ class PlaylistOfAccountFragment : BaseDialogFragment(), PlaylistClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        playlistAdapter = PlaylistAdapter(this)
-        playlistAdapter.differ.submitList(TempData.playlists)
+        playlistAdapter = PlaylistAdapter(mutableListOf(), this)
+        playlistAdapter.setData(TempData.playlists)
 
         binding.recyclerPlaylist.apply {
             adapter = playlistAdapter
@@ -46,5 +46,8 @@ class PlaylistOfAccountFragment : BaseDialogFragment(), PlaylistClickListener {
             putParcelable(Constants.Playlist, playlist)
         }
         fragment.show(requireActivity().supportFragmentManager, null)
+    }
+
+    override fun onPlaylistMoreMenuClick(playlist: Playlist, position: Int) {
     }
 }

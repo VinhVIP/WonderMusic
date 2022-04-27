@@ -39,3 +39,34 @@ data class NotificationCountJson(
     val message: String,
     val data: Int,
 )
+
+
+// Playlist
+
+data class ListPlaylistJson(
+    val message: String,
+    val data: List<PlaylistJson>? = emptyList(),
+)
+
+// TODO: Chưa đúng yêu cầu
+data class PlaylistJson(
+    @Json(name = "id_playlist") val idPlaylist: Int,
+    @Json(name = "name_playlist") val namePlaylist: String,
+    @Json(name = "playlist_status") val playlistStatus: Int
+) {
+    fun toPlaylist(): Playlist {
+        return Playlist(
+            idPlaylist = this.idPlaylist,
+            name = this.namePlaylist,
+            playlistStatus = this.playlistStatus,
+            // TODO: Chưa có account cho playlist
+            account = Account(accountName = "Không biết"),
+            // TODO: Chưa có danh sách bài hát thuộc playlist
+            songs = emptyList(),
+        )
+    }
+}
+
+fun List<PlaylistJson>.toListPlaylist(): List<Playlist> {
+    return map { it.toPlaylist() }
+}
