@@ -1,5 +1,7 @@
 package com.team28.wondermusic.adapter
 
+import android.annotation.SuppressLint
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -35,7 +37,10 @@ class SongAdapter(private val listener: SongClickListener) :
         )
     }
 
-    override fun onBindViewHolder(holder: SongViewHolder, position: Int) {
+    override fun onBindViewHolder(
+        holder: SongViewHolder,
+        @SuppressLint("RecyclerView") position: Int
+    ) {
         val song = differ.currentList[position]
 
         // TODO: Load ảnh từ song

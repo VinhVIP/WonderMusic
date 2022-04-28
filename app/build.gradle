@@ -122,4 +122,7 @@ dependencies {
 
     // Convert Json to Object in Kotlin
     implementation 'com.beust:klaxon:5.5'
+
+    // Chart
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 }

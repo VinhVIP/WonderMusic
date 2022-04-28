@@ -4,8 +4,12 @@ import android.annotation.SuppressLint
 import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.text.InputType
+import android.util.TypedValue
 import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
@@ -16,6 +20,7 @@ import com.team28.wondermusic.R
 import com.team28.wondermusic.data.models.Account
 import java.text.SimpleDateFormat
 import java.util.*
+
 
 object Helper {
 
@@ -114,4 +119,18 @@ object Helper {
             }
         }
     }
+
+    fun dpToPixel(dp: Float, context: Context): Int {
+        return TypedValue.applyDimension(
+            TypedValue.COMPLEX_UNIT_DIP,
+            dp,
+            context.resources.displayMetrics
+        ).toInt()
+    }
+}
+
+fun Drawable.resize(context: Context, width: Int, height: Int): Drawable {
+    val b = (this as BitmapDrawable).bitmap
+    val bitmapResized = Bitmap.createScaledBitmap(b, width, height, false)
+    return BitmapDrawable(context.resources, bitmapResized)
 }
