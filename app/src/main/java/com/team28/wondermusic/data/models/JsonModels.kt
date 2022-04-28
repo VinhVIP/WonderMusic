@@ -70,3 +70,57 @@ data class PlaylistJson(
 fun List<PlaylistJson>.toListPlaylist(): List<Playlist> {
     return map { it.toPlaylist() }
 }
+
+// ----- Comment -----
+
+data class CommentJson(
+    @Json(name = "id_account") val idAccount: Int,
+    @Json(name = "id_cmt") val idCmt: Int,
+    val content: String,
+    val day: String,
+    val time: String,
+    val commentChildren: List<CommentJson>?,
+) {
+    fun toComment(): Comment {
+        return Comment(
+            idComment = this.idCmt,
+            content = this.content,
+            dateTime = "${this.time} - ${this.day}",
+            account = Account(idAccount = this.idAccount, accountName = "Không biết"),
+            children = commentChildren?.toListComment() ?: emptyList(),
+        )
+    }
+}
+
+fun List<CommentJson>.toListComment(): List<Comment> {
+    return map { it.toComment() }
+}
+
+data class ListCommentJson(
+    val message: String,
+    val data: List<CommentJson>? = emptyList(),
+)
+
+data class CommentParentJson(
+    @Json(name = "id_account") val idAccount: Int,
+    @Json(name = "id_cmt") val idCmt: Int,
+    val content: String,
+    @Json(name = "date_time") val dateTime: String,
+    @Json(name = "id_song") val idSong: Int,
+    val listChildren: List<CommentJson>?,
+) {
+    fun toComment(): Comment {
+        return Comment(
+            idComment = this.idCmt,
+            content = this.content,
+            dateTime = this.dateTime,
+            account = Account(idAccount = this.idAccount, accountName = "Không biết"),
+            children = listChildren?.toListComment() ?: emptyList(),
+        )
+    }
+}
+
+data class CommentParentAndChildrenJson(
+    val message: String,
+    val data: CommentParentJson
+)

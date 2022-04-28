@@ -1,12 +1,15 @@
 package com.team28.wondermusic.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.team28.wondermusic.R
+import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.models.Comment
 import com.team28.wondermusic.databinding.ItemCommentWithReplyBinding
 
@@ -41,17 +44,33 @@ class CommentAdapter(private val listener: CommentClickListener) :
         holder.itemBinding.apply {
             imgAvatar.setImageResource(R.drawable.phathuy)
             tvAccountName.text = comment.account.accountName
-            tvCommentTime.text = comment.dateTime
+            tvCommentTime.text = Helper.toDateTimeDistance(comment.dateTime)
             tvCommentContent.text = comment.content
 
-            comment.children?.let {
-                val replyAdapter = CommentReplyLiteAdapter(comment, this@CommentAdapter)
-                replyAdapter.differ.submitList(comment.children)
+            // Hiển thị các button Sửa/Xóa bình luận của bản thân
+            if (Helper.isMyAccount(comment.account)) {
+                dot1.visibility = View.VISIBLE
+                dot2.visibility = View.VISIBLE
+                btnEditComment.visibility = View.VISIBLE
+                btnDeleteComment.visibility = View.VISIBLE
+            }
 
-                recyclerReply.apply {
-                    adapter = replyAdapter
-                    layoutManager = LinearLayoutManager(context)
-                }
+            val replyAdapter = CommentReplyLiteAdapter(comment, this@CommentAdapter)
+            replyAdapter.differ.submitList(comment.children)
+
+            recyclerReply.apply {
+                adapter = replyAdapter
+                layoutManager = LinearLayoutManager(context)
+            }
+
+            btnReplyComment.setOnClickListener {
+                listener.onReplyComment(comment)
+            }
+            btnEditComment.setOnClickListener {
+                listener.onUpdateComment(comment)
+            }
+            btnDeleteComment.setOnClickListener {
+                listener.onDeleteComment(comment)
             }
         }
 
@@ -66,4 +85,7 @@ class CommentAdapter(private val listener: CommentClickListener) :
 
 interface CommentClickListener {
     fun onViewChildrenComment(parentComment: Comment)
+    fun onReplyComment(comment: Comment)
+    fun onUpdateComment(comment: Comment)
+    fun onDeleteComment(comment: Comment)
 }

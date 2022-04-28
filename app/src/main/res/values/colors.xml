@@ -24,6 +24,7 @@
 
     <!-- Màu highlight -->
     <color name="highlight">#F49B32</color>
+    <color name="negative">#CCCCCC</color>
 
     <!-- Màu icon -->
     <color name="icon_tint">#CC18191F</color>

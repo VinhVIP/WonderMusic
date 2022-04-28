@@ -3,10 +3,7 @@ package com.team28.wondermusic.di
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.team28.wondermusic.common.Config
-import com.team28.wondermusic.data.apis.NotificationAPI
-import com.team28.wondermusic.data.apis.PlaylistAPI
-import com.team28.wondermusic.data.apis.PostAPI
-import com.team28.wondermusic.data.apis.QuestionAPI
+import com.team28.wondermusic.data.apis.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -85,6 +82,11 @@ object NetworkModule {
             .baseUrl(Config.MainSite)
             .client(okHttpClient)
             .build()
+    }
+
+    @Provides
+    fun provideCommentAPI(@Named("MainSite") retrofit: Retrofit): CommentAPI {
+        return retrofit.create(CommentAPI::class.java)
     }
 
     @Provides

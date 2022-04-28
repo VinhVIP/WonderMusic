@@ -50,12 +50,10 @@ data class Album(
 @Parcelize
 data class Comment(
     val idComment: Int,
-    val song: Song,
     val account: Account,
     val content: String,
     val dateTime: String,
-    val idCommentParent: Int,
-    val children: List<Comment>? = null
+    val children: List<Comment>
 ) : Parcelable
 
 @Parcelize

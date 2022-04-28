@@ -9,6 +9,7 @@ import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.NotificationAdapter
 import com.team28.wondermusic.adapter.NotificationClickListener
 import com.team28.wondermusic.base.activities.BaseActivity
+import com.team28.wondermusic.base.dialogs.ConfirmDialog
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.data.models.Notification
 import com.team28.wondermusic.databinding.ActivityNotificationBinding
@@ -104,7 +105,23 @@ class NotificationActivity : BaseActivity(), NotificationClickListener {
         when (item.itemId) {
             android.R.id.home -> super.onBackPressed()
             R.id.menuReadAllNotification -> viewModel.readAllNotification()
-            R.id.menuDeleteAllNotification -> viewModel.deleteAllNotification()
+            R.id.menuDeleteAllNotification -> {
+                showConfirmDialog(
+                    "Xóa tất cả",
+                    "Bạn chắc chắn muốn xóa toàn bộ thông báo?",
+                    "Xóa",
+                    "Hủy",
+                    "",
+                    object : ConfirmDialog.ConfirmCallback {
+                        override fun negativeAction() {
+                        }
+
+                        override fun positiveAction() {
+                            viewModel.deleteAllNotification()
+                        }
+                    }
+                )
+            }
         }
         return super.onOptionsItemSelected(item)
     }

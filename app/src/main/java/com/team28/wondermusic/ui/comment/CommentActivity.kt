@@ -3,23 +3,31 @@ package com.team28.wondermusic.ui.comment
 import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
+import android.view.View
+import android.widget.Toast
+import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.CommentAdapter
 import com.team28.wondermusic.adapter.CommentClickListener
+import com.team28.wondermusic.base.activities.BaseActivity
+import com.team28.wondermusic.base.dialogs.ConfirmDialog.ConfirmCallback
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.TempData
-import com.team28.wondermusic.data.models.Account
-import com.team28.wondermusic.data.models.Album
 import com.team28.wondermusic.data.models.Comment
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ActivityCommentBinding
+import com.team28.wondermusic.ui.comment.reply.CommentReplyActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class CommentActivity : AppCompatActivity(), CommentClickListener {
+@AndroidEntryPoint
+class CommentActivity : BaseActivity(), CommentClickListener {
 
     private lateinit var binding: ActivityCommentBinding
+    private val viewModel by viewModels<CommentViewModel>()
+
+    private lateinit var song: Song
 
     lateinit var commentAdapter: CommentAdapter
 
@@ -28,6 +36,59 @@ class CommentActivity : AppCompatActivity(), CommentClickListener {
         binding = ActivityCommentBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // Các bình luận của bài hát này
+//        song = intent.getParcelableExtra(Constants.Song)
+        // TODO: Ví dụ với bài hát có idSong = 4
+        song = TempData.songs[3]
+
+
+        refresh()
+
+        setup()
+        observers()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        refresh()
+    }
+
+    private fun refresh() {
+        binding.swipeRefresh.isRefreshing = true
+        viewModel.getALlComments(song)
+    }
+
+    private fun observers() {
+        viewModel.rootComments.observe(this) {
+            binding.swipeRefresh.isRefreshing = false
+            commentAdapter.differ.submitList(it)
+        }
+
+        viewModel.sendStatus.observe(this) {
+            it?.let {
+                if (it) {
+                    refresh()
+                    binding.layoutDetail.visibility = View.GONE
+                } else {
+                    Toast.makeText(this, viewModel.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+            viewModel.sendStatus.postValue(null)
+        }
+
+        viewModel.deleteStatus.observe(this) {
+            it?.let {
+                if (it) {
+                    refresh()
+                }
+                Toast.makeText(this, viewModel.message, Toast.LENGTH_SHORT).show()
+                viewModel.deleteStatus.postValue(null)
+            }
+        }
+    }
+
+    private fun setup() {
         Helper.setStatusBarGradiant(this, R.color.main_bg_color)
 
         binding.toolbar.title = "Bình luận"
@@ -43,14 +104,64 @@ class CommentActivity : AppCompatActivity(), CommentClickListener {
             layoutManager = LinearLayoutManager(this@CommentActivity)
         }
 
-        populateCommentData()
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.getALlComments(song)
+        }
+
+        binding.btnSendComment.setOnClickListener {
+            val content = binding.edComment.text.toString().trim()
+            if (content.isNotEmpty()) {
+
+                if (viewModel.isUpdateComment()) {
+                    viewModel.updateComment(song, viewModel.commentUpdate!!, content)
+                } else {
+                    viewModel.addComment(song, content)
+                }
+                binding.edComment.setText("")
+            }
+        }
+
+        binding.btnCancel.setOnClickListener {
+            viewModel.commentUpdate = null
+            binding.layoutDetail.visibility = View.GONE
+        }
     }
 
     override fun onViewChildrenComment(parentComment: Comment) {
         val intent = Intent(this, CommentReplyActivity::class.java).apply {
             putExtra(Constants.Comment, parentComment)
+            putExtra(Constants.Song, song)
         }
         startActivity(intent)
+    }
+
+    override fun onReplyComment(comment: Comment) {
+        this.onViewChildrenComment(comment)
+    }
+
+    override fun onUpdateComment(comment: Comment) {
+        binding.edComment.setText(comment.content)
+
+        binding.layoutDetail.visibility = View.VISIBLE
+        viewModel.commentUpdate = comment
+    }
+
+    override fun onDeleteComment(comment: Comment) {
+        this.showConfirmDialog(
+            "Xác nhận xóa",
+            "Các bình luận trả lời cũng sẽ bị xóa. Bạn chắc chắn muốn xóa?",
+            "Xóa",
+            "Hủy",
+            "",
+            object : ConfirmCallback {
+                override fun negativeAction() {
+                }
+
+                override fun positiveAction() {
+                    viewModel.deleteComment(song, comment)
+                }
+            }
+        )
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
@@ -59,131 +170,5 @@ class CommentActivity : AppCompatActivity(), CommentClickListener {
         }
         return super.onOptionsItemSelected(item)
     }
-
-    private fun populateCommentData() {
-        val song = TempData.songs[0]
-
-        val comments = arrayListOf(
-            Comment(
-                idComment = 1,
-                song = song,
-                account = Account(1, "huy@gmail.com", "Phát Huy T4", "", "01/01/2020", 0, 0),
-                content = "Bài hát rất hay, ủng hộ bạn!",
-                dateTime = "01/01/2021",
-                idCommentParent = 0,
-                children = arrayListOf(
-                    Comment(
-                        idComment = 5,
-                        song = song,
-                        account = Account(
-                            1,
-                            "huy@gmail.com",
-                            "Phát Huy T4",
-                            "",
-                            "01/01/2020",
-                            0,
-                            0
-                        ),
-                        content = "Đông quan điểm với bạn <3",
-                        dateTime = "01/01/2021",
-                        idCommentParent = 0
-                    ),
-                    Comment(
-                        idComment = 6,
-                        song = song,
-                        account = Account(
-                            1,
-                            "huy@gmail.com",
-                            "Phát Huy T4",
-                            "",
-                            "01/01/2020",
-                            0,
-                            0
-                        ),
-                        content = "Quá tuyệt luôn ấy chứ!!!",
-                        dateTime = "01/01/2021",
-                        idCommentParent = 0
-                    ),
-                    Comment(
-                        idComment = 7,
-                        song = song,
-                        account = Account(
-                            1,
-                            "huy@gmail.com",
-                            "Phát Huy T4",
-                            "",
-                            "01/01/2020",
-                            0,
-                            0
-                        ),
-                        content = "Cảm ơn các bạn rất nhiều, tương lai mình sẽ ra thêm nhiều bài hay hơn nữa, mong các bạn ủng hộ",
-                        dateTime = "01/01/2021",
-                        idCommentParent = 0
-                    )
-                )
-            ),
-            Comment(
-                idComment = 2,
-                song = song,
-                account = Account(1, "huy@gmail.com", "Phát Huy T4", "", "01/01/2020", 0, 0),
-                content = "Bạn cần phát âm tròn hơn",
-                dateTime = "01/01/2021",
-                idCommentParent = 0
-            ),
-            Comment(
-                idComment = 4,
-                song = song,
-                account = Account(1, "huy@gmail.com", "Phát Huy T4", "", "01/01/2020", 0, 0),
-                content = "Bài hát rất hay, nhưng mà cần chỉnh chu hơn trong việc phát âm, như thế sẽ hay hơn nhiều! Nói chung là tuyệt với",
-                dateTime = "01/01/2021",
-                idCommentParent = 0
-            ),
-            Comment(
-                idComment = 4,
-                song = song,
-                account = Account(1, "huy@gmail.com", "Phát Huy T4", "", "01/01/2020", 0, 0),
-                content = "Nắm đôi tay kiêu sa, được 1 lần không ta :v",
-                dateTime = "01/01/2021",
-                idCommentParent = 0,
-                children = arrayListOf(
-                    Comment(
-                        idComment = 8,
-                        song = song,
-                        account = Account(
-                            1,
-                            "huy@gmail.com",
-                            "Phát Huy T4",
-                            "",
-                            "01/01/2020",
-                            0,
-                            0
-                        ),
-                        content = "Nghĩ qua thôi con tim trong anh đập tung lên rung nóc rung nhà",
-                        dateTime = "01/01/2021",
-                        idCommentParent = 0
-                    ),
-                    Comment(
-                        idComment = 9,
-                        song = song,
-                        account = Account(
-                            1,
-                            "huy@gmail.com",
-                            "Phát Huy T4",
-                            "",
-                            "01/01/2020",
-                            0,
-                            0
-                        ),
-                        content = "Hóa ra yêu đơn phương 1 người, hóa ra khi tơ vương 1 người, 3h đêm vẫn ngồi cười hahahahahahahahahahahahahahahahahahahaha",
-                        dateTime = "01/01/2021",
-                        idCommentParent = 0
-                    )
-                )
-            ),
-        )
-
-        commentAdapter.differ.submitList(comments)
-    }
-
 
 }

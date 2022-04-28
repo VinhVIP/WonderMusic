@@ -48,7 +48,7 @@
             android:name=".ui.notification.NotificationActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.comment.CommentReplyActivity"
+            android:name=".ui.comment.reply.CommentReplyActivity"
             android:exported="false" />
         <activity
             android:name=".ui.formsong.FormSongActivity"

@@ -63,21 +63,50 @@
 
     </RelativeLayout>
 
-    <TextView
-        android:id="@+id/btnReplyComment"
+    <LinearLayout
+        android:id="@+id/layoutAction"
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/layoutCommentContent"
         android:layout_marginStart="24dp"
         android:layout_marginTop="4dp"
         android:layout_toEndOf="@id/cardViewCmtAvatar"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:text="Trả lời"
-        android:textColor="@color/text_action_color"
-        android:textSize="13sp"
-        android:textStyle="bold" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/btnEditComment"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:text="Chỉnh sửa"
+            android:textColor="@color/text_action_color"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/dot2"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:layout_marginHorizontal="6dp"
+            android:gravity="center_vertical"
+            android:text="•"
+            android:textColor="@color/text_secondary"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/btnDeleteComment"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:text="Xóa"
+            android:textColor="@color/red"
+            android:textSize="13sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
 
 </RelativeLayout>

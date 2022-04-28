@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import com.team28.wondermusic.base.dialogs.ConfirmDialog
 import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.data.models.Playlist
@@ -48,8 +49,22 @@ class PlaylistMenuFragment : BaseDialogFragment() {
 
         binding.menuDeletePlaylist.setOnClickListener {
             playlist?.let {
-                viewModel.deletePlaylist(it, position!!)
-                this.dismiss()
+                val confirmDialog = ConfirmDialog(
+                    context = requireContext(),
+                    title = "Xác nhận xóa",
+                    message = "Bạn có muốn xóa danh sách phát: ${it.name}",
+                    positiveButtonTitle = "Xóa",
+                    negativeButtonTitle = "Hủy",
+                    callback = object :ConfirmDialog.ConfirmCallback{
+                        override fun negativeAction() {
+                        }
+                        override fun positiveAction() {
+                            viewModel.deletePlaylist(it, position!!)
+                            this@PlaylistMenuFragment.dismiss()
+                        }
+                    }
+                )
+                confirmDialog.show()
             }
         }
 
