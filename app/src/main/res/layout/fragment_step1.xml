@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="12dp">
+
+    <TextView
+        style="@style/TextViewTitle"
+        android:text="File bài hát" />
+
+    <TextView
+        android:id="@+id/btnChooseMusic"
+        style="@style/SelectField"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:hint="Chọn file bài hát"
+        android:lines="1"
+        android:paddingEnd="12dp"
+        app:drawableEndCompat="@drawable/ic_right_dark" />
+
+    <TextView
+        style="@style/TextViewTitle"
+        android:text="Tên bài hát" />
+
+    <EditText
+        android:id="@+id/edSongName"
+        style="@style/InputField"
+        android:hint="Nhập tên bài hát"
+        android:inputType="text"
+        android:maxLines="1" />
+
+</LinearLayout>

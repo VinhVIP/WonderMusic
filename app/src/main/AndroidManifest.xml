@@ -15,9 +15,19 @@
         android:roundIcon="@drawable/icon_music"
         android:supportsRtl="true"
         android:theme="@style/Theme.WonderMusic">
+        <receiver
+            android:name=".widget.MusicWidget"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/music_widget_info" />
+        </receiver>
 
         <service android:name=".service.MusicService" />
-
         <service
             android:name=".service.NotificationService"
             android:exported="false">
@@ -61,8 +71,8 @@
             android:exported="false" />
         <activity
             android:name=".ui.home.HomeActivity"
-            android:theme="@style/Theme.App.Starting"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/Theme.App.Starting">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

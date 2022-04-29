@@ -125,4 +125,7 @@ dependencies {
 
     // Chart
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+
+    // Stepper
+    implementation 'com.github.acefalobi:android-stepper:0.3.0'
 }

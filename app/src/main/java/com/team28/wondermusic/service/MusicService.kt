@@ -2,6 +2,8 @@ package com.team28.wondermusic.service
 
 import android.app.PendingIntent
 import android.app.Service
+import android.appwidget.AppWidgetManager
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -10,7 +12,6 @@ import android.graphics.drawable.BitmapDrawable
 import android.media.AudioAttributes
 import android.media.MediaMetadata
 import android.media.MediaPlayer
-import android.media.metrics.Event
 import android.os.IBinder
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
@@ -29,6 +30,8 @@ import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.ui.player.PlayerActivity
+import com.team28.wondermusic.widget.MusicWidget
+import com.team28.wondermusic.widget.SongWidget
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
@@ -115,6 +118,17 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
             }
         }
         return START_STICKY
+    }
+
+    private fun sendSongInfoToWidget(song: SongWidget) {
+        val appWidgetManager = AppWidgetManager.getInstance(this)
+        val ids = appWidgetManager.getAppWidgetIds(ComponentName(this, MusicWidget::class.java))
+
+        ids?.let {
+            for (appWidgetId in it) {
+                MusicWidget.updateAppWidget(this, appWidgetManager, appWidgetId, song)
+            }
+        }
     }
 
     private fun indexSong(song: Song, list: ArrayList<Song>): Int {
@@ -227,7 +241,6 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
         sendNotification()
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         mediaPlayer?.release()
@@ -281,6 +294,9 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
             } catch (e: Exception) {
                 BitmapFactory.decodeResource(resources, R.drawable.icon_music)
             }
+
+            // Send song info to app widget
+            sendSongInfoToWidget(SongWidget(currentSong!!, bitmap, mediaPlayer?.isPlaying ?: false))
 
             mediaPlayer?.let { mediaPlayer ->
                 val song = songList[currentSongIndex]

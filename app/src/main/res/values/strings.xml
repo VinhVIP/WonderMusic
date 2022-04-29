@@ -6,5 +6,8 @@
     <string name="menu_individual">Cá nhân</string>
     <string name="menu_highlight">Nổi bật</string>
     <string name="menu_discover">Khám phá</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="app_widget_description">This is an app widget description</string>
 
 </resources>

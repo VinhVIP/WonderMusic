@@ -115,6 +115,7 @@ class HighLightFragment : Fragment(), SongClickListener {
             }
 
             animateX(1500)
+            animateY(1500)
             data = generateDataLine()
 
             setOnChartValueSelectedListener(object : OnChartValueSelectedListener {

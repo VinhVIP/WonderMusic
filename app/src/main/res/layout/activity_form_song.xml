@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/bg_main">
+    android:background="@drawable/bg_song_player">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -13,156 +13,52 @@
         app:title="Thêm bài hát"
         app:titleTextColor="@color/text_primary" />
 
-    <ScrollView
+    <com.aceinteract.android.stepper.StepperNavigationView
+        android:id="@+id/stepper"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
+        app:stepperFleetDuration="0"
+        app:stepperIconSize="24dp"
+        app:stepperItems="@menu/form_music_steps_menu"
+        app:stepperTextColor="@color/text_primary"
+        app:stepperTextSize="15sp"
+        app:stepperType="tab_numbered" />
+
+    <fragment
+        android:id="@+id/frame_stepper"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:paddingHorizontal="12dp">
+        android:layout_below="@id/stepper"
+        app:navGraph="@navigation/nav_form_song_steps" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabPrevious"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:visibility="gone"
+        android:src="@drawable/ic_navigate_before"
+        app:tint="@color/white" />
 
-            <TextView
-                style="@style/TextViewTitle"
-                android:text="Tên bài hát" />
-
-            <EditText
-                android:id="@+id/edSongName"
-                style="@style/InputField"
-                android:hint="Nhập tên bài hát"
-                android:inputType="text"
-                android:maxLines="1" />
-
-            <TextView
-                style="@style/TextViewTitle"
-                android:text="Giới thiệu, mô tả" />
-
-            <EditText
-                android:id="@+id/edSongDescription"
-                style="@style/InputField"
-                android:hint="Nhập giới thiệu, mô tả bài hát"
-                android:inputType="textMultiLine"
-                android:maxLines="3" />
-
-            <TextView
-                style="@style/TextViewTitle"
-                android:text="File bài hát" />
-
-            <TextView
-                android:id="@+id/btnChooseMusic"
-                style="@style/SelectField"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:hint="Chọn file bài hát"
-                android:lines="1"
-                android:paddingEnd="12dp"
-                app:drawableEndCompat="@drawable/ic_right_dark" />
-
-            <TextView
-                style="@style/TextViewTitle"
-                android:text="File hình ảnh" />
-
-            <TextView
-                android:id="@+id/btnChooseImage"
-                style="@style/SelectField"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:hint="Chọn file hình ảnh"
-                android:lines="1"
-                android:paddingEnd="12dp"
-                app:drawableEndCompat="@drawable/ic_right_dark" />
-
-            <com.makeramen.roundedimageview.RoundedImageView
-                android:id="@+id/imgPreview"
-                android:layout_width="120dp"
-                android:layout_height="120dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="8dp"
-                android:src="@drawable/phathuy"
-                android:visibility="gone"
-                app:riv_corner_radius="12dp" />
-
-            <TextView
-                style="@style/TextViewTitle"
-                android:text="Lời bài hát (lyrics)" />
-
-            <EditText
-                android:id="@+id/edLyrics"
-                style="@style/InputField"
-                android:gravity="start"
-                android:hint="Nhập lyrics tại đây..."
-                android:inputType="textMultiLine"
-                android:maxLines="10"
-                android:minLines="5"
-                android:overScrollMode="always"
-                android:paddingVertical="6dp"
-                android:scrollbarStyle="insideInset"
-                android:scrollbars="vertical" />
-
-            <TextView
-                style="@style/TextViewTitle"
-                android:text="Album" />
-
-            <TextView
-                android:id="@+id/btnChooseAlbum"
-                style="@style/SelectField"
-                android:clickable="true"
-                android:focusable="true"
-                android:gravity="center_vertical"
-                android:hint="Chọn album"
-                android:lines="1"
-                android:paddingEnd="12dp"
-                app:drawableEndCompat="@drawable/ic_right_dark" />
-
-            <TextView
-                style="@style/TextViewTitle"
-                android:text="Trạng thái" />
-
-            <RadioGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-                <RadioButton
-                    android:id="@+id/radioPublic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:checked="true"
-                    android:paddingStart="12dp"
-                    android:text="Công khai"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16sp" />
-
-                <RadioButton
-                    android:id="@+id/radioPrivate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:paddingStart="12dp"
-                    android:text="Riêng tư"
-                    android:textColor="@color/text_primary"
-                    android:textSize="16sp" />
-            </RadioGroup>
-
-            <androidx.appcompat.widget.AppCompatButton
-                android:id="@+id/btnSubmit"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/bg_button_active"
-                android:text="Thêm bài hát"
-                android:textColor="@color/text_primary" />
-
-        </LinearLayout>
-    </ScrollView>
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/fabNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="16dp"
+        android:src="@drawable/ic_navigate_next"
+        app:tint="@color/white" />
 
 </RelativeLayout>

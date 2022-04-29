@@ -17,31 +17,38 @@
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeRefresh"
         android:layout_width="match_parent"
+        android:layout_above="@id/layoutBottom"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar"
-        android:layout_marginBottom="54dp">
+        android:layout_below="@id/toolbar">
 
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="match_parent">
 
-            <include
-                android:id="@+id/parentComment"
-                layout="@layout/item_comment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerReply"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/item_comment_reply" />
-        </LinearLayout>
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/parentComment"
+                    layout="@layout/item_comment"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerReply"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/item_comment_reply" />
+            </LinearLayout>
+        </ScrollView>
+
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 
     <LinearLayout
+        android:id="@+id/layoutBottom"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
