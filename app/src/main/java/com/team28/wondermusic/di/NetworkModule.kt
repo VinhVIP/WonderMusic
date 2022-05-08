@@ -3,15 +3,18 @@ package com.team28.wondermusic.di
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.team28.wondermusic.common.Config
+import com.team28.wondermusic.common.DataLocal
 import com.team28.wondermusic.data.apis.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
+import java.util.concurrent.TimeUnit
 import javax.inject.Named
 import javax.inject.Singleton
 
@@ -21,12 +24,27 @@ object NetworkModule {
 
     @Provides
     @Singleton
+    fun provideAuthInterceptor(): Interceptor {
+        return Interceptor { chain ->
+            val request = chain.request().newBuilder()
+//                .header("Accept", "application/json")
+                .header("Authorization", "Bearer ${DataLocal.ACCESS_TOKEN}")
+                .build()
+            chain.proceed(request)
+        }
+    }
+
+    @Provides
+    @Singleton
     fun provideOKHttpClient(
-        httpLoggingInterceptor: HttpLoggingInterceptor
+        httpLoggingInterceptor: HttpLoggingInterceptor,
+        authInterceptor: Interceptor,
     ): OkHttpClient {
         val builder = OkHttpClient.Builder()
 
         builder.interceptors().add(httpLoggingInterceptor)
+        builder.addInterceptor(authInterceptor)
+        builder.callTimeout(2, TimeUnit.MINUTES).readTimeout(2, TimeUnit.MINUTES)
         return builder.build()
     }
 
@@ -47,41 +65,26 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    @Named("StackOverFlowSite")
-    fun provideRetrofitStackOverFlow(
-        okHttpClient: OkHttpClient,
-        moshiConverterFactory: MoshiConverterFactory
-    ): Retrofit {
-        return Retrofit.Builder().addConverterFactory(moshiConverterFactory)
-            .baseUrl(Config.StackOverFlowUrl)
-            .client(okHttpClient)
-            .build()
-    }
-
-    @Provides
-    @Singleton
-    @Named("JsonPlaceHolderSite")
-    fun provideRetrofitJsonPlaceHolder(
-        okHttpClient: OkHttpClient,
-        moshiConverterFactory: MoshiConverterFactory
-    ): Retrofit {
-        return Retrofit.Builder().addConverterFactory(moshiConverterFactory)
-            .baseUrl(Config.JsonPlaceHolder)
-            .client(okHttpClient)
-            .build()
-    }
-
-    @Provides
-    @Singleton
     @Named("MainSite")
     fun provideRetrofitMainSite(
         okHttpClient: OkHttpClient,
         moshiConverterFactory: MoshiConverterFactory
     ): Retrofit {
         return Retrofit.Builder().addConverterFactory(moshiConverterFactory)
+//            .baseUrl("http://192.168.1.4:8000/")
             .baseUrl(Config.MainSite)
             .client(okHttpClient)
             .build()
+    }
+
+    @Provides
+    fun provideSongAPI(@Named("MainSite") retrofit: Retrofit): SongAPI {
+        return retrofit.create(SongAPI::class.java)
+    }
+
+    @Provides
+    fun provideAccountAPI(@Named("MainSite") retrofit: Retrofit): AccountAPI {
+        return retrofit.create(AccountAPI::class.java)
     }
 
     @Provides
@@ -100,12 +103,8 @@ object NetworkModule {
     }
 
     @Provides
-    fun provideQuestionAPI(@Named("StackOverFlowSite") retrofit: Retrofit): QuestionAPI {
-        return retrofit.create(QuestionAPI::class.java)
+    fun provideAlbumAPI(@Named("MainSite") retrofit: Retrofit): AlbumAPI {
+        return retrofit.create(AlbumAPI::class.java)
     }
 
-    @Provides
-    fun providePostAPI(@Named("JsonPlaceHolderSite") retrofit: Retrofit): PostAPI {
-        return retrofit.create(PostAPI::class.java)
-    }
 }

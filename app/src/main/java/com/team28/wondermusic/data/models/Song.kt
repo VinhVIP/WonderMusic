@@ -2,6 +2,7 @@ package com.team28.wondermusic.data.models
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import java.io.File
 
 data class LineLyric(val startTime: Int, val text: String)
 
@@ -18,6 +19,7 @@ data class Account(
     val totalLikes: Int = 0,
     val totalFollowers: Int = 0,
     val totalFollowings: Int = 0,
+    val followStatus: Boolean = false,
 ) : Parcelable
 
 @Parcelize
@@ -35,16 +37,17 @@ data class Song(
     val account: Account?,
     val album: Album? = null,
     var loveStatus: Boolean = false,
-    val singers: List<Account>? = null
+    val singers: List<Account>? = null,
+    val types: List<Type>? = null,
 ) : Parcelable
 
 @Parcelize
 data class Album(
     val idAlbum: Int,
-    val name: String,
-    val dateCreated: String,
-    val account: Account,
-    val songs: List<Song>?
+    var name: String? = "",
+    val dateCreated: String? = "",
+    val account: Account? = null,
+    var songs: List<Song>? = null
 ) : Parcelable
 
 @Parcelize
@@ -59,8 +62,8 @@ data class Comment(
 @Parcelize
 data class Type(
     val idType: Int,
-    val name: String,
-    val description: String
+    val name: String? = "",
+    val description: String? = ""
 ) : Parcelable
 
 @Parcelize
@@ -81,3 +84,15 @@ data class Notification(
     val notificationTime: String,
     val account: Account? = null
 ) : Parcelable
+
+
+data class SongPost(
+    val songFile: File?,
+    val songName: String,
+    val imageSong: File?,
+    val description: String?,
+    val lyrics: String?,
+    val album: Album?,
+    val types: ArrayList<Type>,
+    val accounts: ArrayList<Account>,
+)

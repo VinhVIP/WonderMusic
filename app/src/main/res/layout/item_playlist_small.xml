@@ -30,14 +30,14 @@
                     android:layout_width="@dimen/playlist_item_size"
                     android:layout_height="@dimen/playlist_item_size"
                     android:layout_weight="1"
-                    android:src="@drawable/phathuy" />
+                    android:src="@drawable/bitmap_music" />
 
                 <ImageView
                     android:id="@+id/imgAvatar2"
                     android:layout_width="@dimen/playlist_item_size"
                     android:layout_height="@dimen/playlist_item_size"
                     android:layout_weight="1"
-                    android:src="@drawable/phathuy" />
+                    android:src="@drawable/bitmap_music" />
             </LinearLayout>
 
             <LinearLayout
@@ -52,14 +52,14 @@
                     android:layout_width="@dimen/playlist_item_size"
                     android:layout_height="@dimen/playlist_item_size"
                     android:layout_weight="1"
-                    android:src="@drawable/phathuy" />
+                    android:src="@drawable/bitmap_music" />
 
                 <ImageView
                     android:id="@+id/imgAvatar4"
                     android:layout_width="@dimen/playlist_item_size"
                     android:layout_height="@dimen/playlist_item_size"
                     android:layout_weight="1"
-                    android:src="@drawable/phathuy" />
+                    android:src="@drawable/bitmap_music" />
             </LinearLayout>
         </LinearLayout>
 

@@ -7,7 +7,6 @@ import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.gms.tasks.OnCompleteListener
@@ -18,8 +17,8 @@ import com.team28.wondermusic.adapter.EventBusModel
 import com.team28.wondermusic.adapter.EventBusModel.MusicPlayingEvent
 import com.team28.wondermusic.adapter.EventBusModel.SongInfoEvent
 import com.team28.wondermusic.common.Constants
+import com.team28.wondermusic.common.DataLocal
 import com.team28.wondermusic.common.Helper
-import com.team28.wondermusic.data.TempData
 import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ActivityHomeBinding
@@ -27,7 +26,7 @@ import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.account.AccountActivity
 import com.team28.wondermusic.ui.home.discover.DiscoverFragment
 import com.team28.wondermusic.ui.home.highlight.HighLightFragment
-import com.team28.wondermusic.ui.home.individual.IndividualFragment
+import com.team28.wondermusic.ui.home.personal.PersonalFragment
 import com.team28.wondermusic.ui.notification.NotificationActivity
 import com.team28.wondermusic.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -65,7 +64,7 @@ class HomeActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        installSplashScreen()
+//        installSplashScreen()
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -74,27 +73,14 @@ class HomeActivity : AppCompatActivity() {
         setupViewPager()
         setupBottomNavigation()
 
-        binding.playerMini.setOnClickListener {
-            startActivity(Intent(this, PlayerActivity::class.java))
+        if (DataLocal.myAccount.avatar.isNotEmpty()) {
+            Picasso.get().load(DataLocal.myAccount.avatar).fit().into(binding.toolbar.imgAvatar)
         }
+        clickEvents()
+        observers()
+    }
 
-        binding.toolbar.imgAvatar.setOnClickListener {
-            startActivity(Intent(this, AccountActivity::class.java).apply {
-                putExtra(Constants.Account, TempData.myAccount)
-            })
-        }
-
-        binding.toolbar.imgNotification.setOnClickListener {
-            startActivity(Intent(this, NotificationActivity::class.java))
-        }
-
-        viewModel.isPlaying.observe(this) {
-            binding.btnPlayPause.setImageResource(
-                if (it) R.drawable.ic_pause
-                else R.drawable.ic_play
-            )
-        }
-
+    private fun observers() {
         viewModel.song.observe(this) { song ->
             Log.d("vinh", "update song")
             if (song == null) {
@@ -107,6 +93,41 @@ class HomeActivity : AppCompatActivity() {
             }
         }
 
+        viewModel.isPlaying.observe(this) {
+            binding.btnPlayPause.setImageResource(
+                if (it) R.drawable.ic_pause
+                else R.drawable.ic_play
+            )
+        }
+
+        viewModel.numUnreadNotification.observe(this) {
+            binding.toolbar.tvNotificationCount.apply {
+                if (it == 0) visibility = View.INVISIBLE
+                else {
+                    visibility = View.VISIBLE
+                    text = "$it"
+                }
+            }
+        }
+    }
+
+    private fun clickEvents() {
+        binding.playerMini.setOnClickListener {
+            startActivity(Intent(this, PlayerActivity::class.java))
+        }
+
+        binding.toolbar.imgAvatar.setOnClickListener {
+            startActivity(Intent(this, AccountActivity::class.java).apply {
+                putExtra(Constants.Account, DataLocal.myAccount)
+            })
+        }
+
+        binding.toolbar.imgNotification.setOnClickListener {
+            startActivity(Intent(this, NotificationActivity::class.java))
+        }
+
+
+
         binding.btnPlayPause.setOnClickListener {
             Log.d("vinh", "action_play")
             sendMusicAction(MusicService.ACTION_PLAY)
@@ -117,6 +138,7 @@ class HomeActivity : AppCompatActivity() {
             sendMusicAction(MusicService.ACTION_NEXT)
         }
     }
+
 
     private fun sendMusicAction(
         action: Int,
@@ -177,7 +199,7 @@ class HomeActivity : AppCompatActivity() {
         binding.viewPager.orientation = ViewPager2.ORIENTATION_HORIZONTAL
         val fragmentsList: ArrayList<Fragment> =
             arrayListOf(
-                IndividualFragment(),
+                PersonalFragment(),
                 HighLightFragment(),
                 DiscoverFragment()
             )

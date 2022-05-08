@@ -9,11 +9,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.team28.wondermusic.adapter.AlbumAdapter
 import com.team28.wondermusic.adapter.AlbumClickListener
 import com.team28.wondermusic.base.fragments.BaseDialogFragment
-import com.team28.wondermusic.data.TempData
+import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.data.models.Album
 import com.team28.wondermusic.databinding.FragmentAlbumDialogBinding
 import com.team28.wondermusic.ui.formsong.FormSongViewModel
-import com.team28.wondermusic.ui.formsong.album_form.FormAlbumDialogFragment
+import com.team28.wondermusic.ui.home.personal.album.FormAlbumDialogFragment
 
 class ListAlbumDialogFragment : BaseDialogFragment(), AlbumClickListener {
 
@@ -34,8 +34,11 @@ class ListAlbumDialogFragment : BaseDialogFragment(), AlbumClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        albumAdapter = AlbumAdapter(this)
-        albumAdapter.differ.submitList(TempData.albums)
+        albumAdapter = AlbumAdapter(mutableListOf(), this)
+
+        viewModel.myAlbum.observe(this) {
+            albumAdapter.setData(it)
+        }
 
         binding.recyclerAlbum.apply {
             adapter = albumAdapter
@@ -48,9 +51,23 @@ class ListAlbumDialogFragment : BaseDialogFragment(), AlbumClickListener {
         }
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewModel.getAllMyAlbum()
+    }
+
     override fun onAlbumClick(album: Album) {
         viewModel.album.postValue(album)
         dismiss()
+    }
+
+    override fun onAlbumMoreMenuClick(album: Album, position: Int) {
+        FormAlbumDialogFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(Constants.Album, album)
+                putInt(Constants.Position, position)
+            }
+        }.show(requireActivity().supportFragmentManager, null)
     }
 
 }

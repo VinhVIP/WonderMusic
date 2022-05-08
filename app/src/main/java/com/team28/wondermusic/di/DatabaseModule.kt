@@ -24,6 +24,11 @@ object DatabaseModule {
     }
 
     @Provides
+    fun provideContext(@ApplicationContext appContext: Context): Context{
+        return appContext
+    }
+
+    @Provides
     fun provideSongDao(appDB: AppDB): SongDAO {
         return appDB.songDao()
     }

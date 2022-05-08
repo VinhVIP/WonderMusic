@@ -2,26 +2,38 @@ package com.team28.wondermusic.ui.splash
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
+import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.team28.wondermusic.R
+import com.team28.wondermusic.common.AppSharedPreferences
+import com.team28.wondermusic.common.DataLocal
 import com.team28.wondermusic.ui.home.HomeActivity
 import com.team28.wondermusic.ui.login.LoginActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
+
+    private val viewModel by viewModels<SplashViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val splashScreen = installSplashScreen()
+        installSplashScreen()
 
         setContentView(R.layout.activity_splash)
 
-//        Handler(Looper.getMainLooper()).postDelayed({
-//            val mainIntent = Intent(this, LoginActivity::class.java)
-//            startActivity(mainIntent)
-//            finish()
-//        }, 1000)
+        viewModel.getSavedData()
+
+        if (DataLocal.IS_LOGGED_IN) {
+            startActivity(Intent(this, HomeActivity::class.java))
+            Log.d("vinh", "logged")
+        } else {
+            startActivity(Intent(this, LoginActivity::class.java))
+            Log.d("vinh", "no logged")
+        }
+
     }
 }

@@ -6,6 +6,7 @@
     <color name="primaryDarkColor">#101010</color>
     <color name="playingCardColor">#444caf50</color>
     <color name="textColor">#FAFAFA</color>
+    <color name="colorGrey">#dddddd</color>
 
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>

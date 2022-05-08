@@ -72,6 +72,7 @@
                 android:paddingHorizontal="3dp"
                 android:paddingVertical="2dp"
                 android:text="10"
+                android:visibility="invisible"
                 android:textColor="@color/white"
                 android:textSize="10sp"
                 android:textStyle="bold" />

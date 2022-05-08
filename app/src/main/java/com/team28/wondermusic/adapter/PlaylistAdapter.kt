@@ -44,7 +44,6 @@ class PlaylistAdapter(
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         val playlist = list[position]
 
-        // TODO: Load ảnh từ song
         holder.itemBinding.apply {
             tvPlaylistName.text = playlist.name
             tvSingerName.text = playlist.account.accountName

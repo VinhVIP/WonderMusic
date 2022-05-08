@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
-import com.team28.wondermusic.R
 import com.team28.wondermusic.data.models.Account
 import com.team28.wondermusic.databinding.ItemAccountBinding
 
@@ -39,7 +38,9 @@ class AccountAdapter(val listener: ItemAccountClickListener) :
         val account = differ.currentList[position]
 
         holder.itemBinding.apply {
-            Picasso.get().load(account.avatar).fit().into(imgAvatar)
+            if (account.avatar.isNotEmpty())
+                Picasso.get().load(account.avatar).fit()
+                    .into(imgAvatar)
             tvAccountName.text = account.accountName
             tvTotalFollowers.text = "${account.totalFollowers}"
         }

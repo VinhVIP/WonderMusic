@@ -39,12 +39,23 @@ class PlaylistSmallAdapter(private val listener: PlaylistClickListener) :
     override fun onBindViewHolder(holder: PlaylistViewHolder, position: Int) {
         val playlist = differ.currentList[position]
 
-        holder.itemBinding.apply {
-            Picasso.get().load(R.drawable.phathuy).fit().into(imgAvatar1)
-            Picasso.get().load(R.drawable.phathuy).fit().into(imgAvatar2)
-            Picasso.get().load(R.drawable.phathuy).fit().into(imgAvatar3)
-            Picasso.get().load(R.drawable.phathuy).fit().into(imgAvatar4)
+        val img = listOf(
+            holder.itemBinding.imgAvatar1,
+            holder.itemBinding.imgAvatar2,
+            holder.itemBinding.imgAvatar3,
+            holder.itemBinding.imgAvatar4
+        )
 
+        holder.itemBinding.apply {
+            playlist.songs?.let {
+                if (it.isNotEmpty()) {
+                    for (i in 0..3) {
+                        if (it[i % it.size].image.isNotEmpty()) {
+                            Picasso.get().load(it[i % it.size].image).fit().into(img[i])
+                        }
+                    }
+                }
+            }
             tvPlaylistName.text = playlist.name
         }
 

@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.team28.wondermusic.R
 import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ItemSongSmallBinding
@@ -43,7 +44,15 @@ class SongSmallAdapter(
         val song = differ.currentList[position]
 
         holder.itemBinding.apply {
-            Picasso.get().load(song.image).fit().into(imgAvatar)
+            if (song.image.isEmpty()) {
+                Picasso.get().load(R.drawable.bitmap_music).fit()
+                    .into(imgAvatar)
+            } else {
+                Picasso.get().load(song.image)
+                    .placeholder(R.drawable.bitmap_music).fit()
+                    .into(imgAvatar)
+            }
+
             tvSongName.text = song.name
             tvSinger.text = song.singersToString()
         }

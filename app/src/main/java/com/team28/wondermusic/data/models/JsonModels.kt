@@ -2,6 +2,14 @@ package com.team28.wondermusic.data.models
 
 import com.squareup.moshi.Json
 
+data class LoginModal(val email: String, val password: String)
+
+data class LoginResponseJson(
+    val message: String,
+    val accessToken: String?,
+    val data: AccountJson?
+)
+
 data class NotificationListJson(
     val message: String,
     val data: List<NotificationJson>? = emptyList(),
@@ -45,7 +53,7 @@ data class NotificationCountJson(
 
 data class ListPlaylistJson(
     val message: String,
-    val data: List<PlaylistJson>? = emptyList(),
+    val data: List<PlaylistJson> = emptyList(),
 )
 
 // TODO: Chưa đúng yêu cầu
@@ -74,7 +82,7 @@ fun List<PlaylistJson>.toListPlaylist(): List<Playlist> {
 // ----- Comment -----
 
 data class CommentJson(
-    @Json(name = "id_account") val idAccount: Int,
+    @Json(name = "account") val account: AccountJson,
     @Json(name = "id_cmt") val idCmt: Int,
     val content: String,
     val day: String,
@@ -86,7 +94,7 @@ data class CommentJson(
             idComment = this.idCmt,
             content = this.content,
             dateTime = "${this.time} - ${this.day}",
-            account = Account(idAccount = this.idAccount, accountName = "Không biết"),
+            account = this.account.toAccount(),
             children = commentChildren?.toListComment() ?: emptyList(),
         )
     }
@@ -123,4 +131,135 @@ data class CommentParentJson(
 data class CommentParentAndChildrenJson(
     val message: String,
     val data: CommentParentJson
+)
+
+data class ListSongJson(
+//    val message: String,
+    val data: List<SongJson>
+)
+
+data class SongJson(
+    @Json(name = "id_song") val idSong: Int,
+    @Json(name = "name_song") val nameSong: String,
+    val created: String,
+    val description: String?,
+    val link: String?,
+    val listen: Int,
+    val lyrics: String?,
+    @Json(name = "lovestatus") val loveStatus: Boolean = false,
+    @Json(name = "image_song") val imageSong: String?,
+    @Json(name = "song_status") val songStatus: Int,
+    @Json(name = "qtylove") val totalLove: String,
+
+    @Json(name = "account") val account: AccountJson,
+    @Json(name = "singers") val singers: List<AccountJson>,
+    @Json(name = "types") val types: List<TypeJson>,
+    @Json(name = "album") val album: AlbumJson,
+) {
+    fun toSong(): Song {
+        return Song(
+            idSong = this.idSong,
+            name = this.nameSong,
+            link = this.link ?: "",
+            image = this.imageSong ?: "",
+            lyrics = this.lyrics ?: "",
+            description = this.description ?: "",
+            dateCreated = this.created,
+            songStatus = this.songStatus,
+            listen = this.listen,
+            account = this.account.toAccount(),
+            album = this.album.toAlbum(),
+            types = this.types.toListType(),
+            singers = this.singers.toListAccount(),
+            loveStatus = this.loveStatus,
+            like = this.totalLove.toInt(),
+        )
+    }
+}
+
+fun List<SongJson>.toListSong(): List<Song> {
+    return map { it.toSong() }
+}
+
+data class TypeJson(
+    @Json(name = "id_type") val idType: Int,
+    @Json(name = "name_type") val nameType: String
+) {
+    fun toType(): Type {
+        return Type(
+            idType = this.idType,
+            name = this.nameType,
+        )
+    }
+}
+
+fun List<TypeJson>.toListType(): List<Type> {
+    return map { it.toType() }
+}
+
+data class AlbumJson(
+    @Json(name = "create_date") val createDate: String,
+    @Json(name = "id_album") val idAlbum: Int,
+    @Json(name = "name_album") val nameAlbum: String,
+    val account: AccountJson?,
+    val songs: List<SongJson>?,
+) {
+    fun toAlbum(): Album {
+        return Album(
+            idAlbum = this.idAlbum,
+            name = this.nameAlbum,
+            dateCreated = this.createDate,
+            account = this.account?.toAccount(),
+            songs = this.songs?.toListSong(),
+        )
+    }
+}
+
+data class ListAlbumJson(
+    val message: String,
+    val data: List<AlbumJson>
+)
+
+fun List<AlbumJson>.toListAlbum(): List<Album> {
+    return map { it.toAlbum() }
+}
+
+data class AccountJson(
+    @Json(name = "id_account") val idAccount: Int,
+    @Json(name = "account_name") val accountName: String,
+    val avatar: String,
+    val email: String,
+    @Json(name = "account_status") val accountStatus: Int,
+    @Json(name = "create_date") val createDate: String,
+    val follower: String?,
+    val following: String?,
+    val role: Int,
+    @Json(name = "total_love") val totalLove: String?,
+    @Json(name = "follow_status") val followStatus: Boolean?,
+) {
+    fun toAccount(): Account {
+        return Account(
+            idAccount = this.idAccount,
+            email = this.email,
+            accountName = this.accountName,
+            avatar = this.avatar,
+            dateCreated = this.createDate,
+            role = this.role,
+            accountStatus = this.accountStatus,
+            totalSongs = 0,
+            totalLikes = if (this.totalLove == null) 0 else this.totalLove.toInt(),
+            totalFollowers = if (this.follower == null) 0 else this.follower.toInt(),
+            totalFollowings = if (this.following == null) 0 else this.following.toInt(),
+            followStatus = this.followStatus ?: false,
+        )
+    }
+}
+
+fun List<AccountJson>.toListAccount(): List<Account> {
+    return map { it.toAccount() }
+}
+
+data class ListAccountJson(
+    val message: String,
+    val data: List<AccountJson>
 )

@@ -77,4 +77,13 @@ class NotificationRepository @Inject constructor(
         }
         return result
     }
+
+    suspend fun countUnreadNotification(): Int {
+        val result = remoteService.countUnreadNotification()
+        if (result is NetworkResult.Success) {
+            return result.body.data
+        } else {
+            return 0;
+        }
+    }
 }

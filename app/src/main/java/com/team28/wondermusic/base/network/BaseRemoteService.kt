@@ -10,6 +10,7 @@ open class BaseRemoteService {
         try {
             response = call.invoke()
         } catch (t: Throwable) {
+            t.printStackTrace()
             return NetworkResult.Error(ResponseError("Có lỗi xảy ra", 500))
         }
 

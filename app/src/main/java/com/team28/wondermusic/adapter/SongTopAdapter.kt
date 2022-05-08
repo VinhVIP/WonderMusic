@@ -7,6 +7,8 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.team28.wondermusic.R
+import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ItemSongTopBinding
@@ -42,12 +44,19 @@ class SongTopAdapter(
         val song = differ.currentList[position]
 
         holder.itemBinding.apply {
-            Picasso.get().load(song.image).fit().into(imgAvatar)
+            if (song.image.isEmpty()) {
+                Picasso.get().load(R.drawable.bitmap_music).fit()
+                    .into(imgAvatar)
+            } else {
+                Picasso.get().load(song.image)
+                    .placeholder(R.drawable.bitmap_music).fit()
+                    .into(imgAvatar)
+            }
 
             tvTopNumber.text = "#${position + 1}"
             tvSongName.text = song.name
             tvSinger.text = song.singersToString()
-            tvDate.text = song.dateCreated
+            tvDate.text = Helper.toDateString(song.dateCreated)
         }
 
         holder.itemView.setOnClickListener {

@@ -7,28 +7,40 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.squareup.picasso.Picasso
 import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.MenuBottomAdapter
 import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
-import com.team28.wondermusic.data.models.*
+import com.team28.wondermusic.data.TempData
+import com.team28.wondermusic.data.models.MenuBottom
+import com.team28.wondermusic.data.models.MenuBottomClickListener
+import com.team28.wondermusic.data.models.MenuBottomType.*
+import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.FragmentMenuBottomBinding
+import com.team28.wondermusic.ui.account.album_detail.AlbumDetailFragment
 import com.team28.wondermusic.ui.formsong.FormSongActivity
 import com.team28.wondermusic.ui.player.singers.SingersFragment
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MenuBottomFragment : BaseDialogFragment(), MenuBottomClickListener {
 
     private lateinit var binding: FragmentMenuBottomBinding
+    private val viewModel by viewModels<MenuBottomViewModel>({ requireActivity() })
     private lateinit var menuAdapter: MenuBottomAdapter
 
-    private var song: Song? = null
-
+    private lateinit var song: Song
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        song = arguments?.getParcelable(Constants.Song)
+        val song: Song? = arguments?.getParcelable(Constants.Song)
+        if (song == null) dismiss()
+        else this.song = song
+
+        viewModel.position = arguments?.getInt(Constants.Position)
     }
 
     override fun onCreateView(
@@ -50,71 +62,85 @@ class MenuBottomFragment : BaseDialogFragment(), MenuBottomClickListener {
             layoutManager = LinearLayoutManager(this@MenuBottomFragment.context)
         }
 
-        song?.let { song ->
-            Picasso.get().load(song.image).fit().into(binding.imgSongAvatar)
-            binding.tvSongName.text = song.name
-            binding.tvAccountName.text = song.account?.accountName ?: ""
-        }
+        if (song.image.isNotEmpty()) Picasso.get().load(song.image).fit()
+            .into(binding.imgSongAvatar)
+        binding.tvSongName.text = song.name
+        binding.tvAccountName.text = song.account?.accountName ?: ""
 
     }
 
     private fun generateMenu(): ArrayList<MenuBottom> {
         val items = arrayListOf<MenuBottom>()
 
-        val myAccount =
-            Account(1, "vinhvipit@gmail.com", "Quang Vinh", "", "01/01/2020", 0, 0, 123, 45)
+        val myAccount = TempData.myAccount
 
-
-        song?.let { song ->
-            if (myAccount.idAccount == song.account!!.idAccount) {
-                items.add(MenuBottom("Chỉnh sửa", R.drawable.ic_edit, MenuBottomType.EDIT))
-            }
-
-            if (song.loveStatus)
-                items.add(
-                    MenuBottom(
-                        "Xóa khỏi yêu thích",
-                        R.drawable.ic_heart_red,
-                        MenuBottomType.REMOVE_FAVORITE
-                    )
-                )
-            else
-                items.add(
-                    MenuBottom(
-                        "Thêm vào yêu thích",
-                        R.drawable.ic_heart,
-                        MenuBottomType.FAVORITE
-                    )
-                )
-
-            items.addAll(coreMenu)
+        if (myAccount.idAccount == song.account!!.idAccount) {
+            items.add(MenuBottom("Chỉnh sửa", R.drawable.ic_edit, EDIT))
         }
+
+        if (song.loveStatus)
+            items.add(
+                MenuBottom(
+                    "Xóa khỏi yêu thích",
+                    R.drawable.ic_heart_red,
+                    REMOVE_FAVORITE
+                )
+            )
+        else
+            items.add(
+                MenuBottom(
+                    "Thêm vào yêu thích",
+                    R.drawable.ic_heart,
+                    FAVORITE
+                )
+            )
+
+        items.addAll(coreMenu)
 
         return items
     }
 
     private var coreMenu = arrayListOf(
-        MenuBottom("Thêm vào playlist", R.drawable.ic_playlist_add, MenuBottomType.PLAYLIST),
-        MenuBottom("Phát kế tiếp", R.drawable.ic_play, MenuBottomType.HEAD_OF_PLAYLIST),
+        MenuBottom("Thêm vào playlist", R.drawable.ic_playlist_add, PLAYLIST),
+        MenuBottom("Phát kế tiếp", R.drawable.ic_play, HEAD_OF_PLAYLIST),
         MenuBottom(
             "Thêm vào danh sách phát",
             R.drawable.ic_playlist_current,
-            MenuBottomType.TAIL_OF_PLAYLIST
+            TAIL_OF_PLAYLIST
         ),
-        MenuBottom("Xem album", R.drawable.ic_album, MenuBottomType.ALBUM),
-        MenuBottom("Xem nghệ sĩ", R.drawable.ic_singers, MenuBottomType.SINGERS),
-        MenuBottom("Tải về", R.drawable.ic_download, MenuBottomType.DOWNLOAD),
+        MenuBottom("Xem album", R.drawable.ic_album, ALBUM),
+        MenuBottom("Xem nghệ sĩ", R.drawable.ic_singers, SINGERS),
+        MenuBottom("Tải về", R.drawable.ic_download, DOWNLOAD),
     )
 
     override fun onMenuClick(menu: MenuBottom) {
-        Toast.makeText(context, menu.title, Toast.LENGTH_SHORT).show();
         when (menu.type) {
-            MenuBottomType.EDIT -> {
+            EDIT -> {
                 startActivity(Intent(context, FormSongActivity::class.java).apply {
                     putExtra(Constants.Song, song)
                 })
             }
-            MenuBottomType.SINGERS -> {
+            FAVORITE -> {
+                viewModel.loveSong(song)
+            }
+            REMOVE_FAVORITE -> {
+                viewModel.unLoveSong(song)
+            }
+            ALBUM -> {
+                if (song.album != null) {
+                    AlbumDetailFragment().apply {
+                        arguments = Bundle().apply {
+                            putParcelable(Constants.Album, song.album)
+                            putBoolean(Constants.NeedReload, true)
+                        }
+                    }.show(requireActivity().supportFragmentManager, null)
+                } else {
+                    Toast.makeText(context, "Bài hát nào không thuộc album nào", Toast.LENGTH_SHORT)
+                        .show()
+                }
+
+            }
+            SINGERS -> {
                 SingersFragment().apply {
                     arguments = Bundle().apply {
                         Log.d("vinh", "singers size: ${song?.singers?.size}")

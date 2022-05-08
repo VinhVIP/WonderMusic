@@ -1,20 +1,24 @@
 package com.team28.wondermusic.data
 
-import com.team28.wondermusic.data.models.Account
-import com.team28.wondermusic.data.models.Album
-import com.team28.wondermusic.data.models.Playlist
-import com.team28.wondermusic.data.models.Song
+import com.team28.wondermusic.data.models.*
 
 object TempData {
 
+    val types = arrayListOf(
+        Type(1, "Rap", ""),
+        Type(2, "Hiphop", ""),
+        Type(3, "Lofi", ""),
+        Type(4, "R&B", ""),
+        Type(5, "Tân cổ giao duyên", ""),
+    )
 
     val accounts = arrayListOf(
         Account(
-            idAccount = 0,
+            idAccount = 1,
             email = "vinhvipit@gmail.com",
             accountName = "Quang Vinh",
             avatar = "https://photo-resize-zmp3.zmdcdn.me/w240_r1x1_webp/avatars/f/2/8/d/f28d80ff4eca2403eff48dcbbf7fcb11.jpg",
-            dateCreated = "01/01/2020",
+            dateCreated = "2022-03-06T22:14:40",
             role = 0,
             accountStatus = 0,
             totalSongs = 5,

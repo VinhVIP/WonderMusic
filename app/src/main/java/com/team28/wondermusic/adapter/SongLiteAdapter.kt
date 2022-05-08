@@ -42,7 +42,11 @@ class SongLiteAdapter(private val listener: SongClickListener) :
         val song = differ.currentList[position]
 
         holder.itemBinding.apply {
-            Picasso.get().load(song.image).fit().into(imgSongAvatar)
+            if (song.image.isNotEmpty()) {
+                Picasso.get().load(song.image).fit().into(imgSongAvatar)
+            } else {
+                Picasso.get().load(R.drawable.bitmap_music).fit().into(imgSongAvatar)
+            }
             tvSongName.text = song.name
             tvAccountName.text = song.singersToString()
         }
@@ -52,7 +56,7 @@ class SongLiteAdapter(private val listener: SongClickListener) :
         }
 
         holder.itemBinding.songMenuMore.setOnClickListener {
-            listener.onOpenMenu(song)
+            listener.onOpenMenu(song, position)
         }
     }
 

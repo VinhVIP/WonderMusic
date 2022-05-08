@@ -21,25 +21,20 @@
             android:layout_height="60dp"
             android:paddingVertical="6dp">
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewSong"
+            <com.makeramen.roundedimageview.RoundedImageView
+                android:id="@+id/imgSongAvatar"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
+                android:src="@drawable/bitmap_music"
                 android:layout_marginStart="16dp"
-                app:cardCornerRadius="48dp">
-
-                <ImageView
-                    android:id="@+id/imgSongAvatar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/phathuy" />
-            </androidx.cardview.widget.CardView>
+                app:cardCornerRadius="48dp"
+                app:riv_corner_radius="12dp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginStart="16dp"
-                android:layout_toEndOf="@id/cardViewSong"
+                android:layout_toEndOf="@id/imgSongAvatar"
                 android:gravity="center"
                 android:orientation="vertical">
 

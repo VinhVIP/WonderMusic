@@ -2,8 +2,10 @@ package com.team28.wondermusic.ui.account
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -12,9 +14,8 @@ import com.squareup.picasso.Picasso
 import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.*
 import com.team28.wondermusic.common.Constants
+import com.team28.wondermusic.common.DataLocal
 import com.team28.wondermusic.common.Helper
-import com.team28.wondermusic.data.TempData
-import com.team28.wondermusic.data.models.Account
 import com.team28.wondermusic.data.models.Album
 import com.team28.wondermusic.data.models.Playlist
 import com.team28.wondermusic.data.models.Song
@@ -29,17 +30,18 @@ import com.team28.wondermusic.ui.account.songs.SongOfAccountFragment
 import com.team28.wondermusic.ui.login.LoginActivity
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickListener,
     AlbumClickListener {
 
     private lateinit var binding: ActivityAccountBinding
+    private val viewModel by viewModels<AccountViewModel>()
 
     private lateinit var songAdapter: SongSmallAdapter
     private lateinit var playlistAdapter: PlaylistSmallAdapter
     private lateinit var albumAdapter: AlbumSmallAdapter
-
-    private var account: Account? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,6 +56,7 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
         }
 
         binding.btnLogout.setOnClickListener {
+            viewModel.logout()
             Intent(this, LoginActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
@@ -70,11 +73,32 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
         setActions()
     }
 
-    private fun getData() {
-        account = intent.getParcelableExtra(Constants.Account)
+    override fun onStart() {
+        super.onStart()
+        viewModel.getSongsOfAccount()
+        viewModel.getAlbumsOfAccount()
+        viewModel.getPlaylistsOfAccount()
+    }
 
-        account?.let {
-            if (it.idAccount == TempData.myAccount.idAccount) {
+    override fun onResume() {
+        super.onResume()
+        binding.shimmerSong.startShimmer()
+        binding.shimmerAlbum.startShimmer()
+        binding.shimmerPlaylist.startShimmer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.shimmerSong.stopShimmer()
+        binding.shimmerAlbum.stopShimmer()
+        binding.shimmerPlaylist.stopShimmer()
+    }
+
+    private fun getData() {
+        viewModel.account = intent.getParcelableExtra(Constants.Account)
+
+        viewModel.account?.let {
+            if (it.idAccount == DataLocal.myAccount.idAccount) {
                 binding.layoutMyAccount.visibility = View.VISIBLE
                 binding.btnEditProfile.visibility = View.VISIBLE
 
@@ -87,7 +111,7 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
             }
 
             binding.apply {
-                Picasso.get().load(it.avatar).fit().into(imgAvatar)
+                if (it.avatar.isNotEmpty()) Picasso.get().load(it.avatar).fit().into(imgAvatar)
                 tvAccountName.text = it.accountName
                 tvEmail.text = it.email
 
@@ -95,7 +119,7 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
                 tvTotalLikes.text = "${it.totalLikes}"
                 tvTotalFollowers.text = "${it.totalFollowers}"
                 tvTotalFollowings.text = "${it.totalFollowings}"
-                tvDateCreated.text = it.dateCreated
+                tvDateCreated.text = Helper.toDateString(it.dateCreated)
             }
 
         }
@@ -105,7 +129,7 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
         binding.btnChangePassword.setOnClickListener {
             ChangePasswordFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(Constants.Account, account)
+                    putParcelable(Constants.Account, viewModel.account)
                 }
             }.show(supportFragmentManager, null)
         }
@@ -113,7 +137,7 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
         binding.btnEditProfile.setOnClickListener {
             ChangeProfileFragment().apply {
                 arguments = Bundle().apply {
-                    putParcelable(Constants.Account, account)
+                    putParcelable(Constants.Account, viewModel.account)
                 }
             }.show(supportFragmentManager, null)
         }
@@ -137,7 +161,16 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
 
     private fun setupSong() {
         songAdapter = SongSmallAdapter(this)
-        songAdapter.differ.submitList(TempData.songs)
+        viewModel.songs.observe(this) {
+            binding.shimmerSong.stopShimmer()
+            binding.shimmerSong.visibility = View.GONE
+            binding.recyclerSong.visibility = View.VISIBLE
+            if (it.size > 10) {
+                songAdapter.differ.submitList(it.subList(0, 9))
+            } else {
+                songAdapter.differ.submitList(it)
+            }
+        }
 
         binding.recyclerSong.apply {
             adapter = songAdapter
@@ -154,7 +187,14 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
 
     private fun setupPlaylist() {
         playlistAdapter = PlaylistSmallAdapter(this)
-        playlistAdapter.differ.submitList(TempData.playlists)
+        viewModel.playlists.observe(this) {
+            binding.shimmerPlaylist.stopShimmer()
+            binding.shimmerPlaylist.visibility = View.GONE
+            binding.recyclerPlaylist.visibility = View.VISIBLE
+            playlistAdapter.differ.submitList(it)
+
+            Log.d("vinhabc", "${it.size}")
+        }
 
         binding.recyclerPlaylist.apply {
             adapter = playlistAdapter
@@ -171,7 +211,12 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
 
     private fun setupAlbum() {
         albumAdapter = AlbumSmallAdapter(this)
-        albumAdapter.differ.submitList(TempData.albums)
+        viewModel.albums.observe(this) {
+            binding.shimmerAlbum.stopShimmer()
+            binding.shimmerAlbum.visibility = View.GONE
+            binding.recyclerAlbum.visibility = View.VISIBLE
+            albumAdapter.differ.submitList(it)
+        }
 
         binding.recyclerAlbum.apply {
             adapter = albumAdapter
@@ -206,7 +251,7 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
         })
     }
 
-    override fun onOpenMenu(song: Song) {
+    override fun onOpenMenu(song: Song, position: Int) {
         MenuBottomFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(Constants.Song, song)
@@ -232,6 +277,10 @@ class AccountActivity : AppCompatActivity(), SongClickListener, PlaylistClickLis
             putParcelable(Constants.Album, album)
         }
         fragment.show(supportFragmentManager, null)
+    }
+
+    override fun onAlbumMoreMenuClick(album: Album, position: Int) {
+
     }
 
 }

@@ -89,22 +89,17 @@
 
         </LinearLayout>
 
-        <ImageView
-            android:id="@+id/btnEditAlbum"
-            android:layout_width="40dp"
-            android:layout_height="40dp"
-            android:layout_alignParentEnd="true"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/bg_circle_button"
-            android:clickable="true"
-            android:focusable="true"
-            android:padding="9dp"
-            android:src="@drawable/ic_edit"
-            app:tint="@color/icon_tint" />
     </RelativeLayout>
+
+    <com.google.android.material.progressindicator.CircularProgressIndicator
+        android:id="@+id/pbLoading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="20dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:indicatorColor="@color/highlight" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerSong"

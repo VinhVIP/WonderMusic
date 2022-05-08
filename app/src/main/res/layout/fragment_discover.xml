@@ -12,10 +12,41 @@
 
         <TextView
             style="@style/TitleDiscoverMenu"
-            android:text="Nhạc mới"
+            android:text="Thế loại"
             app:drawableEndCompat="@drawable/ic_right" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerTypes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            tools:itemCount="1"
+            tools:listitem="@layout/item_type" />
+
+        <TextView
+            style="@style/TitleDiscoverMenu"
+            android:text="Nhạc mới"
+            app:drawableEndCompat="@drawable/ic_right" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerNewSong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_song_small_shimmer" />
+
+                <include layout="@layout/item_song_small_shimmer" />
+
+                <include layout="@layout/item_song_small_shimmer" />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             android:id="@+id/recyclerNewSong"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -27,7 +58,26 @@
             android:text="Đang theo dõi"
             app:drawableEndCompat="@drawable/ic_right" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerFollowSong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_song_small_shimmer" />
+
+                <include layout="@layout/item_song_small_shimmer" />
+
+                <include layout="@layout/item_song_small_shimmer" />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             android:id="@+id/recyclerFollowSong"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -39,8 +89,26 @@
             android:text="Top lượt nghe"
             app:drawableEndCompat="@drawable/ic_right" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerTopSong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_song_top_shimmer" />
+
+                <include layout="@layout/item_song_top_shimmer" />
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerTopSong"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:itemCount="1"
@@ -51,7 +119,27 @@
             android:text="Playlist nổi bật"
             app:drawableEndCompat="@drawable/ic_right" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerPlaylist"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_playlist_small_shimmer" />
+
+                <include layout="@layout/item_playlist_small_shimmer" />
+
+                <include layout="@layout/item_playlist_small_shimmer" />
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             android:id="@+id/recyclerPlaylist"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -63,8 +151,30 @@
             android:text="Giọng hát nổi bật"
             app:drawableEndCompat="@drawable/ic_right" />
 
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerTopSinger"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <include layout="@layout/item_singer_shimmer" />
+
+                <include layout="@layout/item_singer_shimmer" />
+
+                <include layout="@layout/item_singer_shimmer" />
+
+                <include layout="@layout/item_singer_shimmer" />
+
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerTopSinger"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             tools:itemCount="1"

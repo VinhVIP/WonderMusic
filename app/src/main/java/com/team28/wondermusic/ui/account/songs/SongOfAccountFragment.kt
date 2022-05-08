@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.team28.wondermusic.adapter.SongClickListener
 import com.team28.wondermusic.adapter.SongLiteAdapter
@@ -13,6 +14,7 @@ import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.data.TempData
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.FragmentSongOfAccountBinding
+import com.team28.wondermusic.ui.account.AccountViewModel
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
 
@@ -22,6 +24,7 @@ class SongOfAccountFragment : BaseDialogFragment(), SongClickListener {
     override val isFullHeight: Boolean = true
 
     private lateinit var binding: FragmentSongOfAccountBinding
+    private val viewModel by viewModels<AccountViewModel>({ requireActivity() })
 
     private lateinit var songAdapter: SongLiteAdapter
 
@@ -42,7 +45,9 @@ class SongOfAccountFragment : BaseDialogFragment(), SongClickListener {
             layoutManager = LinearLayoutManager(this@SongOfAccountFragment.context)
         }
 
-        songAdapter.differ.submitList(TempData.songs)
+        viewModel.songs.observe(this){
+            songAdapter.differ.submitList(it)
+        }
 
     }
 
@@ -52,7 +57,7 @@ class SongOfAccountFragment : BaseDialogFragment(), SongClickListener {
         })
     }
 
-    override fun onOpenMenu(song: Song) {
+    override fun onOpenMenu(song: Song, position: Int) {
         MenuBottomFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(Constants.Song, song)

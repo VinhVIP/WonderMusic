@@ -4,7 +4,7 @@ import com.team28.wondermusic.data.models.*
 
 interface SongClickListener {
     fun onSongClick(song: Song)
-    fun onOpenMenu(song: Song)
+    fun onOpenMenu(song: Song, position: Int)
 }
 
 interface SongPlaylistListener {
@@ -23,10 +23,15 @@ interface AccountClickListener {
 
 interface AlbumClickListener {
     fun onAlbumClick(album: Album)
+    fun onAlbumMoreMenuClick(album: Album, position: Int)
 }
 
 interface LyricsClickListener {
     fun onLineLyricClick(lineLyric: LineLyric)
+}
+
+interface TypeClickListener {
+    fun onTypeClick(type: Type)
 }
 
 class EventBusModel {

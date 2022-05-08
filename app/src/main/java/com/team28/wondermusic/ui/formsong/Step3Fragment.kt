@@ -30,7 +30,15 @@ class Step3Fragment : Fragment() {
             chooseSingers()
         }
 
+        observers()
+
         return binding.root
+    }
+
+    private fun observers(){
+        viewModel.album.observe(viewLifecycleOwner){
+            binding.btnChooseAlbum.text = it.name
+        }
     }
 
     private fun chooseAlbum() {

@@ -18,7 +18,7 @@
             android:id="@+id/imgAvatar"
             android:layout_width="120dp"
             android:layout_height="120dp"
-            android:src="@drawable/phathuy"
+            android:src="@drawable/bitmap_music"
             app:riv_corner_radius="12dp" />
 
         <ImageView

@@ -65,14 +65,31 @@
             android:textSize="14sp" />
     </RelativeLayout>
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btnLogin"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/bg_button_active"
-        android:text="Đăng nhập"
-        android:textColor="@color/white" />
+        android:layout_marginTop="8dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_button_active"
+            android:text="Đăng nhập"
+            android:textColor="@color/text_primary" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/pbLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="20dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/highlight"
+            app:indicatorSize="30dp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

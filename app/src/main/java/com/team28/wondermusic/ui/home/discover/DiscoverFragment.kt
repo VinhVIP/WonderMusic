@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
@@ -16,17 +17,22 @@ import com.team28.wondermusic.data.TempData
 import com.team28.wondermusic.data.models.Account
 import com.team28.wondermusic.data.models.Playlist
 import com.team28.wondermusic.data.models.Song
+import com.team28.wondermusic.data.models.Type
 import com.team28.wondermusic.databinding.FragmentDiscoverBinding
 import com.team28.wondermusic.ui.account.AccountActivity
 import com.team28.wondermusic.ui.account.playlist_detail.PlaylistDetailFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
+import com.team28.wondermusic.ui.type.TypeActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-
-class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener,
+@AndroidEntryPoint
+class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, TypeClickListener,
     AccountClickListener {
 
     private lateinit var binding: FragmentDiscoverBinding
+    private val viewModel by viewModels<DiscoverViewModel>()
 
+    private lateinit var typeAdapter: TypeAdapter
     private lateinit var newSongAdapter: SongSmallAdapter
     private lateinit var followSongAdapter: SongSmallAdapter
     private lateinit var topSongAdapter: SongTopAdapter
@@ -44,6 +50,7 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener,
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupType()
         setupNewestSong()
         setupFollowSong()
         setupTopSong()
@@ -51,9 +58,55 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener,
         setupSingers()
     }
 
+    override fun onStart() {
+        super.onStart()
+
+        viewModel.getNewestSongs(1)
+        viewModel.getBestSongs()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.shimmerNewSong.startShimmer()
+        binding.shimmerFollowSong.startShimmer()
+        binding.shimmerPlaylist.startShimmer()
+        binding.shimmerTopSong.startShimmer()
+        binding.shimmerTopSinger.startShimmer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.shimmerNewSong.stopShimmer()
+        binding.shimmerFollowSong.stopShimmer()
+        binding.shimmerPlaylist.stopShimmer()
+        binding.shimmerTopSong.stopShimmer()
+        binding.shimmerTopSinger.stopShimmer()
+    }
+
+    private fun setupType() {
+        typeAdapter = TypeAdapter(this)
+        typeAdapter.differ.submitList(TempData.types)
+
+        binding.recyclerTypes.apply {
+            adapter = typeAdapter
+            layoutManager = LinearLayoutManager(
+                this@DiscoverFragment.context,
+                LinearLayoutManager.HORIZONTAL,
+                false
+            )
+        }
+        setHorizontalRecyclerScroll(binding.recyclerTypes)
+    }
+
     private fun setupNewestSong() {
         newSongAdapter = SongSmallAdapter(this)
-        newSongAdapter.differ.submitList(TempData.songs)
+
+        viewModel.newestSongs.observe(viewLifecycleOwner) {
+            binding.shimmerNewSong.stopShimmer()
+            binding.shimmerNewSong.visibility = View.GONE
+            binding.recyclerNewSong.visibility = View.VISIBLE
+            newSongAdapter.differ.submitList(it)
+        }
 
         binding.recyclerNewSong.apply {
             adapter = newSongAdapter
@@ -87,7 +140,12 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener,
 
     private fun setupTopSong() {
         topSongAdapter = SongTopAdapter(this)
-        topSongAdapter.differ.submitList(TempData.songs)
+        viewModel.bestSongs.observe(viewLifecycleOwner) {
+            binding.shimmerTopSong.stopShimmer()
+            binding.shimmerTopSong.visibility = View.GONE
+            binding.recyclerTopSong.visibility = View.VISIBLE
+            topSongAdapter.differ.submitList(it)
+        }
 
         binding.recyclerTopSong.apply {
             adapter = topSongAdapter
@@ -157,7 +215,7 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener,
         })
     }
 
-    override fun onOpenMenu(song: Song) {
+    override fun onOpenMenu(song: Song, position: Int) {
 
     }
 
@@ -176,6 +234,12 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener,
     override fun onAccountClick(account: Account) {
         startActivity(Intent(context, AccountActivity::class.java).apply {
             putExtra(Constants.Account, account)
+        })
+    }
+
+    override fun onTypeClick(type: Type) {
+        startActivity(Intent(context, TypeActivity::class.java).apply {
+            putExtra(Constants.Type, type)
         })
     }
 

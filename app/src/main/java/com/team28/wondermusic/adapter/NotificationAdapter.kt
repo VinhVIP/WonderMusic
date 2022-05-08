@@ -10,6 +10,7 @@ import com.makeramen.roundedimageview.RoundedTransformationBuilder
 import com.squareup.picasso.Picasso
 import com.squareup.picasso.Transformation
 import com.team28.wondermusic.R
+import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.models.Notification
 import com.team28.wondermusic.databinding.ItemNotificationBinding
 
@@ -63,20 +64,7 @@ class NotificationAdapter(
         val notification = list[position]
 
         holder.itemBinding.apply {
-            val transformation: Transformation = RoundedTransformationBuilder()
-                .cornerRadiusDp(30f)
-                .oval(false)
-                .build()
-
-            Picasso.get()
-                .load(R.drawable.phathuy)
-                .fit()
-                .transform(transformation)
-                .into(imgAvatar)
-
-            imgSong.setImageResource(R.drawable.phathuy)
-            tvAccountName.text = notification.account?.accountName
-            tvNotificationTime.text = notification.notificationTime
+            tvNotificationTime.text = Helper.toDateTimeDistance(notification.notificationTime)
             tvNotificationContent.text = notification.content
 
             if (notification.notificationStatus == 0) {
@@ -102,6 +90,9 @@ class NotificationAdapter(
         holder.itemView.setOnLongClickListener {
             listener.onNotificationLongClick(notification, position)
             false
+        }
+        holder.itemBinding.btnMore.setOnClickListener {
+            listener.onNotificationLongClick(notification, position)
         }
     }
 

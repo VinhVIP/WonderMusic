@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -13,18 +13,51 @@
             android:layout_marginStart="8dp"
             android:id="@+id/chart"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="170dp" />
+
+        <com.facebook.shimmer.ShimmerFrameLayout
+            android:id="@+id/shimmerTopSong"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include layout="@layout/item_song_shimmer" />
+
+                <include layout="@layout/item_song_shimmer_2" />
+
+                <include layout="@layout/item_song_shimmer" />
+
+                <include layout="@layout/item_song_shimmer_2" />
+
+                <include layout="@layout/item_song_shimmer" />
+
+                <include layout="@layout/item_song_shimmer_2" />
+
+                <include layout="@layout/item_song_shimmer" />
+
+                <include layout="@layout/item_song_shimmer_2" />
+
+                <include layout="@layout/item_song_shimmer" />
+
+                <include layout="@layout/item_song_shimmer_2" />
+
+                <include layout="@layout/item_song_shimmer" />
+
+                <include layout="@layout/item_song_shimmer_2" />
+            </LinearLayout>
+        </com.facebook.shimmer.ShimmerFrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="gone"
             android:id="@+id/recyclerSong"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="6dp"
             tools:listitem="@layout/item_song" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="60dp" />
-
     </LinearLayout>
-</ScrollView>
+</androidx.core.widget.NestedScrollView>

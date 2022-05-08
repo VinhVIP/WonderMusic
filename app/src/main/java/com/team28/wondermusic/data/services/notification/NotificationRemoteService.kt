@@ -5,6 +5,7 @@ import com.team28.wondermusic.base.network.NetworkResult
 import com.team28.wondermusic.data.apis.NotificationAPI
 import com.team28.wondermusic.data.models.MessageJson
 import com.team28.wondermusic.data.models.Notification
+import com.team28.wondermusic.data.models.NotificationCountJson
 import com.team28.wondermusic.data.models.NotificationJson
 import javax.inject.Inject
 
@@ -34,5 +35,9 @@ class NotificationRemoteService @Inject constructor(
 
     suspend fun deleteAllNotification(): NetworkResult<MessageJson> {
         return callApi { notificationAPI.deleteAllNotification() }
+    }
+
+    suspend fun countUnreadNotification(): NetworkResult<NotificationCountJson> {
+        return callApi { notificationAPI.countUnreadNotification() }
     }
 }

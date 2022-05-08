@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -31,6 +32,7 @@ import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.FragmentHighLightBinding
 import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
+import com.team28.wondermusic.ui.menubottom.MenuBottomViewModel
 import com.team28.wondermusic.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
@@ -43,6 +45,7 @@ class HighLightFragment : Fragment(), SongClickListener {
 
     private lateinit var binding: FragmentHighLightBinding
     private val viewModel by viewModels<HighLightViewModel>()
+    private val menuViewModel by viewModels<MenuBottomViewModel>({ requireActivity() })
 
     private lateinit var songAdapter: SongAdapter
 
@@ -50,9 +53,17 @@ class HighLightFragment : Fragment(), SongClickListener {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel.genData()
-
         viewModel.fetchData()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        binding.shimmerTopSong.startShimmer()
+    }
+
+    override fun onPause() {
+        super.onPause()
+        binding.shimmerTopSong.stopShimmer()
     }
 
     override fun onCreateView(
@@ -60,8 +71,24 @@ class HighLightFragment : Fragment(), SongClickListener {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentHighLightBinding.inflate(layoutInflater, container, false);
+
+        menuViewModel.actionLoveStatus.observe(viewLifecycleOwner) {
+            it?.let {
+                if (it) {
+                    menuViewModel.position?.let { position ->
+                        val list = songAdapter.differ.currentList
+                        list[position].loveStatus = !list[position].loveStatus
+                        songAdapter.differ.submitList(list)
+                    }
+                }
+                Toast.makeText(context, menuViewModel.message, Toast.LENGTH_SHORT).show()
+                menuViewModel.actionLoveStatus.value = null
+            }
+        }
+
         return binding.root
     }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -74,6 +101,9 @@ class HighLightFragment : Fragment(), SongClickListener {
         setupChart()
 
         viewModel.topSongs.observe(viewLifecycleOwner) {
+            binding.shimmerTopSong.stopShimmer()
+            binding.shimmerTopSong.visibility = View.GONE
+            binding.recyclerSong.visibility = View.VISIBLE
             songAdapter.differ.submitList(it)
 
             viewModel.getTopSongDrawable(requireContext())
@@ -225,10 +255,11 @@ class HighLightFragment : Fragment(), SongClickListener {
         sendMusicAction(MusicService.ACTION_PLAY, song, TempData.songs)
     }
 
-    override fun onOpenMenu(song: Song) {
+    override fun onOpenMenu(song: Song, position: Int) {
         MenuBottomFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(Constants.Song, song)
+                putInt(Constants.Position, position)
             }
         }.show(requireActivity().supportFragmentManager, null)
     }

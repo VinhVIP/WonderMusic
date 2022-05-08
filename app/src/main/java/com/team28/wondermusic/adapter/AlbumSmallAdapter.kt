@@ -6,6 +6,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
+import com.team28.wondermusic.R
 import com.team28.wondermusic.data.models.Album
 import com.team28.wondermusic.databinding.ItemAlbumSmallBinding
 
@@ -38,8 +39,13 @@ class AlbumSmallAdapter(val listener: AlbumClickListener) :
         val album = differ.currentList[position]
 
         holder.itemBinding.apply {
+            album.songs?.let {
+                if(it.isNotEmpty() && it[0].image.isNotEmpty()){
+                    Picasso.get().load(it[0].image).placeholder(R.drawable.bitmap_music).fit().into(imgAvatar)
+                }
+            }
             tvAlbumName.text = album.name
-            tvSinger.text = album.account.accountName
+            tvSinger.text = album.account?.accountName
         }
 
         holder.itemView.setOnClickListener {

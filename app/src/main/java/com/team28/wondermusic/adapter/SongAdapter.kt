@@ -1,7 +1,6 @@
 package com.team28.wondermusic.adapter
 
 import android.annotation.SuppressLint
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
@@ -43,11 +42,13 @@ class SongAdapter(private val listener: SongClickListener) :
     ) {
         val song = differ.currentList[position]
 
-        // TODO: Load ảnh từ song
         holder.itemBinding.apply {
             tvIndex.text = "${position + 1}"
-            Picasso.get().load(song.image).placeholder(R.drawable.bitmap_music)
-                .error(R.drawable.ic_error).fit().into(imgSongAvatar)
+            if (song.image.isNotEmpty()) {
+                Picasso.get().load(song.image).placeholder(R.drawable.bitmap_music)
+                    .fit().into(imgSongAvatar)
+            }
+
             tvSongName.text = song.name
             tvAccountName.text = song.singersToString()
         }
@@ -57,7 +58,7 @@ class SongAdapter(private val listener: SongClickListener) :
         }
 
         holder.itemBinding.songMenuMore.setOnClickListener {
-            listener.onOpenMenu(song)
+            listener.onOpenMenu(song, position)
         }
     }
 

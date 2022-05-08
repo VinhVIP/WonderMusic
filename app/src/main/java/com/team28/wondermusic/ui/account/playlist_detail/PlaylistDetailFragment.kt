@@ -14,7 +14,6 @@ import com.team28.wondermusic.data.TempData
 import com.team28.wondermusic.data.models.Playlist
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.FragmentPlaylistDetailBinding
-import com.team28.wondermusic.ui.home.individual.playlist.FormPlaylistFragment
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
 
@@ -72,7 +71,7 @@ class PlaylistDetailFragment : BaseDialogFragment(), SongClickListener {
         })
     }
 
-    override fun onOpenMenu(song: Song) {
+    override fun onOpenMenu(song: Song, position: Int) {
         MenuBottomFragment().apply {
             arguments = Bundle().apply {
                 putParcelable(Constants.Song, song)

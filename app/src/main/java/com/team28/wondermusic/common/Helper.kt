@@ -78,6 +78,12 @@ object Helper {
         }
     }
 
+    fun toDateString(datetime: String): String {
+        val date = stringToDate(datetime)
+        val format = SimpleDateFormat("dd/MM/yyyy")
+        return format.format(date);
+    }
+
     @SuppressLint("SimpleDateFormat")
     fun toDateTimeDistance(datetime: String): String {
         val sdf = SimpleDateFormat("HH:mm - dd/MM/yyyy")
