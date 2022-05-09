@@ -14,6 +14,10 @@ class AccountRemoteService @Inject constructor(
         return callApi { accountAPI.login(modal) }
     }
 
+    suspend fun signup(modal: SignupModal): NetworkResult<MessageJson> {
+        return callApi { accountAPI.signup(modal) }
+    }
+
     suspend fun getSongsOfAccount(idAccount: Int): List<Song> {
         val result = callApi { accountAPI.getSongsOfAccount(idAccount) }
         return if (result is NetworkResult.Success) {

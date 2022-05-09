@@ -39,12 +39,24 @@
         android:drawableStart="@drawable/ic_email"
         android:hint="Nhập email" />
 
+    <TextView
+        android:id="@+id/tvEmailError"
+        style="@style/TextViewError"
+        android:text="Email không hợp lệ"
+        android:visibility="gone" />
+
     <EditText
         android:id="@+id/edUser"
         style="@style/InputField"
         android:layout_marginTop="16dp"
         android:drawableStart="@drawable/ic_user"
         android:hint="Nhập tên người dùng" />
+
+    <TextView
+        android:id="@+id/tvAccountNameError"
+        style="@style/TextViewError"
+        android:text="Email không hợp lệ"
+        android:visibility="gone" />
 
     <EditText
         android:id="@+id/edPass"
@@ -54,6 +66,12 @@
         android:hint="Nhập mật khẩu"
         android:inputType="textPassword" />
 
+    <TextView
+        android:id="@+id/tvPassError"
+        style="@style/TextViewError"
+        android:text="Mật khẩu không hợp lệ"
+        android:visibility="gone" />
+
     <EditText
         android:id="@+id/edConfirmPass"
         style="@style/InputField"
@@ -62,14 +80,37 @@
         android:hint="Nhập lại mật khẩu"
         android:inputType="textPassword" />
 
-    <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/btmSignup"
+    <TextView
+        android:id="@+id/tvConfirmPassError"
+        style="@style/TextViewError"
+        android:text="Email không hợp lệ"
+        android:visibility="gone" />
+
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:background="@drawable/bg_button_active"
-        android:text="Đăng ký"
-        android:textColor="@color/white" />
+        android:layout_marginTop="24dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnSignup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_button_active"
+            android:text="Đăng ký"
+            android:textColor="@color/white" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/pbLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="20dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/highlight"
+            app:indicatorSize="30dp" />
+
+    </RelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"

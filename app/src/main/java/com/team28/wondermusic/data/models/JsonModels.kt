@@ -10,6 +10,13 @@ data class LoginResponseJson(
     val data: AccountJson?
 )
 
+data class SignupModal(
+    val email: String,
+    val account_name: String,
+    val password: String,
+    val confirmPassword: String
+)
+
 data class NotificationListJson(
     val message: String,
     val data: List<NotificationJson>? = emptyList(),

@@ -20,6 +20,12 @@ class AccountRepository @Inject constructor(
         }
     }
 
+    suspend fun signup(modal: SignupModal): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            accountRemoteService.signup(modal)
+        }
+    }
+
     suspend fun getSongsOfAccount(idAccount: Int): List<Song> = withContext(dispatcher) {
         accountRemoteService.getSongsOfAccount(idAccount)
     }

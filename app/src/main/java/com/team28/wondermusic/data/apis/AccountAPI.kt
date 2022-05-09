@@ -13,6 +13,9 @@ interface AccountAPI {
     @POST("$ApiVersion/account/login")
     suspend fun login(@Body modal: LoginModal): Response<LoginResponseJson>
 
+    @POST("$ApiVersion/account/")
+    suspend fun signup(@Body modal: SignupModal): Response<MessageJson>
+
     @GET("$ApiVersion/account/{idAccount}")
     suspend fun getAccount(
         @Path("idAccount") idAccount: Int

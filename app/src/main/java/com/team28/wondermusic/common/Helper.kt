@@ -28,6 +28,10 @@ object Helper {
         return account.idAccount == DataLocal.myAccount.idAccount
     }
 
+    fun validateEmail(email: String): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
+    }
+
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     fun setStatusBarGradiant(activity: AppCompatActivity, bgDrawable: Int) {
         val window: Window = activity.window
