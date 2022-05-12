@@ -14,7 +14,7 @@ import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.MenuBottomAdapter
 import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
-import com.team28.wondermusic.data.TempData
+import com.team28.wondermusic.common.DataLocal
 import com.team28.wondermusic.data.models.MenuBottom
 import com.team28.wondermusic.data.models.MenuBottomClickListener
 import com.team28.wondermusic.data.models.MenuBottomType.*
@@ -72,7 +72,7 @@ class MenuBottomFragment : BaseDialogFragment(), MenuBottomClickListener {
     private fun generateMenu(): ArrayList<MenuBottom> {
         val items = arrayListOf<MenuBottom>()
 
-        val myAccount = TempData.myAccount
+        val myAccount = DataLocal.myAccount
 
         if (myAccount.idAccount == song.account!!.idAccount) {
             items.add(MenuBottom("Chỉnh sửa", R.drawable.ic_edit, EDIT))

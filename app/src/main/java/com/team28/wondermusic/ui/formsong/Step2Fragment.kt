@@ -11,6 +11,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.squareup.picasso.Picasso
+import com.team28.wondermusic.R
 import com.team28.wondermusic.common.FileUtils
 import com.team28.wondermusic.databinding.FragmentStep2Binding
 import dagger.hilt.android.AndroidEntryPoint
@@ -68,6 +69,15 @@ class Step2Fragment : Fragment() {
             showImageFileInfo(it)
         }
         binding.edSongDescription.setText(viewModel.description)
+
+        if (viewModel.songEdit != null && viewModel.imageFile == null) {
+            viewModel.songEdit?.let {
+                if (it.image.isNotEmpty()) {
+                    Picasso.get().load(it.image).placeholder(R.drawable.bitmap_music).fit()
+                        .into(binding.imgPreview)
+                }
+            }
+        }
     }
 
     override fun onStop() {

@@ -24,6 +24,10 @@ interface PlaylistAPI {
     @GET("$ApiVersion/playlist")
     suspend fun getMyPlaylists(): Response<ListPlaylistJson>
 
+    // Lấy top playlist nổi bật
+    @GET("$ApiVersion/playlist_song/prominent")
+    suspend fun getTopPlaylists(): Response<ListPlaylistJson>
+
     // Xóa 1 playlist
     @DELETE("$ApiVersion/playlist/{idPlaylist}")
     suspend fun deletePlaylist(@Path("idPlaylist") idPlaylist: Int): Response<MessageJson>

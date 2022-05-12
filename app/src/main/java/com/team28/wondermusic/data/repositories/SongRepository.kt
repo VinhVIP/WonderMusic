@@ -5,6 +5,7 @@ import com.team28.wondermusic.data.database.entities.*
 import com.team28.wondermusic.data.models.MessageJson
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.data.models.SongPost
+import com.team28.wondermusic.data.models.Type
 import com.team28.wondermusic.data.services.account.AccountLocalService
 import com.team28.wondermusic.data.services.song.SongLocalService
 import com.team28.wondermusic.data.services.song.SongRemoteService
@@ -26,6 +27,24 @@ class SongRepository @Inject constructor(
         }
     }
 
+    suspend fun updateSong(song: SongPost): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            songRemoteService.updateSong(song)
+        }
+    }
+
+    suspend fun deleteSong(idSong: Int): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            songRemoteService.deleteSong(idSong)
+        }
+    }
+
+    suspend fun getAllTypes(): List<Type> {
+        return withContext(dispatcher) {
+            songRemoteService.getAllTypes()
+        }
+    }
+
     suspend fun loveSong(idSong: Int): NetworkResult<MessageJson> {
         return withContext(dispatcher) {
             songRemoteService.loveSong(idSong)
@@ -36,6 +55,10 @@ class SongRepository @Inject constructor(
         return withContext(dispatcher) {
             songRemoteService.unLoveSong(idSong)
         }
+    }
+
+    suspend fun getSongsOfFollowing(page: Int): List<Song> = withContext(dispatcher) {
+        songRemoteService.getSongsOfFollowing(page)
     }
 
     suspend fun getSongsOfType(idType: Int, page: Int): List<Song> = withContext(dispatcher) {

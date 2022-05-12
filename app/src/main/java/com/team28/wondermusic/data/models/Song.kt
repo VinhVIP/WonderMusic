@@ -87,12 +87,19 @@ data class Notification(
 
 
 data class SongPost(
-    val songFile: File?,
+    val idSong: Int? = null,
+    val songFile: File? = null,
     val songName: String,
-    val imageSong: File?,
+    val imageSong: File? = null,
     val description: String?,
     val lyrics: String?,
     val album: Album?,
     val types: ArrayList<Type>,
     val accounts: ArrayList<Account>,
+)
+
+data class AccountUpdate(
+    val idAccount: Int,
+    val name: String,
+    val avatar: File?,
 )

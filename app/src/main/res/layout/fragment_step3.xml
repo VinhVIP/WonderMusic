@@ -3,23 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:paddingHorizontal="12dp">
-
-    <TextView
-        style="@style/TextViewTitle"
-        android:text="Album" />
-
-    <TextView
-        android:id="@+id/btnChooseAlbum"
-        style="@style/SelectField"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:hint="Chọn album"
-        android:lines="1"
-        android:paddingEnd="12dp"
-        app:drawableEndCompat="@drawable/ic_right_dark" />
 
     <TextView
         style="@style/TextViewTitle"
@@ -33,15 +19,35 @@
 
     </com.google.android.material.chip.ChipGroup>
 
-    <TextView
-        android:id="@+id/btnChooseSingers"
-        style="@style/SelectField"
-        android:clickable="true"
-        android:focusable="true"
-        android:gravity="center_vertical"
-        android:hint="Chọn người thể hiện bài hát"
-        android:lines="1"
-        android:paddingEnd="12dp"
-        app:drawableEndCompat="@drawable/ic_right_dark" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/edSearchSingers"
+            style="@style/SelectField"
+            android:clickable="true"
+            android:focusable="true"
+            android:gravity="center_vertical"
+            android:hint="Nhập tên ca sĩ thể hiện"
+            android:lines="1" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/pbLoading"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="12dp"
+            android:indeterminate="true"
+            android:visibility="gone"
+            app:indicatorColor="@color/highlight" />
+    </RelativeLayout>
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerSingers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:listitem="@layout/item_account" />
 
 </LinearLayout>

@@ -2,6 +2,7 @@ package com.team28.wondermusic.data.apis
 
 import com.team28.wondermusic.common.Config.ApiVersion
 import com.team28.wondermusic.data.models.ListSongJson
+import com.team28.wondermusic.data.models.ListTypeJson
 import com.team28.wondermusic.data.models.MessageJson
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
@@ -14,7 +15,7 @@ interface SongAPI {
     @POST("$ApiVersion/song")
     suspend fun addSong(
         @Part songFile: MultipartBody.Part,
-        @Part img: MultipartBody.Part,
+        @Part img: MultipartBody.Part?,
         @Part("name_song") name: RequestBody,
         @Part("description") description: RequestBody,
         @Part("lyrics") lyrics: RequestBody,
@@ -22,6 +23,26 @@ interface SongAPI {
         @Part("types") types: ArrayList<Int>,
         @Part("accounts") accounts: ArrayList<Int>,
     ): Response<MessageJson>
+
+    @Multipart
+    @PUT("$ApiVersion/song/{idSong}")
+    suspend fun updateSong(
+        @Path("idSong") idSong: Int,
+        @Part songFile: MultipartBody.Part?,
+        @Part img: MultipartBody.Part?,
+        @Part("name_song") name: RequestBody,
+        @Part("description") description: RequestBody,
+        @Part("lyrics") lyrics: RequestBody,
+        @Part("id_album") idAlbum: Int,
+        @Part("types") types: ArrayList<Int>,
+        @Part("accounts") accounts: ArrayList<Int>,
+    ): Response<MessageJson>
+
+    @DELETE("$ApiVersion/song/deleteSong/{idSong}")
+    suspend fun deleteSong(@Path("idSong") idSong: Int): Response<MessageJson>
+
+    @GET("$ApiVersion/type/all")
+    suspend fun getAllTypes(): Response<ListTypeJson>
 
     @GET("$ApiVersion/song/new-list")
     suspend fun getNewestSongs(
@@ -36,6 +57,9 @@ interface SongAPI {
         @Path("idType") idType: Int,
         @Query("page") page: Int,
     ): Response<ListSongJson>
+
+    @GET("$ApiVersion/account/songs_following")
+    suspend fun getSongsOfFollowing(@Query("page") page: Int): Response<ListSongJson>
 
     @GET("$ApiVersion/love/love-song")
     suspend fun getLoveSongs(

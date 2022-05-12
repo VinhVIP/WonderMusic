@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.team28.wondermusic.adapter.*
 import com.team28.wondermusic.common.Constants
-import com.team28.wondermusic.data.TempData
 import com.team28.wondermusic.data.models.Account
 import com.team28.wondermusic.data.models.Playlist
 import com.team28.wondermusic.data.models.Song
@@ -56,13 +55,25 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, T
         setupTopSong()
         setupPlaylist()
         setupSingers()
+
+        binding.swipeRefresh.setOnRefreshListener {
+            fetchData()
+        }
+    }
+
+    private fun fetchData() {
+        viewModel.getTypes()
+        viewModel.getNewestSongs(1)
+        viewModel.getFollowSongs(1)
+        viewModel.getBestSongs()
+        viewModel.getTopPlaylists()
+        viewModel.getTopAccounts()
     }
 
     override fun onStart() {
         super.onStart()
 
-        viewModel.getNewestSongs(1)
-        viewModel.getBestSongs()
+        fetchData()
     }
 
     override fun onResume() {
@@ -85,7 +96,9 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, T
 
     private fun setupType() {
         typeAdapter = TypeAdapter(this)
-        typeAdapter.differ.submitList(TempData.types)
+        viewModel.types.observe(viewLifecycleOwner) {
+            typeAdapter.differ.submitList(it)
+        }
 
         binding.recyclerTypes.apply {
             adapter = typeAdapter
@@ -102,6 +115,8 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, T
         newSongAdapter = SongSmallAdapter(this)
 
         viewModel.newestSongs.observe(viewLifecycleOwner) {
+            binding.swipeRefresh.isRefreshing = false
+
             binding.shimmerNewSong.stopShimmer()
             binding.shimmerNewSong.visibility = View.GONE
             binding.recyclerNewSong.visibility = View.VISIBLE
@@ -123,7 +138,12 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, T
 
     private fun setupFollowSong() {
         followSongAdapter = SongSmallAdapter(this)
-        followSongAdapter.differ.submitList(TempData.songs)
+        viewModel.followSongs.observe(viewLifecycleOwner) {
+            binding.shimmerFollowSong.stopShimmer()
+            binding.shimmerFollowSong.visibility = View.GONE
+            binding.recyclerFollowSong.visibility = View.VISIBLE
+            followSongAdapter.differ.submitList(it)
+        }
 
         binding.recyclerFollowSong.apply {
             adapter = followSongAdapter
@@ -162,7 +182,12 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, T
 
     private fun setupPlaylist() {
         playlistAdapter = PlaylistSmallAdapter(this)
-        playlistAdapter.differ.submitList(TempData.playlists)
+        viewModel.topPlaylists.observe(viewLifecycleOwner) {
+            binding.shimmerPlaylist.stopShimmer()
+            binding.shimmerPlaylist.visibility = View.GONE
+            binding.recyclerPlaylist.visibility = View.VISIBLE
+            playlistAdapter.differ.submitList(it)
+        }
 
         binding.recyclerPlaylist.apply {
             adapter = playlistAdapter
@@ -179,7 +204,12 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, T
 
     private fun setupSingers() {
         singerAdapter = SingerAdapter(this)
-        singerAdapter.differ.submitList(TempData.accounts)
+        viewModel.topAccounts.observe(viewLifecycleOwner) {
+            binding.shimmerTopSinger.stopShimmer()
+            binding.shimmerTopSinger.visibility = View.GONE
+            binding.recyclerTopSinger.visibility = View.VISIBLE
+            singerAdapter.differ.submitList(it)
+        }
 
         binding.recyclerTopSinger.apply {
             adapter = singerAdapter

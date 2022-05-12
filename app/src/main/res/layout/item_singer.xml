@@ -12,7 +12,7 @@
         android:layout_width="100dp"
         android:layout_height="100dp"
         app:riv_corner_radius="50dp"
-        android:src="@drawable/phathuy" />
+        android:src="@drawable/ic_user_colorful" />
 
     <TextView
         android:id="@+id/tvSingerName"

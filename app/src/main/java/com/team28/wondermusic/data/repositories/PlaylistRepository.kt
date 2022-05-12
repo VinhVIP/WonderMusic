@@ -39,4 +39,9 @@ class PlaylistRepository @Inject constructor(
         val list = remoteService.getMyPlaylists()
         list?.toListPlaylist() ?: emptyList()
     }
+
+    suspend fun getTopPlaylists(): List<Playlist> = withContext(dispatcher) {
+        val list = remoteService.getTopPlaylists()
+        list?.toListPlaylist() ?: emptyList()
+    }
 }

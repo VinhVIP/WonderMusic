@@ -11,7 +11,7 @@
 
     <item
         android:id="@+id/step_3_dest"
-        android:title="Thông tin" />
+        android:title="Thể hiện" />
 
     <item
         android:id="@+id/step_4_dest"

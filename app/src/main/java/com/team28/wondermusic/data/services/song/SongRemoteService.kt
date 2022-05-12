@@ -14,6 +14,15 @@ class SongRemoteService @Inject constructor(
     private val songAPI: SongAPI
 ) : BaseRemoteService() {
 
+    suspend fun getAllTypes(): List<Type> {
+        val result = callApi { songAPI.getAllTypes() }
+        return if (result is NetworkResult.Success) {
+            result.body.data.toListType()
+        } else {
+            emptyList()
+        }
+    }
+
     suspend fun getSongsOfType(idType: Int, page: Int): List<Song> {
         val result = callApi { songAPI.getSongsOfType(idType, page) }
         return if (result is NetworkResult.Success) {
@@ -25,6 +34,15 @@ class SongRemoteService @Inject constructor(
 
     suspend fun getLoveSongs(page: Int): List<Song> {
         val result = callApi { songAPI.getLoveSongs(page) }
+        return if (result is NetworkResult.Success) {
+            result.body.data.toListSong()
+        } else {
+            emptyList()
+        }
+    }
+
+    suspend fun getSongsOfFollowing(page: Int): List<Song> {
+        val result = callApi { songAPI.getSongsOfFollowing(page) }
         return if (result is NetworkResult.Success) {
             result.body.data.toListSong()
         } else {
@@ -58,45 +76,96 @@ class SongRemoteService @Inject constructor(
         return callApi { songAPI.unLoveSong(idSong) }
     }
 
+    suspend fun deleteSong(idSong: Int): NetworkResult<MessageJson> {
+        return callApi { songAPI.deleteSong(idSong) }
+    }
+
     suspend fun addSong(song: SongPost): NetworkResult<MessageJson> {
-
         return callApi {
-            val songFileRequestBody = song.songFile!!
-                .asRequestBody("audio/mpeg".toMediaTypeOrNull())
-            val imageFileRequestBody = song.imageSong!!.asRequestBody("image/*".toMediaTypeOrNull())
+            var songMultipart: MultipartBody.Part? = null
+            var imageMultipart: MultipartBody.Part? = null
 
-            songAPI.addSong(
-                songFile = MultipartBody.Part.createFormData(
+            song.songFile?.let {
+                val songFileRequestBody = it.asRequestBody("audio/mpeg".toMediaTypeOrNull())
+                songMultipart = MultipartBody.Part.createFormData(
                     "song",
                     song.songFile.name,
                     songFileRequestBody
-                ),
-                img = MultipartBody.Part.createFormData(
+                )
+            }
+
+            song.imageSong?.let {
+                val imageFileRequestBody = it.asRequestBody("image/*".toMediaTypeOrNull())
+                imageMultipart = MultipartBody.Part.createFormData(
                     "img",
                     song.imageSong.name,
                     imageFileRequestBody
-                ),
+                )
+            }
+
+            songAPI.addSong(
+                songFile = songMultipart!!,
+                img = imageMultipart,
                 name = song.songName.toRequestBody(MultipartBody.FORM),
                 description = song.description!!.toRequestBody(MultipartBody.FORM),
                 lyrics = song.lyrics!!.toRequestBody(MultipartBody.FORM),
                 idAlbum = song.album!!.idAlbum,
                 types = song.types.toListIdType(),
-                accounts = song.accounts.toListIdAccount(),
-//                idAlbum = Klaxon().toJsonString(song.album!!.idAlbum)
-//                    .toRequestBody(MultipartBody.FORM),
-//                types = Klaxon().toJsonString(song.types.toListIdType())
-//                    .toRequestBody(MultipartBody.FORM),
-//                accounts = Klaxon().toJsonString(song.accounts.toListIdAccount())
-//                    .toRequestBody(MultipartBody.FORM),
+                accounts = song.accounts.toListIdAccount()
+            )
+        }
+    }
+
+    suspend fun updateSong(song: SongPost): NetworkResult<MessageJson> {
+        return callApi {
+            var songMultipart: MultipartBody.Part? = null
+            var imageMultipart: MultipartBody.Part? = null
+
+            song.songFile?.let {
+                val songFileRequestBody = it.asRequestBody("audio/mpeg".toMediaTypeOrNull())
+                songMultipart = MultipartBody.Part.createFormData(
+                    "song",
+                    song.songFile.name,
+                    songFileRequestBody
+                )
+            }
+
+            song.imageSong?.let {
+                val imageFileRequestBody = it.asRequestBody("image/*".toMediaTypeOrNull())
+                imageMultipart = MultipartBody.Part.createFormData(
+                    "img",
+                    song.imageSong.name,
+                    imageFileRequestBody
+                )
+            }
+
+            songAPI.updateSong(
+                idSong = song.idSong!!,
+                songFile = songMultipart,
+                img = imageMultipart,
+                name = song.songName.toRequestBody(MultipartBody.FORM),
+                description = song.description!!.toRequestBody(MultipartBody.FORM),
+                lyrics = song.lyrics!!.toRequestBody(MultipartBody.FORM),
+                idAlbum = song.album!!.idAlbum,
+                types = song.types.toListIdType(),
+                accounts = song.accounts.toListIdAccount()
             )
         }
     }
 }
 
 fun ArrayList<Type>.toListIdType(): ArrayList<Int> {
-    return map { it.idType } as ArrayList<Int>
+    val list = arrayListOf<Int>()
+    for (type in this) {
+        list.add(type.idType)
+    }
+    return list
 }
 
 fun ArrayList<Account>.toListIdAccount(): ArrayList<Int> {
-    return map { it.idAccount } as ArrayList<Int>
+    val list = arrayListOf<Int>()
+    for (account in this) {
+        list.add(account.idAccount)
+    }
+    return list
 }

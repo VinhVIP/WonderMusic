@@ -4,6 +4,10 @@ import com.team28.wondermusic.base.network.BaseRemoteService
 import com.team28.wondermusic.base.network.NetworkResult
 import com.team28.wondermusic.data.apis.AccountAPI
 import com.team28.wondermusic.data.models.*
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody.Companion.asRequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import javax.inject.Inject
 
 class AccountRemoteService @Inject constructor(
@@ -16,6 +20,55 @@ class AccountRemoteService @Inject constructor(
 
     suspend fun signup(modal: SignupModal): NetworkResult<MessageJson> {
         return callApi { accountAPI.signup(modal) }
+    }
+
+    suspend fun updateAccount(account: AccountUpdate): NetworkResult<MessageJson> {
+        return callApi {
+            if (account.avatar != null) {
+                val imageFileRequestBody =
+                    account.avatar.asRequestBody("image/*".toMediaTypeOrNull())
+                accountAPI.updateAccount(
+                    idAccount = account.idAccount,
+                    name = account.name.toRequestBody(MultipartBody.FORM),
+                    img = MultipartBody.Part.createFormData(
+                        "image",
+                        account.avatar.name,
+                        imageFileRequestBody
+                    )
+                )
+            } else {
+                accountAPI.updateAccount(
+                    idAccount = account.idAccount,
+                    name = account.name.toRequestBody(MultipartBody.FORM),
+                )
+            }
+        }
+
+    }
+
+    suspend fun followAccount(idAccount: Int): NetworkResult<MessageJson> {
+        return callApi { accountAPI.followAccount(idAccount) }
+    }
+
+    suspend fun unFollowAccount(idAccount: Int): NetworkResult<MessageJson> {
+        return callApi { accountAPI.unFollowAccount(idAccount) }
+    }
+
+    suspend fun getAccount(idAccount: Int): Account? {
+        val result = callApi { accountAPI.getAccount(idAccount) }
+        if (result is NetworkResult.Success) {
+            return result.body.data.toAccount()
+        }
+        return null
+    }
+
+    suspend fun searchAccount(keyword: String): List<Account> {
+        val result = callApi { accountAPI.searchAccount(keyword) }
+        return if (result is NetworkResult.Success) {
+            result.body.data.toListAccount()
+        } else {
+            emptyList()
+        }
     }
 
     suspend fun getSongsOfAccount(idAccount: Int): List<Song> {
@@ -54,6 +107,15 @@ class AccountRemoteService @Inject constructor(
         }
     }
 
+    suspend fun getTopAccounts(): List<Account> {
+        val result = callApi { accountAPI.getTopAccounts() }
+        return if (result is NetworkResult.Success) {
+            result.body.data.toListAccount()
+        } else {
+            emptyList()
+        }
+    }
+
     suspend fun getAlbumsOfAccount(idAccount: Int): List<Album> {
         val result = callApi { accountAPI.getAlbumsOfAccount(idAccount) }
         return if (result is NetworkResult.Success) {
@@ -70,5 +132,9 @@ class AccountRemoteService @Inject constructor(
         } else {
             emptyList()
         }
+    }
+
+    suspend fun changePassword(modal: ChangePasswordModal): NetworkResult<MessageJson> {
+        return callApi { accountAPI.changePassword(modal) }
     }
 }

@@ -71,7 +71,7 @@ object NetworkModule {
         moshiConverterFactory: MoshiConverterFactory
     ): Retrofit {
         return Retrofit.Builder().addConverterFactory(moshiConverterFactory)
-//            .baseUrl("http://192.168.1.4:8000/")
+//            .baseUrl("http://192.168.1.6:8000/")
             .baseUrl(Config.MainSite)
             .client(okHttpClient)
             .build()

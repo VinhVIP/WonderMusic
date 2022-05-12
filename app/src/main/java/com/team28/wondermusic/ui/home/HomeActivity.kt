@@ -193,6 +193,10 @@ class HomeActivity : AppCompatActivity() {
             if (viewModel.isPlaying.value!!) R.drawable.ic_pause
             else R.drawable.ic_play
         )
+        if (DataLocal.myAccount.avatar.isNotEmpty()) {
+            Picasso.get().load(DataLocal.myAccount.avatar).placeholder(R.drawable.ic_user_colorful)
+                .fit().into(binding.toolbar.imgAvatar)
+        }
     }
 
     private fun setupViewPager() {

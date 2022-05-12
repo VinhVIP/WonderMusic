@@ -39,9 +39,8 @@ class SingerAdapter(private val listener: AccountClickListener) :
 
         holder.itemBinding.apply {
             if (account.avatar.isNotEmpty()) {
-                Picasso.get().load(account.avatar).fit().into(imgAvatar)
-            } else {
-                Picasso.get().load(R.drawable.profile).fit().into(imgAvatar)
+                Picasso.get().load(account.avatar).placeholder(R.drawable.ic_user_colorful).fit()
+                    .into(imgAvatar)
             }
             tvSingerName.text = account.accountName
         }

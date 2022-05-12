@@ -17,6 +17,11 @@ data class SignupModal(
     val confirmPassword: String
 )
 
+data class ChangePasswordModal(
+    val old_password: String,
+    val new_password: String,
+)
+
 data class NotificationListJson(
     val message: String,
     val data: List<NotificationJson>? = emptyList(),
@@ -200,6 +205,11 @@ data class TypeJson(
     }
 }
 
+data class ListTypeJson(
+    val message: String,
+    val data: List<TypeJson>
+)
+
 fun List<TypeJson>.toListType(): List<Type> {
     return map { it.toType() }
 }
@@ -242,6 +252,7 @@ data class AccountJson(
     val following: String?,
     val role: Int,
     @Json(name = "total_love") val totalLove: String?,
+    @Json(name = "total_song") val totalSong: String?,
     @Json(name = "follow_status") val followStatus: Boolean?,
 ) {
     fun toAccount(): Account {
@@ -253,7 +264,7 @@ data class AccountJson(
             dateCreated = this.createDate,
             role = this.role,
             accountStatus = this.accountStatus,
-            totalSongs = 0,
+            totalSongs = if (this.totalSong == null) 0 else this.totalSong.toInt(),
             totalLikes = if (this.totalLove == null) 0 else this.totalLove.toInt(),
             totalFollowers = if (this.follower == null) 0 else this.follower.toInt(),
             totalFollowings = if (this.following == null) 0 else this.following.toInt(),
@@ -269,4 +280,9 @@ fun List<AccountJson>.toListAccount(): List<Account> {
 data class ListAccountJson(
     val message: String,
     val data: List<AccountJson>
+)
+
+data class SingleAccountJson(
+    val message: String,
+    val data: AccountJson
 )

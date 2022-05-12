@@ -2,11 +2,10 @@ package com.team28.wondermusic.data.apis
 
 import com.team28.wondermusic.common.Config.ApiVersion
 import com.team28.wondermusic.data.models.*
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import retrofit2.Response
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface AccountAPI {
 
@@ -16,10 +15,28 @@ interface AccountAPI {
     @POST("$ApiVersion/account/")
     suspend fun signup(@Body modal: SignupModal): Response<MessageJson>
 
+    @Multipart
+    @PUT("$ApiVersion/account/{idAccount}")
+    suspend fun updateAccount(
+        @Part img: MultipartBody.Part,
+        @Part("account_name") name: RequestBody,
+        @Path("idAccount") idAccount: Int,
+    ): Response<MessageJson>
+
+    @Multipart
+    @PUT("$ApiVersion/account/{idAccount}")
+    suspend fun updateAccount(
+        @Part("account_name") name: RequestBody,
+        @Path("idAccount") idAccount: Int,
+    ): Response<MessageJson>
+
+    @GET("$ApiVersion/account")
+    suspend fun searchAccount(@Query("k") keyword: String): Response<ListAccountJson>
+
     @GET("$ApiVersion/account/{idAccount}")
     suspend fun getAccount(
         @Path("idAccount") idAccount: Int
-    ): Response<AccountJson>
+    ): Response<SingleAccountJson>
 
     @GET("$ApiVersion/account/{idAccount}/songs")
     suspend fun getSongsOfAccount(
@@ -48,4 +65,16 @@ interface AccountAPI {
     suspend fun getPlaylistsOfAccount(
         @Path("idAccount") idAccount: Int,
     ): Response<ListPlaylistJson>
+
+    @GET("$ApiVersion/account/hot")
+    suspend fun getTopAccounts(): Response<ListAccountJson>
+
+    @POST("$ApiVersion/follow/{idAccount}")
+    suspend fun followAccount(@Path("idAccount") idAccount: Int): Response<MessageJson>
+
+    @DELETE("$ApiVersion/follow/{idAccount}")
+    suspend fun unFollowAccount(@Path("idAccount") idAccount: Int): Response<MessageJson>
+
+    @PUT("$ApiVersion/account/change/password")
+    suspend fun changePassword(@Body modal: ChangePasswordModal): Response<MessageJson>
 }

@@ -2,6 +2,7 @@ package com.team28.wondermusic.ui.home.personal.mysongs
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -76,6 +77,11 @@ class MySongsFragment : BaseDialogFragment(), SongClickListener {
                 putParcelable(Constants.Song, song)
             }
         }.show(requireActivity().supportFragmentManager, null)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        viewModel.fetchData()
     }
 
 }

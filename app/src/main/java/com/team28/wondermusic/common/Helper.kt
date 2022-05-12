@@ -18,6 +18,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.team28.wondermusic.R
 import com.team28.wondermusic.data.models.Account
+import com.team28.wondermusic.data.models.Type
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -143,4 +144,18 @@ fun Drawable.resize(context: Context, width: Int, height: Int): Drawable {
     val b = (this as BitmapDrawable).bitmap
     val bitmapResized = Bitmap.createScaledBitmap(b, width, height, false)
     return BitmapDrawable(context.resources, bitmapResized)
+}
+
+fun List<Account>.exists(account: Account): Boolean {
+    for (it in this) {
+        if (it.idAccount == account.idAccount) return true
+    }
+    return false
+}
+
+fun List<Type>.exists(type: Type): Boolean {
+    for (it in this) {
+        if (it.idType == type.idType) return true
+    }
+    return false
 }

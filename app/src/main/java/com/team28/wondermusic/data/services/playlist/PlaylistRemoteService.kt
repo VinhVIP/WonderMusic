@@ -30,6 +30,14 @@ class PlaylistRemoteService @Inject constructor(
             response.body.data
         else null
     }
+
+    suspend fun getTopPlaylists(): List<PlaylistJson>? {
+        val response = callApi { playlistAPI.getTopPlaylists() }
+        return if (response is NetworkResult.Success)
+            response.body.data
+        else null
+    }
+
 }
 
 // Modal dùng để gửi request body khi thêm/sửa

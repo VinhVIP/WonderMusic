@@ -1,63 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/swipeRefresh"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
-        <com.github.mikephil.charting.charts.LineChart
-            android:layout_marginStart="8dp"
-            android:id="@+id/chart"
-            android:layout_width="match_parent"
-            android:layout_height="170dp" />
-
-        <com.facebook.shimmer.ShimmerFrameLayout
-            android:id="@+id/shimmerTopSong"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <include layout="@layout/item_song_shimmer" />
-
-                <include layout="@layout/item_song_shimmer_2" />
-
-                <include layout="@layout/item_song_shimmer" />
-
-                <include layout="@layout/item_song_shimmer_2" />
-
-                <include layout="@layout/item_song_shimmer" />
-
-                <include layout="@layout/item_song_shimmer_2" />
-
-                <include layout="@layout/item_song_shimmer" />
-
-                <include layout="@layout/item_song_shimmer_2" />
-
-                <include layout="@layout/item_song_shimmer" />
-
-                <include layout="@layout/item_song_shimmer_2" />
-
-                <include layout="@layout/item_song_shimmer" />
-
-                <include layout="@layout/item_song_shimmer_2" />
-            </LinearLayout>
-        </com.facebook.shimmer.ShimmerFrameLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:visibility="gone"
-            android:id="@+id/recyclerSong"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="6dp"
-            tools:listitem="@layout/item_song" />
+            android:orientation="vertical">
 
-    </LinearLayout>
-</androidx.core.widget.NestedScrollView>
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/chart"
+                android:layout_width="match_parent"
+                android:layout_height="170dp"
+                android:layout_marginStart="8dp" />
+
+            <com.facebook.shimmer.ShimmerFrameLayout
+                android:id="@+id/shimmerTopSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <include layout="@layout/item_song_shimmer" />
+
+                    <include layout="@layout/item_song_shimmer_2" />
+
+                    <include layout="@layout/item_song_shimmer" />
+
+                    <include layout="@layout/item_song_shimmer_2" />
+
+                    <include layout="@layout/item_song_shimmer" />
+
+                    <include layout="@layout/item_song_shimmer_2" />
+
+                    <include layout="@layout/item_song_shimmer" />
+
+                    <include layout="@layout/item_song_shimmer_2" />
+
+                    <include layout="@layout/item_song_shimmer" />
+
+                    <include layout="@layout/item_song_shimmer_2" />
+
+                    <include layout="@layout/item_song_shimmer" />
+
+                    <include layout="@layout/item_song_shimmer_2" />
+                </LinearLayout>
+            </com.facebook.shimmer.ShimmerFrameLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerSong"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:visibility="gone"
+                tools:listitem="@layout/item_song" />
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

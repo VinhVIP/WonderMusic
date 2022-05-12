@@ -22,6 +22,12 @@
         app:drawableEndCompat="@drawable/ic_right_dark" />
 
     <TextView
+        android:id="@+id/tvSongFileError"
+        style="@style/TextViewError"
+        android:text="Chưa chọn file bài hát"
+        android:visibility="gone" />
+
+    <TextView
         style="@style/TextViewTitle"
         android:text="Tên bài hát" />
 
@@ -31,5 +37,41 @@
         android:hint="Nhập tên bài hát"
         android:inputType="text"
         android:maxLines="1" />
+
+    <TextView
+        android:id="@+id/tvSongNameError"
+        style="@style/TextViewError"
+        android:text="Tên bài hát không được bỏ trống"
+        android:visibility="gone" />
+
+    <TextView
+        style="@style/TextViewTitle"
+        android:text="Album" />
+
+    <TextView
+        android:id="@+id/btnChooseAlbum"
+        style="@style/SelectField"
+        android:clickable="true"
+        android:focusable="true"
+        android:gravity="center_vertical"
+        android:hint="Chọn album"
+        android:lines="1"
+        android:paddingEnd="12dp"
+        app:drawableEndCompat="@drawable/ic_right_dark" />
+
+    <TextView
+        android:id="@+id/tvAlbumError"
+        style="@style/TextViewError"
+        android:text="Chưa chọn album"
+        android:visibility="gone" />
+
+    <TextView
+        style="@style/TextViewTitle"
+        android:text="Thể loại" />
+
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

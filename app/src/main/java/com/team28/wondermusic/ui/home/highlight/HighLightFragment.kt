@@ -86,6 +86,10 @@ class HighLightFragment : Fragment(), SongClickListener {
             }
         }
 
+        binding.swipeRefresh.setOnRefreshListener {
+            viewModel.fetchData()
+        }
+
         return binding.root
     }
 
@@ -101,6 +105,8 @@ class HighLightFragment : Fragment(), SongClickListener {
         setupChart()
 
         viewModel.topSongs.observe(viewLifecycleOwner) {
+            binding.swipeRefresh.isRefreshing = false
+
             binding.shimmerTopSong.stopShimmer()
             binding.shimmerTopSong.visibility = View.GONE
             binding.recyclerSong.visibility = View.VISIBLE

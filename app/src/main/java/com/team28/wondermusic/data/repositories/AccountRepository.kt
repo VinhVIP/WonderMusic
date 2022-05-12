@@ -26,6 +26,32 @@ class AccountRepository @Inject constructor(
         }
     }
 
+    suspend fun updateAccount(account: AccountUpdate): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            accountRemoteService.updateAccount(account)
+        }
+    }
+
+    suspend fun followAccount(idAccount: Int): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            accountRemoteService.followAccount(idAccount)
+        }
+    }
+
+    suspend fun unFollowAccount(idAccount: Int): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            accountRemoteService.unFollowAccount(idAccount)
+        }
+    }
+
+    suspend fun getAccount(idAccount: Int): Account? = withContext(dispatcher) {
+        accountRemoteService.getAccount(idAccount)
+    }
+
+    suspend fun searchAccount(keyword: String): List<Account> = withContext(dispatcher) {
+        accountRemoteService.searchAccount(keyword)
+    }
+
     suspend fun getSongsOfAccount(idAccount: Int): List<Song> = withContext(dispatcher) {
         accountRemoteService.getSongsOfAccount(idAccount)
     }
@@ -42,6 +68,10 @@ class AccountRepository @Inject constructor(
         accountRemoteService.getFollowings(idAccount)
     }
 
+    suspend fun getTopAccounts(): List<Account> = withContext(dispatcher) {
+        accountRemoteService.getTopAccounts()
+    }
+
     suspend fun getAlbumsOfAccount(idAccount: Int): List<Album> = withContext(dispatcher) {
         accountRemoteService.getAlbumsOfAccount(idAccount)
     }
@@ -49,4 +79,11 @@ class AccountRepository @Inject constructor(
     suspend fun getPlaylistsOfAccount(idAccount: Int): List<Playlist> = withContext(dispatcher) {
         accountRemoteService.getPlaylistsOfAccount(idAccount)
     }
+
+    suspend fun changePassword(modal: ChangePasswordModal): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            accountRemoteService.changePassword(modal)
+        }
+    }
+
 }
