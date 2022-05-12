@@ -2,10 +2,7 @@ package com.team28.wondermusic.data.repositories
 
 import com.team28.wondermusic.base.network.NetworkResult
 import com.team28.wondermusic.data.database.entities.*
-import com.team28.wondermusic.data.models.MessageJson
-import com.team28.wondermusic.data.models.Song
-import com.team28.wondermusic.data.models.SongPost
-import com.team28.wondermusic.data.models.Type
+import com.team28.wondermusic.data.models.*
 import com.team28.wondermusic.data.services.account.AccountLocalService
 import com.team28.wondermusic.data.services.song.SongLocalService
 import com.team28.wondermusic.data.services.song.SongRemoteService
@@ -45,6 +42,18 @@ class SongRepository @Inject constructor(
         }
     }
 
+    suspend fun listen(idSong: Int): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            songRemoteService.listen(idSong)
+        }
+    }
+
+    suspend fun getSong(idSong: Int): Song? {
+        return withContext(dispatcher) {
+            songRemoteService.getSong(idSong)
+        }
+    }
+
     suspend fun loveSong(idSong: Int): NetworkResult<MessageJson> {
         return withContext(dispatcher) {
             songRemoteService.loveSong(idSong)
@@ -55,6 +64,14 @@ class SongRepository @Inject constructor(
         return withContext(dispatcher) {
             songRemoteService.unLoveSong(idSong)
         }
+    }
+
+    suspend fun getTopTenSongs(): List<Song> = withContext(dispatcher) {
+        songRemoteService.getTopTenSongs()
+    }
+
+    suspend fun getTop3Songs(): List<SongListen> = withContext(dispatcher) {
+        songRemoteService.getTop3Songs()
     }
 
     suspend fun getSongsOfFollowing(page: Int): List<Song> = withContext(dispatcher) {

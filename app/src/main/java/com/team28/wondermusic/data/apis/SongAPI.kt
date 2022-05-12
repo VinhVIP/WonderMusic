@@ -1,9 +1,7 @@
 package com.team28.wondermusic.data.apis
 
 import com.team28.wondermusic.common.Config.ApiVersion
-import com.team28.wondermusic.data.models.ListSongJson
-import com.team28.wondermusic.data.models.ListTypeJson
-import com.team28.wondermusic.data.models.MessageJson
+import com.team28.wondermusic.data.models.*
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import retrofit2.Response
@@ -41,6 +39,12 @@ interface SongAPI {
     @DELETE("$ApiVersion/song/deleteSong/{idSong}")
     suspend fun deleteSong(@Path("idSong") idSong: Int): Response<MessageJson>
 
+    @POST("$ApiVersion/song/listen/{idSong}")
+    suspend fun listen(@Path("idSong") idSong: Int): Response<MessageJson>
+
+    @GET("$ApiVersion/song/{idSong}")
+    suspend fun getSong(@Path("idSong") idSong: Int): Response<SingleSongJson>
+
     @GET("$ApiVersion/type/all")
     suspend fun getAllTypes(): Response<ListTypeJson>
 
@@ -57,6 +61,12 @@ interface SongAPI {
         @Path("idType") idType: Int,
         @Query("page") page: Int,
     ): Response<ListSongJson>
+
+    @GET("$ApiVersion/listen/best-new-10day")
+    suspend fun getTopTenSongs(): Response<ListTopListenSongs>
+
+    @GET("$ApiVersion/listen/best-new-3day")
+    suspend fun getTop3Songs(): Response<ListTopListenSongs>
 
     @GET("$ApiVersion/account/songs_following")
     suspend fun getSongsOfFollowing(@Query("page") page: Int): Response<ListSongJson>

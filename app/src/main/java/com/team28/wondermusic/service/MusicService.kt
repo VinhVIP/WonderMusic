@@ -16,6 +16,7 @@ import android.os.IBinder
 import android.support.v4.media.MediaMetadataCompat
 import android.support.v4.media.session.MediaSessionCompat
 import android.util.Log
+import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
@@ -158,19 +159,24 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
         }
     }
 
-    private fun prepareMediaURL(url: String): MediaPlayer {
+    private fun prepareMediaURL(url: String): MediaPlayer? {
         Log.d("vinh", url)
-
-        return MediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_MEDIA)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
-                    .build()
-            )
-            setDataSource(url)
-            setOnPreparedListener(this@MusicService)
-            prepareAsync()
+        try {
+            return MediaPlayer().apply {
+                setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_MEDIA)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
+                        .build()
+                )
+                setDataSource(url)
+                setOnPreparedListener(this@MusicService)
+                prepareAsync()
+            }
+        } catch (e: Exception) {
+            Log.d("vinh", "File nhạc lỗi")
+            Toast.makeText(this, "File nhạc bị lỗi, không thể phát nhạc", Toast.LENGTH_SHORT).show()
+            return null
         }
     }
 

@@ -1,10 +1,6 @@
 package com.team28.wondermusic.data.database.entities
 
-import com.team28.wondermusic.data.models.Account
-import com.team28.wondermusic.data.models.LineLyric
-import com.team28.wondermusic.data.models.Notification
-import com.team28.wondermusic.data.models.Song
-
+import com.team28.wondermusic.data.models.*
 
 
 // Chuyển 1 dòng String lyric thành đối tượng object LineLyric
@@ -161,4 +157,15 @@ fun List<Song>.toListFavoriteSongsEntity(): List<FavoriteSongEntity> {
 
 fun List<Notification>.toListNotificationEntity(): List<NotificationEntity> {
     return map { it.toNotificationEntity() }
+}
+
+fun List<Type>.toStringTypes(): String {
+    var str = ""
+    for (i in 0 until this.size - 1) {
+        str += this[i].name + ", "
+    }
+    if (this.isNotEmpty()) {
+        str += this.last().name
+    }
+    return str
 }

@@ -13,11 +13,13 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.OnItemTouchListener
 import com.team28.wondermusic.adapter.*
 import com.team28.wondermusic.common.Constants
+import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.models.Account
 import com.team28.wondermusic.data.models.Playlist
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.data.models.Type
 import com.team28.wondermusic.databinding.FragmentDiscoverBinding
+import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.account.AccountActivity
 import com.team28.wondermusic.ui.account.playlist_detail.PlaylistDetailFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
@@ -25,7 +27,7 @@ import com.team28.wondermusic.ui.type.TypeActivity
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, TypeClickListener,
+class DiscoverFragment : Fragment(), PlaylistClickListener, TypeClickListener,
     AccountClickListener {
 
     private lateinit var binding: FragmentDiscoverBinding
@@ -112,7 +114,20 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, T
     }
 
     private fun setupNewestSong() {
-        newSongAdapter = SongSmallAdapter(this)
+        newSongAdapter = SongSmallAdapter(object:SongClickListener{
+            override fun onSongClick(song: Song) {
+                startActivity(Intent(context, PlayerActivity::class.java))
+                Helper.sendMusicAction(
+                    requireContext(),
+                    MusicService.ACTION_PLAY,
+                    song,
+                    viewModel.newestSongs.value as ArrayList<Song>
+                )
+            }
+
+            override fun onOpenMenu(song: Song, position: Int) {
+            }
+        })
 
         viewModel.newestSongs.observe(viewLifecycleOwner) {
             binding.swipeRefresh.isRefreshing = false
@@ -137,7 +152,20 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, T
     }
 
     private fun setupFollowSong() {
-        followSongAdapter = SongSmallAdapter(this)
+        followSongAdapter = SongSmallAdapter(object:SongClickListener{
+            override fun onSongClick(song: Song) {
+                startActivity(Intent(context, PlayerActivity::class.java))
+                Helper.sendMusicAction(
+                    requireContext(),
+                    MusicService.ACTION_PLAY,
+                    song,
+                    viewModel.followSongs.value as ArrayList<Song>
+                )
+            }
+
+            override fun onOpenMenu(song: Song, position: Int) {
+            }
+        })
         viewModel.followSongs.observe(viewLifecycleOwner) {
             binding.shimmerFollowSong.stopShimmer()
             binding.shimmerFollowSong.visibility = View.GONE
@@ -159,7 +187,20 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, T
     }
 
     private fun setupTopSong() {
-        topSongAdapter = SongTopAdapter(this)
+        topSongAdapter = SongTopAdapter(object:SongClickListener{
+            override fun onSongClick(song: Song) {
+                startActivity(Intent(context, PlayerActivity::class.java))
+                Helper.sendMusicAction(
+                    requireContext(),
+                    MusicService.ACTION_PLAY,
+                    song,
+                    viewModel.bestSongs.value as ArrayList<Song>
+                )
+            }
+
+            override fun onOpenMenu(song: Song, position: Int) {
+            }
+        })
         viewModel.bestSongs.observe(viewLifecycleOwner) {
             binding.shimmerTopSong.stopShimmer()
             binding.shimmerTopSong.visibility = View.GONE
@@ -237,16 +278,6 @@ class DiscoverFragment : Fragment(), SongClickListener, PlaylistClickListener, T
             override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
             override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
         })
-    }
-
-    override fun onSongClick(song: Song) {
-        startActivity(Intent(context, PlayerActivity::class.java).apply {
-            putExtra(Constants.Song, song)
-        })
-    }
-
-    override fun onOpenMenu(song: Song, position: Int) {
-
     }
 
     override fun onPlaylistClick(playlist: Playlist) {

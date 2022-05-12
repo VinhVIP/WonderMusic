@@ -150,6 +150,11 @@ data class ListSongJson(
     val data: List<SongJson>
 )
 
+data class SingleSongJson(
+//    val message: String,
+    val data: SongJson
+)
+
 data class SongJson(
     @Json(name = "id_song") val idSong: Int,
     @Json(name = "name_song") val nameSong: String,
@@ -285,4 +290,28 @@ data class ListAccountJson(
 data class SingleAccountJson(
     val message: String,
     val data: AccountJson
+)
+
+data class ListenOfDay(
+    val day: String,
+    @Json(name = "listenofday") val listen: Int
+)
+
+data class SongListen(
+    @Json(name = "listen10d") val listen10Day: String?,
+    val song: SongJson,
+    @Json(name = "listen") val listenDetail: List<ListenOfDay>?
+) {
+    fun toSong(): Song {
+        return song.toSong()
+    }
+}
+
+fun List<SongListen>.toSong(): List<Song> {
+    return map { it.toSong() }
+}
+
+data class ListTopListenSongs(
+    val message: String?,
+    val data: List<SongListen>
 )

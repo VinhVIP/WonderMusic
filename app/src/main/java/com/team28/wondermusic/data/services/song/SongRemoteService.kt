@@ -50,6 +50,24 @@ class SongRemoteService @Inject constructor(
         }
     }
 
+    suspend fun getTopTenSongs(): List<Song> {
+        val result = callApi { songAPI.getTopTenSongs() }
+        return if (result is NetworkResult.Success) {
+            result.body.data.toSong()
+        } else {
+            emptyList()
+        }
+    }
+
+    suspend fun getTop3Songs(): List<SongListen> {
+        val result = callApi { songAPI.getTop3Songs() }
+        return if (result is NetworkResult.Success) {
+            result.body.data
+        } else {
+            emptyList()
+        }
+    }
+
     suspend fun getBestSongs(): List<Song> {
         val result = callApi { songAPI.getBestSongs() }
         return if (result is NetworkResult.Success) {
@@ -65,6 +83,19 @@ class SongRemoteService @Inject constructor(
             result.body.data.toListSong()
         } else {
             emptyList()
+        }
+    }
+
+    suspend fun listen(idSong: Int): NetworkResult<MessageJson> {
+        return callApi { songAPI.listen(idSong) }
+    }
+
+    suspend fun getSong(idSong: Int): Song? {
+        val result = callApi { songAPI.getSong(idSong) }
+        if (result is NetworkResult.Success) {
+            return result.body.data.toSong()
+        } else {
+            return null
         }
     }
 

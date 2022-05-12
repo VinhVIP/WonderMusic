@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Build
+import android.os.Bundle
 import android.text.InputType
 import android.util.TypedValue
 import android.view.Window
@@ -18,7 +19,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.team28.wondermusic.R
 import com.team28.wondermusic.data.models.Account
+import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.data.models.Type
+import com.team28.wondermusic.service.MusicService
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -32,6 +35,35 @@ object Helper {
     fun validateEmail(email: String): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
+
+    fun sendMusicAction(
+        context: Context,
+        action: Int,
+        song: Song? = null,
+        songList: ArrayList<Song> = arrayListOf()
+    ) {
+        val intent = Intent(context, MusicService::class.java)
+
+        intent.putExtra("action", action)
+        song?.let {
+            val bundle = Bundle().apply {
+                putParcelable(Constants.Song, it)
+                putParcelableArrayList(Constants.SongList, songList)
+            }
+            intent.putExtra(Constants.Data, bundle)
+        }
+
+        startMusicService(context, intent)
+    }
+
+    fun startMusicService(context: Context, intent: Intent) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            context.startForegroundService(intent);
+        } else {
+            context.startService(intent);
+        }
+    }
+
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     fun setStatusBarGradiant(activity: AppCompatActivity, bgDrawable: Int) {
@@ -64,15 +96,7 @@ object Helper {
         editText.setSelection(editText.text.length)
     }
 
-    fun startMusicService(context: Context, intent: Intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intent);
-        } else {
-            context.startService(intent);
-        }
-    }
-
-    private fun stringToDate(datetime: String): Date? {
+    fun stringToDateTime(datetime: String): Date? {
         // 2022-03-06T22:14:40.034Z
         val str = datetime.substring(0, "2022-03-06T22:14:40".length).replace('T', ' ')
         val sdf = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
@@ -83,8 +107,19 @@ object Helper {
         }
     }
 
+    fun stringToDate(datetime: String): Date? {
+        // 2022-03-06T22:14:40.034Z
+        val str = datetime.substring(0, "2022-03-06".length)
+        val sdf = SimpleDateFormat("yyyy-MM-dd")
+        return try {
+            sdf.parse(str)
+        } catch (e: Exception) {
+            null
+        }
+    }
+
     fun toDateString(datetime: String): String {
-        val date = stringToDate(datetime)
+        val date = stringToDateTime(datetime)
         val format = SimpleDateFormat("dd/MM/yyyy")
         return format.format(date);
     }
@@ -101,7 +136,7 @@ object Helper {
                 getDifferenceString(diff)
             }
         } catch (e: Exception) {
-            val date = stringToDate(datetime)
+            val date = stringToDateTime(datetime)
             if (date == null) {
                 datetime
             } else {

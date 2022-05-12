@@ -2,7 +2,6 @@ package com.team28.wondermusic.ui.home.highlight
 
 import android.content.Intent
 import android.graphics.Color
-import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -27,7 +26,7 @@ import com.team28.wondermusic.adapter.SongAdapter
 import com.team28.wondermusic.adapter.SongClickListener
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.Helper
-import com.team28.wondermusic.data.TempData
+import com.team28.wondermusic.data.models.ListenOfDay
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.FragmentHighLightBinding
 import com.team28.wondermusic.service.MusicService
@@ -37,7 +36,6 @@ import com.team28.wondermusic.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
 import java.util.*
 import kotlin.math.abs
-import kotlin.math.roundToInt
 
 
 @AndroidEntryPoint
@@ -99,10 +97,30 @@ class HighLightFragment : Fragment(), SongClickListener {
         songAdapter = SongAdapter(this)
         binding.recyclerSong.apply {
             adapter = songAdapter
-            layoutManager = LinearLayoutManager(this@HighLightFragment.context)
+            layoutManager = LinearLayoutManager(context)
         }
 
-        setupChart()
+        viewModel.topSongsChart.observe(viewLifecycleOwner) {
+            // Chỉ lấy top 3
+            values.clear()
+            for (topIndex in 0 until 3) {
+                values.add(ArrayList())
+
+                // Lấy 10 ngày gần nhất
+                // Duyệt từ 10 ngày trước, cho đến hiện tại
+                it[topIndex].listenDetail?.let { listListen ->
+                    val calendar = Calendar.getInstance()
+                    calendar.add(Calendar.DAY_OF_MONTH, -10)
+                    for (cnt in 0 until 10) {
+                        calendar.add(Calendar.DAY_OF_MONTH, 1)
+                        val numListen = getListenOfDay(calendar.time, listListen)
+                        values[topIndex].add(Entry(cnt.toFloat(), numListen.toFloat()))
+                    }
+                }
+            }
+
+            setupChart()
+        }
 
         viewModel.topSongs.observe(viewLifecycleOwner) {
             binding.swipeRefresh.isRefreshing = false
@@ -117,8 +135,25 @@ class HighLightFragment : Fragment(), SongClickListener {
 
         viewModel.songDrawables.observe(viewLifecycleOwner) {
             binding.chart.data = generateDataLine()
-            Log.d("vinh", "load ok")
+            Log.d("vinh", "load drawable ok")
         }
+    }
+
+    private fun getListenOfDay(checkDate: Date, listens: List<ListenOfDay>): Int {
+        for (listenOfDay in listens) {
+            val date = Helper.stringToDate(listenOfDay.day)
+            val calendar1 = Calendar.getInstance()
+            val calendar2 = Calendar.getInstance()
+
+            calendar1.time = checkDate
+            date?.let {
+                calendar2.time = it
+                if (calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH)
+                    && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH)
+                ) return listenOfDay.listen
+            }
+        }
+        return 0
     }
 
     private fun setupChart() {
@@ -137,7 +172,9 @@ class HighLightFragment : Fragment(), SongClickListener {
                 textColor = ContextCompat.getColor(context, R.color.text_primary)
                 valueFormatter = object : ValueFormatter() {
                     override fun getFormattedValue(value: Float): String {
-                        return "${value.roundToInt()}"
+                        val calendar = Calendar.getInstance()
+                        calendar.add(Calendar.DAY_OF_MONTH, value.toInt() - 9)
+                        return "${calendar.get(Calendar.DAY_OF_MONTH)}"
                     }
                 }
             }
@@ -150,7 +187,7 @@ class HighLightFragment : Fragment(), SongClickListener {
                 textColor = ContextCompat.getColor(context, R.color.text_primary)
             }
 
-            animateX(1500)
+//            animateX(1500)
             animateY(1500)
             data = generateDataLine()
 
@@ -169,15 +206,6 @@ class HighLightFragment : Fragment(), SongClickListener {
 
     private val values: ArrayList<ArrayList<Entry>> = ArrayList()
 
-    init {
-        for (i in 0..2) {
-            values.add(ArrayList())
-            for (d in 0..9) {
-                values[i].add(Entry(d.toFloat(), ((Math.random() * 65).toInt() + 40).toFloat()))
-            }
-        }
-    }
-
     private fun generateDataLine(highlightSetIndex: Int = -1): LineData {
 
         val sets: ArrayList<ILineDataSet> = ArrayList()
@@ -192,7 +220,7 @@ class HighLightFragment : Fragment(), SongClickListener {
             var lineDataSet: LineDataSet
             if (highlightSetIndex == i) {
                 val highLightValue = values[i].toMutableList()
-                val randomIndex = abs(Random().nextInt() % 10)
+                val randomIndex = abs(Random().nextInt() % 9 + 1)
 
                 val a = RoundedImageView(context)
                 a.setImageDrawable(viewModel.songDrawables.value?.get(i))
@@ -233,32 +261,14 @@ class HighLightFragment : Fragment(), SongClickListener {
         return LineData(sets)
     }
 
-    private fun sendMusicAction(
-        action: Int,
-        song: Song? = null,
-        songList: ArrayList<Song> = arrayListOf()
-    ) {
-        val intent = Intent(requireActivity().applicationContext, MusicService::class.java)
-
-        intent.putExtra("action", action)
-        song?.let {
-            val bundle = Bundle().apply {
-                putParcelable(Constants.Song, it)
-                putParcelableArrayList(Constants.SongList, songList)
-            }
-            intent.putExtra(Constants.Data, bundle)
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            requireActivity().startForegroundService(intent);
-        } else {
-            requireActivity().startService(intent);
-        }
-    }
-
     override fun onSongClick(song: Song) {
         startActivity(Intent(context, PlayerActivity::class.java))
-        sendMusicAction(MusicService.ACTION_PLAY, song, TempData.songs)
+        Helper.sendMusicAction(
+            requireContext(),
+            MusicService.ACTION_PLAY,
+            song,
+            viewModel.topSongs.value as ArrayList<Song>
+        )
     }
 
     override fun onOpenMenu(song: Song, position: Int) {

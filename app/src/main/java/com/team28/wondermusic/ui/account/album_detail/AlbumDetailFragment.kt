@@ -11,9 +11,11 @@ import com.team28.wondermusic.adapter.SongAdapter
 import com.team28.wondermusic.adapter.SongClickListener
 import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
+import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.models.Album
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.FragmentAlbumDetailBinding
+import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
@@ -84,9 +86,13 @@ class AlbumDetailFragment : BaseDialogFragment(), SongClickListener {
     }
 
     override fun onSongClick(song: Song) {
-        startActivity(Intent(context, PlayerActivity::class.java).apply {
-            putExtra(Constants.Song, song)
-        })
+        startActivity(Intent(context, PlayerActivity::class.java))
+        Helper.sendMusicAction(
+            requireContext(),
+            MusicService.ACTION_PLAY,
+            song,
+            album.songs as ArrayList<Song>
+        )
     }
 
     override fun onOpenMenu(song: Song, position: Int) {

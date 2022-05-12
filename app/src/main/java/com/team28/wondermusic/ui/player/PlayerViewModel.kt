@@ -1,10 +1,19 @@
 package com.team28.wondermusic.ui.player
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.team28.wondermusic.base.network.NetworkResult
 import com.team28.wondermusic.base.viewmodels.BaseViewModel
 import com.team28.wondermusic.data.models.Song
+import com.team28.wondermusic.data.repositories.SongRepository
+import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class PlayerViewModel : BaseViewModel() {
+@HiltViewModel
+class PlayerViewModel @Inject constructor(
+    private val songRepository: SongRepository
+) : BaseViewModel() {
 
     var audioSessionId = MutableLiveData(0)
 
@@ -23,5 +32,48 @@ class PlayerViewModel : BaseViewModel() {
     var isUserTouchedSlider = false
 
     var currentRotate = 0f
+
+    var message: String? = null
+    var loveResponseStatus = MutableLiveData<Boolean?>(null)
+
+
+    fun listen(song: Song) {
+        viewModelScope.launch {
+            songRepository.listen(song.idSong)
+        }
+    }
+
+    fun getSong(s: Song) {
+        viewModelScope.launch {
+            val refreshSong = songRepository.getSong(s.idSong)
+            refreshSong?.let { s ->
+                song.postValue(s)
+            }
+        }
+    }
+
+    fun loveSong(song: Song) {
+        viewModelScope.launch {
+            val result = songRepository.loveSong(song.idSong)
+            if (result is NetworkResult.Success) {
+                message = result.body.message
+            } else if (result is NetworkResult.Error) {
+                message = result.responseError.message
+            }
+            loveResponseStatus.postValue(result is NetworkResult.Success)
+        }
+    }
+
+    fun unLoveSong(song: Song) {
+        viewModelScope.launch {
+            val result = songRepository.unLoveSong(song.idSong)
+            if (result is NetworkResult.Success) {
+                message = result.body.message
+            } else if (result is NetworkResult.Error) {
+                message = result.responseError.message
+            }
+            loveResponseStatus.postValue(result is NetworkResult.Success)
+        }
+    }
 
 }

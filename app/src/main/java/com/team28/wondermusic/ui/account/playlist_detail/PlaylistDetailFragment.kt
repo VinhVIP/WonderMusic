@@ -10,26 +10,30 @@ import com.team28.wondermusic.adapter.SongAdapter
 import com.team28.wondermusic.adapter.SongClickListener
 import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
-import com.team28.wondermusic.data.TempData
+import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.models.Playlist
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.FragmentPlaylistDetailBinding
+import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
 
 class PlaylistDetailFragment : BaseDialogFragment(), SongClickListener {
 
-    override val isFullHeight = true
+//    override val isFullHeight = true
 
     private lateinit var binding: FragmentPlaylistDetailBinding
 
     private lateinit var songAdapter: SongAdapter
 
-    private var playlist: Playlist? = null
+    private lateinit var playlist: Playlist
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        playlist = arguments?.getParcelable(Constants.Playlist)
+        val playlist: Playlist? = arguments?.getParcelable(Constants.Playlist)
+
+        if (playlist == null) dismiss()
+        else this.playlist = playlist
     }
 
     override fun onCreateView(
@@ -46,7 +50,7 @@ class PlaylistDetailFragment : BaseDialogFragment(), SongClickListener {
         setInfoPlaylist()
 
         songAdapter = SongAdapter(this)
-        songAdapter.differ.submitList(TempData.songs)
+        songAdapter.differ.submitList(playlist.songs)
 
         binding.recyclerSong.apply {
             adapter = songAdapter
@@ -55,20 +59,21 @@ class PlaylistDetailFragment : BaseDialogFragment(), SongClickListener {
     }
 
     private fun setInfoPlaylist() {
-        playlist?.let { playlist ->
-            binding.tvPlaylistName.text = playlist.name
-            binding.tvAccountName.text = playlist.account.accountName
-            playlist.songs?.let {
-                binding.tvTotalSongs.text = "${it.size}"
-            }
-
+        binding.tvPlaylistName.text = playlist.name
+        binding.tvAccountName.text = playlist.account.accountName
+        playlist.songs?.let {
+            binding.tvTotalSongs.text = "${it.size}"
         }
     }
 
     override fun onSongClick(song: Song) {
-        startActivity(Intent(context, PlayerActivity::class.java).apply {
-            putExtra(Constants.Song, song)
-        })
+        startActivity(Intent(context, PlayerActivity::class.java))
+        Helper.sendMusicAction(
+            requireContext(),
+            MusicService.ACTION_PLAY,
+            song,
+            playlist.songs as ArrayList<Song>
+        )
     }
 
     override fun onOpenMenu(song: Song, position: Int) {

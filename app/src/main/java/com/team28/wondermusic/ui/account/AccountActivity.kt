@@ -21,6 +21,7 @@ import com.team28.wondermusic.data.models.Album
 import com.team28.wondermusic.data.models.Playlist
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ActivityAccountBinding
+import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.account.album_detail.AlbumDetailFragment
 import com.team28.wondermusic.ui.account.albums.AlbumOfAccountFragment
 import com.team28.wondermusic.ui.account.changepassword.ChangePasswordFragment
@@ -32,6 +33,7 @@ import com.team28.wondermusic.ui.login.LoginActivity
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.ArrayList
 
 @AndroidEntryPoint
 class AccountActivity : BaseActivity(), SongClickListener, PlaylistClickListener,
@@ -308,9 +310,13 @@ class AccountActivity : BaseActivity(), SongClickListener, PlaylistClickListener
     }
 
     override fun onSongClick(song: Song) {
-        startActivity(Intent(this, PlayerActivity::class.java).apply {
-            putExtra(Constants.Song, song)
-        })
+        startActivity(Intent(this, PlayerActivity::class.java))
+        Helper.sendMusicAction(
+            this,
+            MusicService.ACTION_PLAY,
+            song,
+            viewModel.songs.value as ArrayList<Song>
+        )
     }
 
     override fun onOpenMenu(song: Song, position: Int) {

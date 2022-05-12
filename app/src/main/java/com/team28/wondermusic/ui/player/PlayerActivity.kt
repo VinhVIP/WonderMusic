@@ -24,6 +24,7 @@ import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.songinfo.SongInfoFragment
 import com.team28.wondermusic.ui.player.songlyrics.SongLyricsFragment
 import com.team28.wondermusic.ui.player.songmain.SongMainFragment
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
@@ -31,6 +32,7 @@ import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
+@AndroidEntryPoint
 class PlayerActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
@@ -77,6 +79,11 @@ class PlayerActivity : AppCompatActivity() {
         runOnUiThread {
             binding.tvSongDuration.text = "..."
         }
+
+        // Tăng số lượt nghe bài hát
+        viewModel.listen(song)
+
+        viewModel.getSong(song)
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true)

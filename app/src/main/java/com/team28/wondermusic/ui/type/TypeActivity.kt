@@ -1,5 +1,6 @@
 package com.team28.wondermusic.ui.type
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -16,7 +17,10 @@ import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.data.models.Type
 import com.team28.wondermusic.databinding.ActivityTypeBinding
+import com.team28.wondermusic.service.MusicService
+import com.team28.wondermusic.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.util.ArrayList
 
 
 @AndroidEntryPoint
@@ -97,7 +101,13 @@ class TypeActivity : AppCompatActivity(), SongClickListener {
     }
 
     override fun onSongClick(song: Song) {
-
+        startActivity(Intent(this, PlayerActivity::class.java))
+        Helper.sendMusicAction(
+            this,
+            MusicService.ACTION_PLAY,
+            song,
+            viewModel.songsOfType.value as ArrayList<Song>
+        )
     }
 
     override fun onOpenMenu(song: Song, position: Int) {

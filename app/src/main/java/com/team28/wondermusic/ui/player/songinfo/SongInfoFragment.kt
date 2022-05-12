@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.team28.wondermusic.data.database.entities.singersToString
+import com.team28.wondermusic.data.database.entities.toStringTypes
 import com.team28.wondermusic.databinding.FragmentSongInfoBinding
 import com.team28.wondermusic.ui.player.PlayerViewModel
 
@@ -30,8 +31,12 @@ class SongInfoFragment : Fragment() {
             binding.apply {
                 tvSongName.text = song.name
                 tvSingerName.text = song.singersToString()
-                tvAlbumName.text = "My Album"
-                tvType.text = "My Type"
+                song.album?.let {
+                    tvAlbumName.text = it.name
+                }
+                song.types?.let {
+                    tvType.text = song.types.toStringTypes()
+                }
 
                 tvLikes.text = "${song.like}"
                 tvListens.text = "${song.listen}"

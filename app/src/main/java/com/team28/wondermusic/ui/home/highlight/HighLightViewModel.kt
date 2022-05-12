@@ -7,11 +7,12 @@ import androidx.lifecycle.viewModelScope
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
-import com.team28.wondermusic.base.network.NetworkResult
 import com.team28.wondermusic.base.viewmodels.BaseViewModel
 import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.common.resize
 import com.team28.wondermusic.data.models.Song
+import com.team28.wondermusic.data.models.SongJson
+import com.team28.wondermusic.data.models.SongListen
 import com.team28.wondermusic.data.repositories.SongRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -25,12 +26,14 @@ class HighLightViewModel @Inject constructor(
     var message = MutableLiveData<String?>(null)
 
     var topSongs = MutableLiveData<List<Song>>()
+    var topSongsChart = MutableLiveData<List<SongListen>>()
     var songDrawables = MutableLiveData<ArrayList<Drawable?>>()
 
     fun fetchData() {
         // TODO: Lấy top song
         parentJob = viewModelScope.launch {
-            topSongs.postValue(songRepository.getNewestSongs(1))
+            topSongs.postValue(songRepository.getTopTenSongs())
+            topSongsChart.postValue(songRepository.getTop3Songs())
         }
         registerEventParentJobFinish()
     }
