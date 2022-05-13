@@ -31,4 +31,18 @@ interface PlaylistAPI {
     // Xóa 1 playlist
     @DELETE("$ApiVersion/playlist/{idPlaylist}")
     suspend fun deletePlaylist(@Path("idPlaylist") idPlaylist: Int): Response<MessageJson>
+
+    // Thêm bài hát vào playlist
+    @POST("$ApiVersion/playlist_song/{idPlaylist}/song/{idSong}")
+    suspend fun addSongToPlaylist(
+        @Path("idPlaylist") idPlaylist: Int,
+        @Path("idSong") idSong: Int
+    ): Response<MessageJson>
+
+    // Xóa bài hát khỏi playlist
+    @DELETE("$ApiVersion/playlist_song/{idPlaylist}/song/{idSong}")
+    suspend fun deleteSongFromPlaylist(
+        @Path("idPlaylist") idPlaylist: Int,
+        @Path("idSong") idSong: Int
+    ): Response<MessageJson>
 }

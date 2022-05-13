@@ -2,7 +2,6 @@ package com.team28.wondermusic.ui.home.personal.mysongs
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ import com.team28.wondermusic.ui.formsong.FormSongActivity
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
 
 @AndroidEntryPoint
 class MySongsFragment : BaseDialogFragment(), SongClickListener {
@@ -65,6 +63,20 @@ class MySongsFragment : BaseDialogFragment(), SongClickListener {
 
         binding.btnAddSong.setOnClickListener {
             startActivity(Intent(context, FormSongActivity::class.java))
+        }
+
+        binding.btnPlayMusic.setOnClickListener {
+            viewModel.mySongs.value?.let {
+                if (it.isNotEmpty()) {
+                    startActivity(Intent(context, PlayerActivity::class.java))
+                    Helper.sendMusicAction(
+                        requireContext(),
+                        MusicService.ACTION_PLAY,
+                        it[0],
+                        it as ArrayList<Song>
+                    )
+                }
+            }
         }
     }
 

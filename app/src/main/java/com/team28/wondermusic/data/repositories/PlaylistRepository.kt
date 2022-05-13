@@ -35,6 +35,18 @@ class PlaylistRepository @Inject constructor(
         }
     }
 
+    suspend fun addSongToPlaylist(idPlaylist: Int, idSong: Int): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            remoteService.addSongToPlaylist(idPlaylist, idSong)
+        }
+    }
+
+    suspend fun deleteSongFromPlaylist(idPlaylist: Int, idSong: Int): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            remoteService.deleteSongFromPlaylist(idPlaylist, idSong)
+        }
+    }
+
     suspend fun getMyPlaylists(): List<Playlist> = withContext(dispatcher) {
         val list = remoteService.getMyPlaylists()
         list?.toListPlaylist() ?: emptyList()

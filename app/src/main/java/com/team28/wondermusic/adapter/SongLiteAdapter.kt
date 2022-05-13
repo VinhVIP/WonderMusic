@@ -2,6 +2,7 @@ package com.team28.wondermusic.adapter
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
@@ -12,15 +13,20 @@ import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ItemSongLiteBinding
 
-class SongLiteAdapter(private val listener: SongClickListener) :
-    RecyclerView.Adapter<SongLiteAdapter.SongViewHolder>() {
+class SongLiteAdapter(
+    private val listener: SongClickListener,
+    private val removeSongFromPlaylistListener: RemoveSongFromPlaylistListener? = null
+) : RecyclerView.Adapter<SongLiteAdapter.SongViewHolder>() {
+
+    var showRemoveSongFromPlaylist: Boolean = false
+
 
     inner class SongViewHolder(val itemBinding: ItemSongLiteBinding) :
         RecyclerView.ViewHolder(itemBinding.root)
 
     private val differCallback = object : DiffUtil.ItemCallback<Song>() {
         override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
-            return oldItem.idSong == newItem.idSong
+            return oldItem == newItem
         }
 
         @SuppressLint("DiffUtilEquals")
@@ -49,6 +55,14 @@ class SongLiteAdapter(private val listener: SongClickListener) :
             }
             tvSongName.text = song.name
             tvAccountName.text = song.singersToString()
+
+            removeSongFromPlaylist.visibility =
+                if (showRemoveSongFromPlaylist) View.VISIBLE
+                else View.GONE
+
+            removeSongFromPlaylist.setOnClickListener {
+                removeSongFromPlaylistListener?.onRemoveSongFromPlaylist(song, position)
+            }
         }
 
         holder.itemView.setOnClickListener {

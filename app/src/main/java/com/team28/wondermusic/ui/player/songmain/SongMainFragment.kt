@@ -40,9 +40,6 @@ class SongMainFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         animation()
-//        viewModel.isPlaying.value?.let {
-            animationRotate(true)
-//        }
     }
 
     private fun animationRotate(rotate:Boolean){

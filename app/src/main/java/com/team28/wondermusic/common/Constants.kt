@@ -1,5 +1,7 @@
 package com.team28.wondermusic.common
 
+import android.graphics.Color
+
 object Constants {
     const val Action = "action"
 
@@ -18,4 +20,10 @@ object Constants {
     const val NeedReload = "NeedReload"
 
     const val SIZE_PER_PAGE = 10
+
+    val colorsTopSong = listOf(
+        Color.rgb(47, 148, 240),
+        Color.rgb(56, 202, 147),
+        Color.rgb(227, 121, 68),
+    )
 }

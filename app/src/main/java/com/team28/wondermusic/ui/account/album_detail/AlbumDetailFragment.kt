@@ -7,8 +7,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.team28.wondermusic.adapter.SongAdapter
 import com.team28.wondermusic.adapter.SongClickListener
+import com.team28.wondermusic.adapter.SongLiteAdapter
 import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.Helper
@@ -26,7 +26,7 @@ class AlbumDetailFragment : BaseDialogFragment(), SongClickListener {
     private lateinit var binding: FragmentAlbumDetailBinding
     private val viewModel by viewModels<AlbumDetailViewModel>()
 
-    private lateinit var songAdapter: SongAdapter
+    private lateinit var songAdapter: SongLiteAdapter
 
     private lateinit var album: Album
     private var needReload: Boolean = false
@@ -60,7 +60,7 @@ class AlbumDetailFragment : BaseDialogFragment(), SongClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        songAdapter = SongAdapter(this)
+        songAdapter = SongLiteAdapter(this)
         setInfoPlaylist()
 
         binding.recyclerSong.apply {

@@ -24,6 +24,14 @@ class PlaylistRemoteService @Inject constructor(
         return callApi { playlistAPI.deletePlaylist(idPlaylist) }
     }
 
+    suspend fun addSongToPlaylist(idPlaylist: Int, idSong: Int): NetworkResult<MessageJson> {
+        return callApi { playlistAPI.addSongToPlaylist(idPlaylist, idSong) }
+    }
+
+    suspend fun deleteSongFromPlaylist(idPlaylist: Int, idSong: Int): NetworkResult<MessageJson> {
+        return callApi { playlistAPI.deleteSongFromPlaylist(idPlaylist, idSong) }
+    }
+
     suspend fun getMyPlaylists(): List<PlaylistJson>? {
         val response = callApi { playlistAPI.getMyPlaylists() }
         return if (response is NetworkResult.Success)

@@ -94,6 +94,20 @@ class FavoriteSongsFragment : BaseDialogFragment(), SongClickListener {
                 }
             }
         })
+
+        binding.btnPlayMusic.setOnClickListener {
+            viewModel.favoriteSongs.value?.let {
+                if (it.isNotEmpty()) {
+                    startActivity(Intent(context, PlayerActivity::class.java))
+                    Helper.sendMusicAction(
+                        requireContext(),
+                        MusicService.ACTION_PLAY,
+                        it[0],
+                        it as ArrayList<Song>
+                    )
+                }
+            }
+        }
     }
 
     override fun onSongClick(song: Song) {

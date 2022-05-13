@@ -33,7 +33,6 @@ import com.team28.wondermusic.ui.login.LoginActivity
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
 
 @AndroidEntryPoint
 class AccountActivity : BaseActivity(), SongClickListener, PlaylistClickListener,
@@ -65,6 +64,20 @@ class AccountActivity : BaseActivity(), SongClickListener, PlaylistClickListener
                 addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             }.also { startActivity(it) }
             finish()
+        }
+
+        binding.btnPlayMusic.setOnClickListener {
+            viewModel.songs.value?.let {
+                if (it.isNotEmpty()) {
+                    startActivity(Intent(this, PlayerActivity::class.java))
+                    Helper.sendMusicAction(
+                        this,
+                        MusicService.ACTION_PLAY,
+                        it[0],
+                        it as ArrayList<Song>
+                    )
+                }
+            }
         }
 
         getData()

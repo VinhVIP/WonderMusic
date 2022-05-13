@@ -15,14 +15,17 @@ import com.team28.wondermusic.adapter.MenuBottomAdapter
 import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.DataLocal
+import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.models.MenuBottom
 import com.team28.wondermusic.data.models.MenuBottomClickListener
 import com.team28.wondermusic.data.models.MenuBottomType.*
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.FragmentMenuBottomBinding
+import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.account.album_detail.AlbumDetailFragment
 import com.team28.wondermusic.ui.formsong.FormSongActivity
-import com.team28.wondermusic.ui.player.singers.SingersFragment
+import com.team28.wondermusic.ui.menubottom.playlists.SongToPlaylistFragment
+import com.team28.wondermusic.ui.menubottom.singers.SingersFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -150,6 +153,30 @@ class MenuBottomFragment : BaseDialogFragment(), MenuBottomClickListener {
                         )
                     }
                 }.show(requireActivity().supportFragmentManager, null)
+            }
+            PLAYLIST -> {
+                SongToPlaylistFragment().apply {
+                    arguments = Bundle().apply {
+                        putParcelable(Constants.Song, song)
+                    }
+                }.show(requireActivity().supportFragmentManager, null)
+            }
+            HEAD_OF_PLAYLIST -> {
+                Helper.sendMusicAction(
+                    requireContext(),
+                    MusicService.ACTION_ADD_SONG_NEXT,
+                    song
+                )
+                Toast.makeText(context, "Đã thêm vào danh sách phát", Toast.LENGTH_SHORT).show()
+            }
+            TAIL_OF_PLAYLIST -> {
+                Helper.sendMusicAction(
+                    requireContext(),
+                    MusicService.ACTION_ADD_SONG_TAIL,
+                    song
+                )
+                Toast.makeText(context, "Đã thêm vào cuối danh sách phát", Toast.LENGTH_SHORT)
+                    .show()
             }
         }
 

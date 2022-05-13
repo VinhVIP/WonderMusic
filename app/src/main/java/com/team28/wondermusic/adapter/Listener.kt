@@ -7,6 +7,10 @@ interface SongClickListener {
     fun onOpenMenu(song: Song, position: Int)
 }
 
+interface RemoveSongFromPlaylistListener {
+    fun onRemoveSongFromPlaylist(song: Song, position: Int)
+}
+
 interface SongPlaylistListener {
     fun onSongPlaylistClick(song: Song, position: Int)
     fun onSongPlaylistReorder(songs: ArrayList<Song>)

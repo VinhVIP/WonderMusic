@@ -70,7 +70,7 @@ class PlayerActivity : AppCompatActivity() {
             btnMore.setOnClickListener {
                 MenuBottomFragment().apply {
                     arguments = Bundle().apply {
-                        putParcelable(Constants.Song, song)
+                        putParcelable(Constants.Song, viewModel.song.value)
                     }
                 }.show(supportFragmentManager, null)
             }

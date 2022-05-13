@@ -72,7 +72,7 @@ data class Playlist(
     var name: String,
     val account: Account,
     var playlistStatus: Int,
-    val songs: List<Song>?
+    var songs: List<Song>?
 ) : Parcelable
 
 @Parcelize

@@ -12,14 +12,12 @@ import com.team28.wondermusic.adapter.SongLiteAdapter
 import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.Helper
-import com.team28.wondermusic.data.TempData
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.FragmentSongOfAccountBinding
 import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.account.AccountViewModel
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
-import java.util.ArrayList
 
 
 class SongOfAccountFragment : BaseDialogFragment(), SongClickListener {
@@ -48,8 +46,22 @@ class SongOfAccountFragment : BaseDialogFragment(), SongClickListener {
             layoutManager = LinearLayoutManager(this@SongOfAccountFragment.context)
         }
 
-        viewModel.songs.observe(this){
+        viewModel.songs.observe(this) {
             songAdapter.differ.submitList(it)
+        }
+
+        binding.btnPlayMusic.setOnClickListener {
+            viewModel.songs.value?.let {
+                if (it.isNotEmpty()) {
+                    startActivity(Intent(context, PlayerActivity::class.java))
+                    Helper.sendMusicAction(
+                        requireContext(),
+                        MusicService.ACTION_PLAY,
+                        it[0],
+                        it as ArrayList<Song>
+                    )
+                }
+            }
         }
 
     }

@@ -5,9 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.team28.wondermusic.adapter.RemoveSongFromPlaylistListener
 import com.team28.wondermusic.adapter.SongAdapter
 import com.team28.wondermusic.adapter.SongClickListener
+import com.team28.wondermusic.adapter.SongLiteAdapter
 import com.team28.wondermusic.base.fragments.BaseDialogFragment
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.Helper
@@ -17,14 +21,18 @@ import com.team28.wondermusic.databinding.FragmentPlaylistDetailBinding
 import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
+import dagger.hilt.android.AndroidEntryPoint
 
-class PlaylistDetailFragment : BaseDialogFragment(), SongClickListener {
+@AndroidEntryPoint
+class PlaylistDetailFragment : BaseDialogFragment(), SongClickListener,
+    RemoveSongFromPlaylistListener {
 
 //    override val isFullHeight = true
 
     private lateinit var binding: FragmentPlaylistDetailBinding
+    private val viewModel by viewModels<PlaylistDetailViewModel>()
 
-    private lateinit var songAdapter: SongAdapter
+    private lateinit var songAdapter: SongLiteAdapter
 
     private lateinit var playlist: Playlist
 
@@ -49,12 +57,35 @@ class PlaylistDetailFragment : BaseDialogFragment(), SongClickListener {
 
         setInfoPlaylist()
 
-        songAdapter = SongAdapter(this)
+        songAdapter = SongLiteAdapter(this, this)
+        if (Helper.isMyAccount(playlist.account)) {
+            songAdapter.showRemoveSongFromPlaylist = true
+        }
+
         songAdapter.differ.submitList(playlist.songs)
 
         binding.recyclerSong.apply {
             adapter = songAdapter
-            layoutManager = LinearLayoutManager(this@PlaylistDetailFragment.context)
+            layoutManager = LinearLayoutManager(context)
+        }
+
+        viewModel.removeSongFromPlaylistStatus.observe(this) {
+            it?.let {
+                Toast.makeText(context, viewModel.message, Toast.LENGTH_SHORT).show()
+                if (it && viewModel.removePosition != -1) {
+                    playlist.songs?.let { songs ->
+                        val list = mutableListOf<Song>()
+                        list.addAll(songs)
+                        list.removeAt(viewModel.removePosition)
+                        songAdapter.differ.submitList(list)
+
+                        playlist.songs = list
+                        binding.tvTotalSongs.text = "${list.size}"
+                    }
+                }
+                viewModel.removePosition = -1
+                viewModel.removeSongFromPlaylistStatus.value = null
+            }
         }
     }
 
@@ -82,6 +113,11 @@ class PlaylistDetailFragment : BaseDialogFragment(), SongClickListener {
                 putParcelable(Constants.Song, song)
             }
         }.show(requireActivity().supportFragmentManager, null)
+    }
+
+    override fun onRemoveSongFromPlaylist(song: Song, position: Int) {
+        viewModel.removePosition = position
+        viewModel.removeSongFromPlaylist(playlist.idPlaylist, song.idSong)
     }
 
 }

@@ -1,4 +1,4 @@
-package com.team28.wondermusic.ui.player.singers
+package com.team28.wondermusic.ui.menubottom.singers
 
 import android.content.Intent
 import android.os.Bundle

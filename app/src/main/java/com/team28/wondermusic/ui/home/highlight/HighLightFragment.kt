@@ -210,11 +210,6 @@ class HighLightFragment : Fragment(), SongClickListener {
 
         val sets: ArrayList<ILineDataSet> = ArrayList()
         val dataSets: ArrayList<LineDataSet> = ArrayList()
-        val colors = listOf(
-            Color.rgb(47, 148, 240),
-            Color.rgb(56, 202, 147),
-            Color.rgb(227, 121, 68),
-        )
 
         for (i in 0..2) {
             var lineDataSet: LineDataSet
@@ -226,7 +221,7 @@ class HighLightFragment : Fragment(), SongClickListener {
                 a.setImageDrawable(viewModel.songDrawables.value?.get(i))
                 a.cornerRadius = 24f
                 a.borderWidth = Helper.dpToPixel(2f, requireContext()).toFloat()
-                a.borderColor = colors[i]
+                a.borderColor = Constants.colorsTopSong[i]
 
                 highLightValue[randomIndex] = Entry(
                     randomIndex.toFloat(),
@@ -238,7 +233,7 @@ class HighLightFragment : Fragment(), SongClickListener {
                     setDrawCircles(true)
                     setDrawCircleHole(true)
                     circleRadius = 3.5f
-                    setCircleColor(colors[i])
+                    setCircleColor(Constants.colorsTopSong[i])
                 }
             } else {
                 lineDataSet = LineDataSet(values[i], "Top ${i + 1}").apply {
@@ -249,7 +244,7 @@ class HighLightFragment : Fragment(), SongClickListener {
 
             lineDataSet.apply {
                 lineWidth = 1.5f
-                color = colors[i]
+                color = Constants.colorsTopSong[i]
                 setDrawValues(false)
                 setDrawHorizontalHighlightIndicator(false)
                 setDrawVerticalHighlightIndicator(false)

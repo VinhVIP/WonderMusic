@@ -54,6 +54,8 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
         const val ACTION_NEXT = 14
         const val ACTION_CLEAR = 15
         const val ACTION_DO_NOTHING = 16
+        const val ACTION_ADD_SONG_NEXT = 21
+        const val ACTION_ADD_SONG_TAIL = 22
     }
 
     private var mediaPlayer: MediaPlayer? = null
@@ -77,8 +79,23 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
 
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         Log.d("vinh", "onStartCommand")
-
+        val action = intent.getIntExtra(Constants.Action, 0)
         val data = intent.getBundleExtra(Constants.Data)
+
+        data?.let { data ->
+            val song: Song? = data.getParcelable(Constants.Song)
+            song?.let {
+                if (action == ACTION_ADD_SONG_NEXT) {
+                    addSongNext(it)
+                    return START_STICKY
+                } else if (action == ACTION_ADD_SONG_TAIL) {
+                    addSongTail(it)
+                    return START_STICKY
+                }
+            }
+        }
+
+
         data?.let { data ->
             val song: Song? = data.getParcelable(Constants.Song)
             val songs: ArrayList<Song>? = data.getParcelableArrayList(Constants.SongList)
@@ -137,6 +154,27 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
             if (list[i].idSong == song.idSong) return i
         }
         return -1;
+    }
+
+    private fun addSongNext(song: Song) {
+        val index = indexSong(song, songList)
+        if (index == -1) {
+            if (currentSongIndex == songList.size - 1) {
+                songList.add(song)
+            } else {
+                songList.add(currentSongIndex + 1, song)
+            }
+            EventBus.getDefault().postSticky(SongListEvent(songList))
+        }
+    }
+
+    private fun addSongTail(song: Song) {
+        val index = indexSong(song, songList)
+        if (index == -1) {
+            songList.add(song)
+
+            EventBus.getDefault().postSticky(SongListEvent(songList))
+        }
     }
 
     private fun timeSend(mediaPlayer: MediaPlayer) {
