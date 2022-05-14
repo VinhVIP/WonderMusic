@@ -5,6 +5,7 @@ import androidx.room.Room
 import com.team28.wondermusic.data.database.AppDB
 import com.team28.wondermusic.data.database.daos.AccountDAO
 import com.team28.wondermusic.data.database.daos.NotificationDAO
+import com.team28.wondermusic.data.database.daos.SearchHistoryDAO
 import com.team28.wondermusic.data.database.daos.SongDAO
 import dagger.Module
 import dagger.Provides
@@ -41,5 +42,10 @@ object DatabaseModule {
     @Provides
     fun provideNotificationDao(appDB: AppDB): NotificationDAO {
         return appDB.notificationDao()
+    }
+
+    @Provides
+    fun provideSearchHistoryDao(appDB: AppDB): SearchHistoryDAO {
+        return appDB.searchHistoryDao()
     }
 }

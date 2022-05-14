@@ -329,7 +329,7 @@ data class SearchResponse(
 )
 
 data class SearchJson(
-    @Json(name = "song") val songs: List<SongJson>,
-    @Json(name = "playList") val playlists: List<PlaylistJson>,
-    @Json(name = "account") val accounts: List<AccountJson>,
+    @Json(name = "songs") val songs: List<SongJson>,
+    @Json(name = "playLists") val playlists: List<PlaylistJson>,
+    @Json(name = "accounts") val accounts: List<AccountJson>,
 )

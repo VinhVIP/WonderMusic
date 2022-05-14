@@ -17,9 +17,12 @@
         android:theme="@style/Theme.WonderMusic"
         android:usesCleartextTraffic="true">
         <activity
-            android:name=".ui.search.SearchActivity"
-            android:theme="@style/NoAnimTheme"
+            android:name=".activities.TricksActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.search.SearchActivity"
+            android:exported="false"
+            android:theme="@style/NoAnimTheme" />
         <activity
             android:name=".ui.type.TypeActivity"
             android:exported="false" />

@@ -1,6 +1,7 @@
 package com.team28.wondermusic.ui.comment.reply
 
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
@@ -139,8 +140,9 @@ class CommentReplyActivity : BaseActivity(), CommentClickListener {
         }
 
         if (DataLocal.myAccount.avatar.isNotEmpty()) {
+            Log.d("vinhimg", DataLocal.myAccount.avatar)
             Picasso.get().load(DataLocal.myAccount.avatar).placeholder(R.drawable.ic_user_colorful)
-                .fit().into(binding.imgAvatar)
+                .fit().into(binding.imgUser)
         }
 
         binding.btnSendComment.setOnClickListener {

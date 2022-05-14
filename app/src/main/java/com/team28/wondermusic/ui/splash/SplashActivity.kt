@@ -1,5 +1,6 @@
 package com.team28.wondermusic.ui.splash
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -13,6 +14,7 @@ import com.team28.wondermusic.ui.home.HomeActivity
 import com.team28.wondermusic.ui.login.LoginActivity
 import dagger.hilt.android.AndroidEntryPoint
 
+@SuppressLint("CustomSplashScreen")
 @AndroidEntryPoint
 class SplashActivity : AppCompatActivity() {
 
@@ -30,9 +32,12 @@ class SplashActivity : AppCompatActivity() {
         if (DataLocal.IS_LOGGED_IN) {
             startActivity(Intent(this, HomeActivity::class.java))
             Log.d("vinh", "logged")
+            finish()
         } else {
             startActivity(Intent(this, LoginActivity::class.java))
+            finish()
             Log.d("vinh", "no logged")
+            finish()
         }
 
     }

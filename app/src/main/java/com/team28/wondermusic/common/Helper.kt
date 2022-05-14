@@ -24,6 +24,7 @@ import com.team28.wondermusic.data.models.Account
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.data.models.Type
 import com.team28.wondermusic.service.MusicService
+import com.team28.wondermusic.ui.notification.NotificationAction
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -174,6 +175,30 @@ object Helper {
             dp,
             context.resources.displayMetrics
         ).toInt()
+    }
+
+    fun getAction(action: String): NotificationAction? {
+        return if (action.contains("newsong")) NotificationAction.NEW_SONG
+        else if (action.contains("comment")) NotificationAction.COMMENT
+        else if (action.contains("reply")) NotificationAction.REPLY
+        else if (action.contains("love")) NotificationAction.LOVE
+        else if (action.contains("follow")) NotificationAction.FOLLOW
+        else if (action.contains("singer")) NotificationAction.SINGER
+        else null
+    }
+
+    fun getIds(action: String): List<Int> {
+        val list = arrayListOf<Int>()
+        val arr = action.trim().split('/')
+        for (e in arr) {
+            try {
+                val id = e.toInt()
+                list.add(id)
+            } catch (e: Exception) {
+
+            }
+        }
+        return list
     }
 }
 

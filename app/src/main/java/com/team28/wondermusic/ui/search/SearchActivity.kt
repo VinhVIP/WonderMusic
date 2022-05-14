@@ -12,6 +12,7 @@ import android.widget.TextView.OnEditorActionListener
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.chip.Chip
 import com.google.android.material.tabs.TabLayoutMediator
 import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.ViewPagerAdapter
@@ -20,6 +21,7 @@ import com.team28.wondermusic.databinding.ActivitySearchBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlin.math.min
 
 @AndroidEntryPoint
 class SearchActivity : BaseActivity() {
@@ -36,10 +38,21 @@ class SearchActivity : BaseActivity() {
 
         binding.btnBack.setOnClickListener { finish() }
 
+        viewModel.searchHistoryList.observe(this) {
+            binding.chipGroup.removeAllViews()
+            for (i in 0 until min(it.size, 10)) {
+                val chip = createHistoryChip(it[i].keyword)
+                binding.chipGroup.addView(chip)
+            }
+        }
+
         binding.editText.setOnEditorActionListener(OnEditorActionListener { v, actionId, event ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH) {
-                if (binding.editText.text.toString().trim().isNotEmpty()) {
-                    viewModel.search(binding.editText.text.toString().trim())
+                val keyword = binding.editText.text.toString().trim()
+                if (keyword.isNotEmpty()) {
+                    viewModel.search(keyword)
+
+                    viewModel.saveSearchKeyword(keyword)
                 }
                 binding.editText.hideKeyboard()
                 return@OnEditorActionListener true
@@ -64,6 +77,23 @@ class SearchActivity : BaseActivity() {
         binding.editText.requestFocus()
 
         showSoftKeyboard(binding.editText)
+    }
+
+    private fun createHistoryChip(keyword: String): Chip {
+        return Chip(this).apply {
+            text = keyword
+            setOnClickListener {
+                binding.editText.apply {
+                    setText(keyword)
+                    setSelection(length())
+                }
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.getSearchHistory()
     }
 
     private fun showSoftKeyboard(view: View) {

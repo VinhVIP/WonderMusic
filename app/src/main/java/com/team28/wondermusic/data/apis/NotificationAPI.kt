@@ -36,7 +36,7 @@ interface NotificationAPI {
 
 
     // Xóa tất cả thông báo
-    @GET("$ApiVersion/notification/delete_all")
+    @DELETE("$ApiVersion/notification/delete_all")
     suspend fun deleteAllNotification(): Response<MessageJson>
 
     // Lấy số lượng thông báo chưa đọc
