@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import com.team28.wondermusic.R
 import com.team28.wondermusic.base.activities.BaseActivity
+import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.models.LoginModal
 import com.team28.wondermusic.databinding.ActivityLoginBinding
@@ -50,7 +51,9 @@ class LoginActivity : BaseActivity() {
         }
 
         binding.btnForgotPass.setOnClickListener {
-            startActivity(Intent(this, ForgetPasswordActivity::class.java))
+            startActivity(Intent(this, ForgetPasswordActivity::class.java).apply {
+                putExtra(Constants.Email, binding.edEmail.text.toString().trim())
+            })
         }
     }
 

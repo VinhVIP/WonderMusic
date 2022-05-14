@@ -18,6 +18,7 @@ object Constants {
     const val Singers = "Singers"
     const val Position = "Position"
     const val NeedReload = "NeedReload"
+    const val Email = "Email"
 
     const val SIZE_PER_PAGE = 10
 

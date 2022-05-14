@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingHorizontal="20dp"
+    android:paddingTop="30dp">
+
+    <EditText
+        android:id="@+id/edPass"
+        style="@style/InputField"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_password"
+        android:hint="Nhập mật khẩu mới"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/tvPassError"
+        style="@style/TextViewError"
+        android:text="Mật khẩu không hợp lệ"
+        android:visibility="gone" />
+
+    <EditText
+        android:id="@+id/edConfirmPass"
+        style="@style/InputField"
+        android:layout_marginTop="16dp"
+        android:drawableStart="@drawable/ic_password"
+        android:hint="Nhập lại mật khẩu"
+        android:inputType="textPassword" />
+
+    <TextView
+        android:id="@+id/tvConfirmPassError"
+        style="@style/TextViewError"
+        android:text="Email không hợp lệ"
+        android:visibility="gone" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp">
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/btnChangePassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_button_active"
+            android:text="Đổi mật khẩu"
+            android:textColor="@color/white" />
+
+        <com.google.android.material.progressindicator.CircularProgressIndicator
+            android:id="@+id/pbLoading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerInParent="true"
+            android:layout_marginEnd="20dp"
+            android:indeterminate="true"
+            app:indicatorColor="@color/highlight"
+            app:indicatorSize="30dp" />
+
+    </RelativeLayout>
+
+</LinearLayout>

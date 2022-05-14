@@ -18,6 +18,15 @@ interface AccountAPI {
     @POST("$ApiVersion/account-device/token")
     suspend fun sendAccountDevice(@Body modal: DeviceTokenModal): Response<MessageJson>
 
+    @POST("$ApiVersion/account/forget/password")
+    suspend fun forgetEmail(@Body modal: ForgetEmailModal): Response<MessageJson>
+
+    @POST("$ApiVersion/account/forget/verify")
+    suspend fun forgetCode(@Body modal: ForgetCodeModal): Response<MessageJson>
+
+    @POST("$ApiVersion/account/forget/change")
+    suspend fun forgetChangePassword(@Body modal: ForgetChangeModal): Response<MessageJson>
+
     @Multipart
     @PUT("$ApiVersion/account/{idAccount}")
     suspend fun updateAccount(

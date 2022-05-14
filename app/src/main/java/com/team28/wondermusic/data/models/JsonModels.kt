@@ -21,6 +21,10 @@ data class DeviceTokenModal(
     val token: String
 )
 
+data class ForgetEmailModal(val email: String)
+data class ForgetCodeModal(val email: String, val code: String)
+data class ForgetChangeModal(val email: String, val code: String, val new_pass: String)
+
 data class ChangePasswordModal(
     val old_password: String,
     val new_password: String,

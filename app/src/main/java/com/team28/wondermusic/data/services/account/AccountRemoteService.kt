@@ -26,6 +26,18 @@ class AccountRemoteService @Inject constructor(
         return callApi { accountAPI.sendAccountDevice(DeviceTokenModal(deviceToken)) }
     }
 
+    suspend fun forgetEmail(modal: ForgetEmailModal): NetworkResult<MessageJson> {
+        return callApi { accountAPI.forgetEmail(modal) }
+    }
+
+    suspend fun forgetCode(modal: ForgetCodeModal): NetworkResult<MessageJson> {
+        return callApi { accountAPI.forgetCode(modal) }
+    }
+
+    suspend fun forgetChangePassword(modal: ForgetChangeModal): NetworkResult<MessageJson> {
+        return callApi { accountAPI.forgetChangePassword(modal) }
+    }
+
     suspend fun updateAccount(account: AccountUpdate): NetworkResult<MessageJson> {
         return callApi {
             if (account.avatar != null) {

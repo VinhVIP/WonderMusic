@@ -1,6 +1,7 @@
 package com.team28.wondermusic.adapter
 
 import android.annotation.SuppressLint
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -23,11 +24,11 @@ class SongPlaylistAdapter(
     private var currentSong: Song? = null
 
     fun setCurrentSong(song: Song) {
-        val oldSongIndex = songs.indexOf(currentSong)
-        val newSongIndex = songs.indexOf(song)
+        val oldSongIndex = songs.indexOfFirst { currentSong?.idSong == it.idSong }
+        val newSongIndex = songs.indexOfFirst { song.idSong == it.idSong }
 
-        notifyItemChanged(oldSongIndex)
-        notifyItemChanged(newSongIndex)
+        if (oldSongIndex != -1) notifyItemChanged(oldSongIndex)
+        if (newSongIndex != -1) notifyItemChanged(newSongIndex)
 
         currentSong = song
     }

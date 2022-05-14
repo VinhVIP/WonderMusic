@@ -55,12 +55,6 @@
         </receiver>
 
         <activity
-            android:name=".ui.forgetpassword.NewPasswordActivity"
-            android:exported="false" />
-        <activity
-            android:name=".ui.forgetpassword.ConfirmCodeActivity"
-            android:exported="false" />
-        <activity
             android:name=".ui.forgetpassword.ForgetPasswordActivity"
             android:exported="false" />
         <activity

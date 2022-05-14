@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.squareup.picasso.Picasso
 import com.team28.wondermusic.R
+import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.databinding.FragmentSongMainBinding
 import com.team28.wondermusic.ui.player.PlayerViewModel
 import com.team28.wondermusic.ui.songplaylist.SongPlaylistFragment
@@ -53,7 +54,9 @@ class SongMainFragment : Fragment() {
                     viewModel.currentRotate + 360f
                 )
 
-            val i: Float = binding.imgSongAvatar.measuredHeight.toFloat()
+//            val i: Float = binding.imgSongAvatar.measuredHeight.toFloat()
+            // Lấy giá trị cố định :)))
+            val i :Float = Helper.dpToPixel(300f, requireContext()).toFloat()
 
             rotateAnimation.duration = 10000
             binding.imgSongAvatar.pivotX = i / 2

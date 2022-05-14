@@ -32,6 +32,24 @@ class AccountRepository @Inject constructor(
         }
     }
 
+    suspend fun forgetEmail(modal: ForgetEmailModal): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            accountRemoteService.forgetEmail(modal)
+        }
+    }
+
+    suspend fun forgetCode(modal: ForgetCodeModal): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            accountRemoteService.forgetCode(modal)
+        }
+    }
+
+    suspend fun forgetChangePassword(modal: ForgetChangeModal): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            accountRemoteService.forgetChangePassword(modal)
+        }
+    }
+
     suspend fun updateAccount(account: AccountUpdate): NetworkResult<MessageJson> {
         return withContext(dispatcher) {
             accountRemoteService.updateAccount(account)
