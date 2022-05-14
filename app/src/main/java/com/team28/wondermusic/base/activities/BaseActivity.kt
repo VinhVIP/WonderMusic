@@ -1,12 +1,26 @@
 package com.team28.wondermusic.base.activities
 
 import android.view.Gravity
-import android.view.ViewGroup
+import android.view.Window
+import android.view.WindowManager
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.team28.wondermusic.base.dialogs.ConfirmDialog
 import com.team28.wondermusic.base.dialogs.ErrorDialog
 
 open class BaseActivity : AppCompatActivity() {
+
+    fun setStatusBarGradiant(bgDrawable: Int) {
+        val window: Window = this.window
+        val background = ContextCompat.getDrawable(this, bgDrawable)
+        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
+
+        window.statusBarColor =
+            ContextCompat.getColor(this, android.R.color.transparent)
+        window.navigationBarColor =
+            ContextCompat.getColor(this, android.R.color.transparent)
+        window.setBackgroundDrawable(background)
+    }
 
     open fun showErrorDialog(message: String) {
         val errorDialog = ErrorDialog(this, message)

@@ -6,12 +6,14 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.squareup.picasso.Picasso
 import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.CommentClickListener
 import com.team28.wondermusic.adapter.CommentReplyAdapter
 import com.team28.wondermusic.base.activities.BaseActivity
 import com.team28.wondermusic.base.dialogs.ConfirmDialog
 import com.team28.wondermusic.common.Constants
+import com.team28.wondermusic.common.DataLocal
 import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.models.Comment
 import com.team28.wondermusic.data.models.Song
@@ -64,10 +66,15 @@ class CommentReplyActivity : BaseActivity(), CommentClickListener {
     }
 
     private fun updateOnlyParentComment(parentCmt: Comment) {
-        binding.parentComment.imgAvatar.setImageResource(R.drawable.phathuy)
-        binding.parentComment.tvAccountName.text = parentCmt.account.accountName
-        binding.parentComment.tvCommentTime.text = Helper.toDateTimeDistance(parentCmt.dateTime)
-        binding.parentComment.tvCommentContent.text = parentCmt.content
+        binding.parentComment.apply {
+            if (parentComment.account.avatar.isNotEmpty()) {
+                Picasso.get().load(parentComment.account.avatar)
+                    .placeholder(R.drawable.ic_user_colorful).fit().into(imgAvatar)
+            }
+            tvAccountName.text = parentCmt.account.accountName
+            tvCommentTime.text = Helper.toDateTimeDistance(parentCmt.dateTime)
+            tvCommentContent.text = parentCmt.content
+        }
     }
 
     private fun observers() {
@@ -129,6 +136,11 @@ class CommentReplyActivity : BaseActivity(), CommentClickListener {
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.getCommentAndChildren(parentComment)
+        }
+
+        if (DataLocal.myAccount.avatar.isNotEmpty()) {
+            Picasso.get().load(DataLocal.myAccount.avatar).placeholder(R.drawable.ic_user_colorful)
+                .fit().into(binding.imgAvatar)
         }
 
         binding.btnSendComment.setOnClickListener {

@@ -1,6 +1,5 @@
 package com.team28.wondermusic.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,6 +7,7 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import com.team28.wondermusic.R
 import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.models.Comment
@@ -42,7 +42,10 @@ class CommentAdapter(private val listener: CommentClickListener) :
         val comment = differ.currentList[position]
 
         holder.itemBinding.apply {
-            imgAvatar.setImageResource(R.drawable.phathuy)
+            if (comment.account.avatar.isNotEmpty()) {
+                Picasso.get().load(comment.account.avatar).placeholder(R.drawable.ic_user_colorful)
+                    .fit().into(imgAvatar)
+            }
             tvAccountName.text = comment.account.accountName
             tvCommentTime.text = Helper.toDateTimeDistance(comment.dateTime)
             tvCommentContent.text = comment.content

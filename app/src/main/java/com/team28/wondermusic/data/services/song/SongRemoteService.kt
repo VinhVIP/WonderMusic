@@ -14,6 +14,15 @@ class SongRemoteService @Inject constructor(
     private val songAPI: SongAPI
 ) : BaseRemoteService() {
 
+    suspend fun search(keyword: String): SearchJson? {
+        val result = callApi { songAPI.search(keyword) }
+        return if (result is NetworkResult.Success) {
+            result.body.data
+        } else {
+            null
+        }
+    }
+
     suspend fun getAllTypes(): List<Type> {
         val result = callApi { songAPI.getAllTypes() }
         return if (result is NetworkResult.Success) {

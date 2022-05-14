@@ -10,8 +10,12 @@ sealed class NetworkResult<out T : Any> {
 data class ResponseError(val message: String? = null, val code: Int = -1) {
     companion object{
         fun fromJson(errorBody: String, code: Int): ResponseError {
-            val response = Klaxon().parse<ResponseMessage>(errorBody)
-            return ResponseError(response?.message, code)
+            return try {
+                val response = Klaxon().parse<ResponseMessage>(errorBody)
+                ResponseError(response?.message, code)
+            } catch (e: Exception) {
+                ResponseError("Đã có lỗi xảy ra!", code)
+            }
         }
     }
 }

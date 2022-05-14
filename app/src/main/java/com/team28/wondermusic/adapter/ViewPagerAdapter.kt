@@ -1,4 +1,4 @@
-package com.team28.wondermusic.ui.home
+package com.team28.wondermusic.adapter
 
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment

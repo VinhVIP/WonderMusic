@@ -18,6 +18,10 @@ class SongRepository @Inject constructor(
     @IoDispatcher private val dispatcher: CoroutineDispatcher
 ) {
 
+    suspend fun search(keyword: String): SearchJson? {
+        return songRemoteService.search(keyword)
+    }
+
     suspend fun addSong(song: SongPost): NetworkResult<MessageJson> {
         return withContext(dispatcher) {
             songRemoteService.addSong(song)

@@ -21,9 +21,13 @@ open class BaseRemoteService {
                 )
             else NetworkResult.Success(response.body()!!)
         } else {
-            val errorBody = response.errorBody()?.string() ?: ""
-            Log.d("vinh", "error body: $errorBody")
-            NetworkResult.Error(ResponseError.fromJson(errorBody, response.code()))
+            if(response.code() >= 500){
+                NetworkResult.Error(ResponseError("Server bị lỗi! Xin hãy thử lại sau", response.code()))
+            }else{
+                val errorBody = response.errorBody()?.string() ?: ""
+                Log.d("vinh", "error body: $errorBody")
+                NetworkResult.Error(ResponseError.fromJson(errorBody, response.code()))
+            }
         }
     }
 }

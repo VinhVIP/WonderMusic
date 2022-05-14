@@ -16,7 +16,7 @@
             android:id="@+id/imgAvatar"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/phathuy" />
+            android:src="@drawable/ic_user_colorful" />
     </androidx.cardview.widget.CardView>
 
     <RelativeLayout

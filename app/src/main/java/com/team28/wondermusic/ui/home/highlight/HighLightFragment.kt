@@ -1,7 +1,6 @@
 package com.team28.wondermusic.ui.home.highlight
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -34,6 +33,7 @@ import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.menubottom.MenuBottomViewModel
 import com.team28.wondermusic.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
+import java.lang.Integer.min
 import java.util.*
 import kotlin.math.abs
 
@@ -74,9 +74,9 @@ class HighLightFragment : Fragment(), SongClickListener {
             it?.let {
                 if (it) {
                     menuViewModel.position?.let { position ->
-                        val list = songAdapter.differ.currentList
+                        val list = songAdapter.getSongs()
                         list[position].loveStatus = !list[position].loveStatus
-                        songAdapter.differ.submitList(list)
+                        songAdapter.setData(list)
                     }
                 }
                 Toast.makeText(context, menuViewModel.message, Toast.LENGTH_SHORT).show()
@@ -103,7 +103,7 @@ class HighLightFragment : Fragment(), SongClickListener {
         viewModel.topSongsChart.observe(viewLifecycleOwner) {
             // Chỉ lấy top 3
             values.clear()
-            for (topIndex in 0 until 3) {
+            for (topIndex in 0 until min(3, it.size)) {
                 values.add(ArrayList())
 
                 // Lấy 10 ngày gần nhất
@@ -128,7 +128,7 @@ class HighLightFragment : Fragment(), SongClickListener {
             binding.shimmerTopSong.stopShimmer()
             binding.shimmerTopSong.visibility = View.GONE
             binding.recyclerSong.visibility = View.VISIBLE
-            songAdapter.differ.submitList(it)
+            songAdapter.setData(it)
 
             viewModel.getTopSongDrawable(requireContext())
         }
@@ -211,7 +211,7 @@ class HighLightFragment : Fragment(), SongClickListener {
         val sets: ArrayList<ILineDataSet> = ArrayList()
         val dataSets: ArrayList<LineDataSet> = ArrayList()
 
-        for (i in 0..2) {
+        for (i in 0 until values.size) {
             var lineDataSet: LineDataSet
             if (highlightSetIndex == i) {
                 val highLightValue = values[i].toMutableList()

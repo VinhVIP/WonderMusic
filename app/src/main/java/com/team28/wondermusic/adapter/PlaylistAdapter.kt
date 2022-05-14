@@ -15,6 +15,8 @@ class PlaylistAdapter(
     private val listener: PlaylistClickListener
 ) : RecyclerView.Adapter<PlaylistAdapter.PlaylistViewHolder>() {
 
+    var hideBtnMore = false
+
     inner class PlaylistViewHolder(val itemBinding: ItemPlaylistBinding) :
         RecyclerView.ViewHolder(itemBinding.root)
 
@@ -60,6 +62,8 @@ class PlaylistAdapter(
                 }
                 tvTotalSongs.text = "${it.size}"
             }
+
+            btnMore.visibility = if (hideBtnMore) View.GONE else View.VISIBLE
         }
 
         holder.itemView.setOnClickListener {

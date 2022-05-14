@@ -27,6 +27,7 @@
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/drawable/bg_rounded_bottom_nav.xml" value="0.2" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/drawable/bg_rounded_corner.xml" value="0.2235" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/drawable/bg_search.xml" value="0.2285" />
+        <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/drawable/bg_search_page.xml" value="0.317" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/drawable/bg_song_player.xml" value="0.2285" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/drawable/bg_song_playlist_current.xml" value="0.311" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/drawable/edit_border.xml" value="0.2315" />
@@ -75,12 +76,14 @@
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/activity_notification.xml" value="0.33" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/activity_player.xml" value="0.33" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/activity_profile.xml" value="0.33" />
+        <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/activity_search.xml" value="0.32222222222222224" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/activity_signup.xml" value="0.33" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/activity_splash.xml" value="0.33" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/activity_type.xml" value="0.33" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/dialog_confirm.xml" value="0.33" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/dialog_error.xml" value="0.317351598173516" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/dialog_loading.xml" value="0.317351598173516" />
+        <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_account_search.xml" value="0.30972222222222223" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_album.xml" value="0.32175925925925924" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_album_detail.xml" value="0.32175925925925924" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_album_dialog.xml" value="0.32175925925925924" />
@@ -111,6 +114,7 @@
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_playlist_detail.xml" value="0.32175925925925924" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_playlist_menu.xml" value="0.32222222222222224" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_playlist_of_account.xml" value="0.32175925925925924" />
+        <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_playlist_search.xml" value="0.32222222222222224" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_second.xml" value="0.3619791666666667" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_singers.xml" value="0.32175925925925924" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_song_info.xml" value="0.33" />
@@ -119,6 +123,7 @@
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_song_main.xml" value="0.33" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_song_of_account.xml" value="0.32175925925925924" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_song_playlist.xml" value="0.22916666666666666" />
+        <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_song_search.xml" value="0.32222222222222224" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_song_to_playlist.xml" value="0.32222222222222224" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_stack_over_flow.xml" value="0.1" />
         <entry key="..\:/Users/vinhv/AndroidStudioProjects/WonderMusic/app/src/main/res/layout/fragment_step1.xml" value="0.32222222222222224" />

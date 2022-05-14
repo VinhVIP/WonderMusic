@@ -17,12 +17,12 @@
             android:id="@+id/imgAvatar"
             android:layout_width="48dp"
             android:layout_height="48dp"
-            android:src="@drawable/phathuy" />
+            android:src="@drawable/ic_user_colorful" />
     </androidx.cardview.widget.CardView>
 
     <RelativeLayout
         android:id="@+id/layoutCommentContent"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="12dp"
         android:layout_toEndOf="@id/cardViewCmtAvatar"

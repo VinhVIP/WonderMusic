@@ -16,6 +16,7 @@ import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.EventBusModel
 import com.team28.wondermusic.adapter.EventBusModel.MusicPlayingEvent
 import com.team28.wondermusic.adapter.EventBusModel.SongInfoEvent
+import com.team28.wondermusic.adapter.ViewPagerAdapter
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.DataLocal
 import com.team28.wondermusic.common.Helper
@@ -29,6 +30,7 @@ import com.team28.wondermusic.ui.home.highlight.HighLightFragment
 import com.team28.wondermusic.ui.home.personal.PersonalFragment
 import com.team28.wondermusic.ui.notification.NotificationActivity
 import com.team28.wondermusic.ui.player.PlayerActivity
+import com.team28.wondermusic.ui.search.SearchActivity
 import dagger.hilt.android.AndroidEntryPoint
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -136,6 +138,10 @@ class HomeActivity : AppCompatActivity() {
         binding.btnNext.setOnClickListener {
             Log.d("vinh", "action_next")
             sendMusicAction(MusicService.ACTION_NEXT)
+        }
+
+        binding.toolbar.btnGoToSearch.setOnClickListener {
+            startActivity(Intent(this, SearchActivity::class.java))
         }
     }
 

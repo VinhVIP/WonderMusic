@@ -7,14 +7,15 @@ import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.squareup.picasso.Picasso
 import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.CommentAdapter
 import com.team28.wondermusic.adapter.CommentClickListener
 import com.team28.wondermusic.base.activities.BaseActivity
 import com.team28.wondermusic.base.dialogs.ConfirmDialog.ConfirmCallback
 import com.team28.wondermusic.common.Constants
+import com.team28.wondermusic.common.DataLocal
 import com.team28.wondermusic.common.Helper
-import com.team28.wondermusic.data.TempData
 import com.team28.wondermusic.data.models.Comment
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ActivityCommentBinding
@@ -37,9 +38,9 @@ class CommentActivity : BaseActivity(), CommentClickListener {
         setContentView(binding.root)
 
         // Các bình luận của bài hát này
-//        song = intent.getParcelableExtra(Constants.Song)
-        // TODO: Ví dụ với bài hát có idSong = 4
-        song = TempData.songs[3]
+        val song: Song? = intent.getParcelableExtra(Constants.Song)
+        if (song == null) finish()
+        else this.song = song
 
 
         refresh()
@@ -106,6 +107,11 @@ class CommentActivity : BaseActivity(), CommentClickListener {
 
         binding.swipeRefresh.setOnRefreshListener {
             viewModel.getALlComments(song)
+        }
+
+        if (DataLocal.myAccount.avatar.isNotEmpty()) {
+            Picasso.get().load(DataLocal.myAccount.avatar).placeholder(R.drawable.ic_user_colorful)
+                .fit().into(binding.imgAvatar)
         }
 
         binding.btnSendComment.setOnClickListener {

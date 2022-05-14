@@ -5,8 +5,6 @@ import android.graphics.Typeface
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.AsyncListDiffer
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.team28.wondermusic.R
@@ -22,20 +20,18 @@ class SongAdapter(
 
     var showRemoveSongFromPlaylist: Boolean = false
 
+    private var songs: List<Song> = arrayListOf()
+
     class SongViewHolder(val itemBinding: ItemSongBinding) :
         RecyclerView.ViewHolder(itemBinding.root)
 
-    private val differCallback = object : DiffUtil.ItemCallback<Song>() {
-        override fun areItemsTheSame(oldItem: Song, newItem: Song): Boolean {
-            return oldItem == newItem
-        }
-
-        override fun areContentsTheSame(oldItem: Song, newItem: Song): Boolean {
-            return oldItem == newItem
-        }
+    @SuppressLint("NotifyDataSetChanged")
+    fun setData(data: List<Song>) {
+        songs = data
+        notifyDataSetChanged()
     }
 
-    val differ = AsyncListDiffer(this, differCallback)
+    fun getSongs(): List<Song> = songs
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SongViewHolder {
         return SongViewHolder(
@@ -47,7 +43,7 @@ class SongAdapter(
         holder: SongViewHolder,
         @SuppressLint("RecyclerView") position: Int
     ) {
-        val song = differ.currentList[position]
+        val song = songs[position]
 
         holder.itemBinding.apply {
             removeSongFromPlaylist.visibility =
@@ -69,9 +65,7 @@ class SongAdapter(
             }
 
             removeSongFromPlaylist.setOnClickListener {
-                removeSongFromPlaylistListener?.let {
-                    it.onRemoveSongFromPlaylist(song, position)
-                }
+                removeSongFromPlaylistListener?.onRemoveSongFromPlaylist(song, position)
             }
         }
 
@@ -84,5 +78,5 @@ class SongAdapter(
         }
     }
 
-    override fun getItemCount(): Int = differ.currentList.size
+    override fun getItemCount(): Int = songs.size
 }

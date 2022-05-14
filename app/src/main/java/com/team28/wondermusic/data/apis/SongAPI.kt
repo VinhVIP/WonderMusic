@@ -9,6 +9,9 @@ import retrofit2.http.*
 
 interface SongAPI {
 
+    @GET("$ApiVersion/search")
+    suspend fun search(@Query("k") keyword: String): Response<SearchResponse>
+
     @Multipart
     @POST("$ApiVersion/song")
     suspend fun addSong(

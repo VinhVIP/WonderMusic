@@ -2,6 +2,7 @@ package com.team28.wondermusic.ui.home.discover
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
@@ -116,13 +117,15 @@ class DiscoverFragment : Fragment(), PlaylistClickListener, TypeClickListener,
     private fun setupNewestSong() {
         newSongAdapter = SongSmallAdapter(object:SongClickListener{
             override fun onSongClick(song: Song) {
-                startActivity(Intent(context, PlayerActivity::class.java))
-                Helper.sendMusicAction(
-                    requireContext(),
-                    MusicService.ACTION_PLAY,
-                    song,
-                    viewModel.newestSongs.value as ArrayList<Song>
-                )
+                viewModel.newestSongs.value?.let {
+                    startActivity(Intent(context, PlayerActivity::class.java))
+                    Helper.sendMusicAction(
+                        requireContext(),
+                        MusicService.ACTION_PLAY,
+                        song,
+                        ArrayList(it)
+                    )
+                }
             }
 
             override fun onOpenMenu(song: Song, position: Int) {
@@ -154,13 +157,15 @@ class DiscoverFragment : Fragment(), PlaylistClickListener, TypeClickListener,
     private fun setupFollowSong() {
         followSongAdapter = SongSmallAdapter(object:SongClickListener{
             override fun onSongClick(song: Song) {
-                startActivity(Intent(context, PlayerActivity::class.java))
-                Helper.sendMusicAction(
-                    requireContext(),
-                    MusicService.ACTION_PLAY,
-                    song,
-                    viewModel.followSongs.value as ArrayList<Song>
-                )
+                viewModel.followSongs.value?.let {
+                    startActivity(Intent(context, PlayerActivity::class.java))
+                    Helper.sendMusicAction(
+                        requireContext(),
+                        MusicService.ACTION_PLAY,
+                        song,
+                        ArrayList(it)
+                    )
+                }
             }
 
             override fun onOpenMenu(song: Song, position: Int) {
@@ -189,13 +194,15 @@ class DiscoverFragment : Fragment(), PlaylistClickListener, TypeClickListener,
     private fun setupTopSong() {
         topSongAdapter = SongTopAdapter(object:SongClickListener{
             override fun onSongClick(song: Song) {
-                startActivity(Intent(context, PlayerActivity::class.java))
-                Helper.sendMusicAction(
-                    requireContext(),
-                    MusicService.ACTION_PLAY,
-                    song,
-                    viewModel.bestSongs.value as ArrayList<Song>
-                )
+                viewModel.bestSongs.value?.let {
+                    startActivity(Intent(context, PlayerActivity::class.java))
+                    Helper.sendMusicAction(
+                        requireContext(),
+                        MusicService.ACTION_PLAY,
+                        song,
+                        ArrayList(it)
+                    )
+                }
             }
 
             override fun onOpenMenu(song: Song, position: Int) {
@@ -228,16 +235,14 @@ class DiscoverFragment : Fragment(), PlaylistClickListener, TypeClickListener,
             binding.shimmerPlaylist.visibility = View.GONE
             binding.recyclerPlaylist.visibility = View.VISIBLE
             playlistAdapter.differ.submitList(it)
+            for(i in it){
+                Log.d("vinhabc", "${i.name} - ${i.songs?.size}")
+            }
         }
 
         binding.recyclerPlaylist.apply {
             adapter = playlistAdapter
-            layoutManager =
-                LinearLayoutManager(
-                    this@DiscoverFragment.context,
-                    LinearLayoutManager.HORIZONTAL,
-                    false
-                )
+            layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
         }
 
         setHorizontalRecyclerScroll(binding.recyclerPlaylist)

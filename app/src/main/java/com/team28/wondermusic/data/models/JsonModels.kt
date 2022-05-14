@@ -314,3 +314,14 @@ data class ListTopListenSongs(
     val message: String?,
     val data: List<SongListen>
 )
+
+data class SearchResponse(
+    val message: String?,
+    val data: SearchJson
+)
+
+data class SearchJson(
+    @Json(name = "song") val songs: List<SongJson>,
+    @Json(name = "playList") val playlists: List<PlaylistJson>,
+    @Json(name = "account") val accounts: List<AccountJson>,
+)

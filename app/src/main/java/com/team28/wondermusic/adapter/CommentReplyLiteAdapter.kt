@@ -5,6 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.squareup.picasso.Picasso
 import com.team28.wondermusic.R
 import com.team28.wondermusic.data.models.Comment
 import com.team28.wondermusic.databinding.ItemCommentReplyLiteBinding
@@ -43,7 +44,10 @@ class CommentReplyLiteAdapter(
         val comment = differ.currentList[position]
 
         holder.itemBinding.apply {
-            imgAvatar.setImageResource(R.drawable.phathuy)
+            if (comment.account.avatar.isNotEmpty()) {
+                Picasso.get().load(comment.account.avatar).placeholder(R.drawable.ic_user_colorful)
+                    .fit().into(imgAvatar)
+            }
             tvAccountName.text = comment.account.accountName
             tvCommentContent.text = comment.content
         }

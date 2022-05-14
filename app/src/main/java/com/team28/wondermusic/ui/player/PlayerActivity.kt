@@ -19,7 +19,7 @@ import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ActivityPlayerBinding
 import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.comment.CommentActivity
-import com.team28.wondermusic.ui.home.ViewPagerAdapter
+import com.team28.wondermusic.adapter.ViewPagerAdapter
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.songinfo.SongInfoFragment
 import com.team28.wondermusic.ui.player.songlyrics.SongLyricsFragment
@@ -144,7 +144,9 @@ class PlayerActivity : AppCompatActivity() {
 
         binding.toolbar.apply {
             btnShowComment.setOnClickListener {
-                startActivity(Intent(this@PlayerActivity, CommentActivity::class.java))
+                startActivity(Intent(this@PlayerActivity, CommentActivity::class.java).apply {
+                    putExtra(Constants.Song, viewModel.song.value!!)
+                })
             }
             btnBack.setOnClickListener { super.onBackPressed() }
         }
