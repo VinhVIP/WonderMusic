@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.team28.wondermusic.base.network.NetworkResult
 import com.team28.wondermusic.base.viewmodels.BaseViewModel
 import com.team28.wondermusic.data.models.Song
+import com.team28.wondermusic.data.repositories.AccountRepository
 import com.team28.wondermusic.data.repositories.SongRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -12,7 +13,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
-    private val songRepository: SongRepository
+    private val songRepository: SongRepository,
+    private val accountRepository: AccountRepository
 ) : BaseViewModel() {
 
     var audioSessionId = MutableLiveData(0)
@@ -36,6 +38,19 @@ class PlayerViewModel @Inject constructor(
     var message: String? = null
     var loveResponseStatus = MutableLiveData<Boolean?>(null)
 
+    // Recommend Song
+    var recommendSongs = MutableLiveData<List<Song>>()
+
+    fun getRecommendSong() {
+        song.value?.let {
+            it.account?.let {
+                viewModelScope.launch {
+                    val list = accountRepository.getSongsOfAccount(it.idAccount)
+                    recommendSongs.postValue(list)
+                }
+            }
+        }
+    }
 
     fun listen(song: Song) {
         viewModelScope.launch {

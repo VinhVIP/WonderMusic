@@ -15,6 +15,9 @@ interface AccountAPI {
     @POST("$ApiVersion/account/")
     suspend fun signup(@Body modal: SignupModal): Response<MessageJson>
 
+    @POST("$ApiVersion/account-device/token")
+    suspend fun sendAccountDevice(@Body modal: DeviceTokenModal): Response<MessageJson>
+
     @Multipart
     @PUT("$ApiVersion/account/{idAccount}")
     suspend fun updateAccount(

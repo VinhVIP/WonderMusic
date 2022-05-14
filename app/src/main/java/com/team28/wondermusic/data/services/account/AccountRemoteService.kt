@@ -22,6 +22,10 @@ class AccountRemoteService @Inject constructor(
         return callApi { accountAPI.signup(modal) }
     }
 
+    suspend fun sendAccountDevice(deviceToken: String): NetworkResult<MessageJson> {
+        return callApi { accountAPI.sendAccountDevice(DeviceTokenModal(deviceToken)) }
+    }
+
     suspend fun updateAccount(account: AccountUpdate): NetworkResult<MessageJson> {
         return callApi {
             if (account.avatar != null) {

@@ -70,12 +70,14 @@ class NotificationActivity : BaseActivity(), NotificationClickListener {
         viewModel.readAllStatus.observe(this) {
             if (it) {
                 notificationAdapter.readAll()
+                viewModel.refreshNotifications()
             }
         }
 
         viewModel.deleteAllStatus.observe(this) {
             if (it) {
                 notificationAdapter.deleteAll()
+                viewModel.refreshNotifications()
             }
         }
 
@@ -84,6 +86,7 @@ class NotificationActivity : BaseActivity(), NotificationClickListener {
                 viewModel.changePosition?.let { position ->
                     notificationAdapter.readAt(position)
                 }
+                viewModel.refreshNotifications()
             }
         }
 
@@ -92,6 +95,7 @@ class NotificationActivity : BaseActivity(), NotificationClickListener {
                 viewModel.changePosition?.let { position ->
                     notificationAdapter.removeAt(position)
                 }
+                viewModel.refreshNotifications()
             }
         }
     }

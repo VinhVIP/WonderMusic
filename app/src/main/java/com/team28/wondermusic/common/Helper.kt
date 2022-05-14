@@ -11,12 +11,14 @@ import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.TypedValue
+import android.view.MotionEvent
 import android.view.Window
 import android.view.WindowManager
 import android.widget.EditText
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.RecyclerView
 import com.team28.wondermusic.R
 import com.team28.wondermusic.data.models.Account
 import com.team28.wondermusic.data.models.Song
@@ -193,4 +195,18 @@ fun List<Type>.exists(type: Type): Boolean {
         if (it.idType == type.idType) return true
     }
     return false
+}
+
+fun RecyclerView.setHorizontalRecyclerScroll() {
+    this.addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
+        override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
+            when (e.action) {
+                MotionEvent.ACTION_MOVE -> rv.parent.requestDisallowInterceptTouchEvent(true)
+            }
+            return false
+        }
+
+        override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {}
+        override fun onRequestDisallowInterceptTouchEvent(disallowIntercept: Boolean) {}
+    })
 }

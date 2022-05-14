@@ -18,9 +18,9 @@ import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.data.models.Type
 import com.team28.wondermusic.databinding.ActivityTypeBinding
 import com.team28.wondermusic.service.MusicService
+import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
-import java.util.ArrayList
 
 
 @AndroidEntryPoint
@@ -111,6 +111,11 @@ class TypeActivity : AppCompatActivity(), SongClickListener {
     }
 
     override fun onOpenMenu(song: Song, position: Int) {
+        MenuBottomFragment().apply {
+            arguments = Bundle().apply {
+                putParcelable(Constants.Song, song)
+            }
+        }.show(supportFragmentManager, null)
     }
 
 }

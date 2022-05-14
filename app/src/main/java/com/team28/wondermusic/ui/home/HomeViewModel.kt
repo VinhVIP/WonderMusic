@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.team28.wondermusic.base.viewmodels.BaseViewModel
 import com.team28.wondermusic.data.models.Song
+import com.team28.wondermusic.data.repositories.AccountRepository
 import com.team28.wondermusic.data.repositories.NotificationRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
@@ -11,7 +12,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val notificationRepository: NotificationRepository
+    private val notificationRepository: NotificationRepository,
+    private val accountRepository: AccountRepository
 ) : BaseViewModel() {
 
     var song: MutableLiveData<Song?> = MutableLiveData()
@@ -26,6 +28,12 @@ class HomeViewModel @Inject constructor(
     fun countUnreadNotification() {
         viewModelScope.launch {
             numUnreadNotification.postValue(notificationRepository.countUnreadNotification())
+        }
+    }
+
+    fun sendAccountDevice(deviceToken: String) {
+        viewModelScope.launch {
+            accountRepository.sendAccountDevice(deviceToken)
         }
     }
 

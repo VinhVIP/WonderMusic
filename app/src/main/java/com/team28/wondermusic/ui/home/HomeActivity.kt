@@ -54,7 +54,8 @@ class HomeActivity : AppCompatActivity() {
             }
 
             val token = task.result
-            Log.d("vinh", token)
+            Log.d("vinhtoken", token)
+            viewModel.sendAccountDevice(token)
         })
     }
 
@@ -138,6 +139,10 @@ class HomeActivity : AppCompatActivity() {
         binding.btnNext.setOnClickListener {
             Log.d("vinh", "action_next")
             sendMusicAction(MusicService.ACTION_NEXT)
+        }
+
+        binding.btnClearMusic.setOnClickListener {
+            Helper.sendMusicAction(this, MusicService.ACTION_CLEAR)
         }
 
         binding.toolbar.btnGoToSearch.setOnClickListener {

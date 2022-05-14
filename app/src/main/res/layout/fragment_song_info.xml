@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
@@ -153,5 +154,36 @@
 
     </RelativeLayout>
 
+    <TextView
+        style="@style/TitleDiscoverMenu"
+        android:layout_marginTop="16dp"
+        android:text="Gợi ý"
+        app:drawableEndCompat="@drawable/ic_right" />
+
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmerSong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <include layout="@layout/item_song_small_shimmer" />
+
+            <include layout="@layout/item_song_small_shimmer" />
+
+            <include layout="@layout/item_song_small_shimmer" />
+        </LinearLayout>
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerSong"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        tools:itemCount="1"
+        tools:listitem="@layout/item_song_small" />
 
 </LinearLayout>

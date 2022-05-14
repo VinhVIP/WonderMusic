@@ -26,6 +26,12 @@ class AccountRepository @Inject constructor(
         }
     }
 
+    suspend fun sendAccountDevice(deviceToken: String): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            accountRemoteService.sendAccountDevice(deviceToken)
+        }
+    }
+
     suspend fun updateAccount(account: AccountUpdate): NetworkResult<MessageJson> {
         return withContext(dispatcher) {
             accountRemoteService.updateAccount(account)

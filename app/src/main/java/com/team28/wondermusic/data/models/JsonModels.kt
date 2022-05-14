@@ -17,6 +17,10 @@ data class SignupModal(
     val confirmPassword: String
 )
 
+data class DeviceTokenModal(
+    val token: String
+)
+
 data class ChangePasswordModal(
     val old_password: String,
     val new_password: String,
