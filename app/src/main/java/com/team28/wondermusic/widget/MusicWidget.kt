@@ -6,7 +6,6 @@ import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.util.Log
 import android.widget.RemoteViews
 import com.team28.wondermusic.R
 import com.team28.wondermusic.broadcast.MusicBroadcast
@@ -14,6 +13,7 @@ import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.player.PlayerActivity
+import com.team28.wondermusic.ui.splash.SplashActivity
 
 
 class MusicWidget : AppWidgetProvider() {
@@ -43,40 +43,57 @@ class MusicWidget : AppWidgetProvider() {
             appWidgetId: Int,
             song: SongWidget? = null
         ) {
-            val views = RemoteViews(context.packageName, R.layout.music_widget)
+            var views: RemoteViews
 
-            song?.let {
-                views.setTextViewText(R.id.tvSongName, it.song.name)
-                views.setTextViewText(R.id.tvSongSingers, it.song.singersToString())
-                views.setImageViewBitmap(R.id.imgSongAvatar, it.bitmap)
-                views.setImageViewResource(
+            if (song == null) {
+                views = RemoteViews(context.packageName, R.layout.music_widget_empty)
+
+                val intent = Intent(context, SplashActivity::class.java)
+                val playerPendingIntent = PendingIntent.getActivity(
+                    context,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+                views.setOnClickPendingIntent(R.id.layoutWidget, playerPendingIntent)
+
+            } else {
+                views = RemoteViews(context.packageName, R.layout.music_widget)
+
+                song.let {
+                    views.setTextViewText(R.id.tvSongName, it.song.name)
+                    views.setTextViewText(R.id.tvSongSingers, it.song.singersToString())
+                    views.setImageViewBitmap(R.id.imgSongAvatar, it.bitmap)
+                    views.setImageViewResource(
+                        R.id.btnPlay,
+                        if (it.isPlaying) R.drawable.ic_pause else R.drawable.ic_play
+                    )
+                }
+
+                val intent = Intent(context, PlayerActivity::class.java)
+                val playerPendingIntent = PendingIntent.getActivity(
+                    context,
+                    0,
+                    intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+                views.setOnClickPendingIntent(R.id.layoutWidget, playerPendingIntent)
+
+                // Button Action
+                views.setOnClickPendingIntent(
+                    R.id.btnPrev,
+                    getPendingIntent(context, MusicService.ACTION_PREV)
+                )
+                views.setOnClickPendingIntent(
                     R.id.btnPlay,
-                    if (it.isPlaying) R.drawable.ic_pause else R.drawable.ic_play
+                    getPendingIntent(context, MusicService.ACTION_PLAY)
+                )
+                views.setOnClickPendingIntent(
+                    R.id.btnNext,
+                    getPendingIntent(context, MusicService.ACTION_NEXT)
                 )
             }
 
-            val intent = Intent(context, PlayerActivity::class.java)
-            val playerPendingIntent = PendingIntent.getActivity(
-                context,
-                0,
-                intent,
-                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-            )
-            views.setOnClickPendingIntent(R.id.layoutWidget, playerPendingIntent)
-
-            // Button Action
-            views.setOnClickPendingIntent(
-                R.id.btnPrev,
-                getPendingIntent(context, MusicService.ACTION_PREV)
-            )
-            views.setOnClickPendingIntent(
-                R.id.btnPlay,
-                getPendingIntent(context, MusicService.ACTION_PLAY)
-            )
-            views.setOnClickPendingIntent(
-                R.id.btnNext,
-                getPendingIntent(context, MusicService.ACTION_NEXT)
-            )
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }

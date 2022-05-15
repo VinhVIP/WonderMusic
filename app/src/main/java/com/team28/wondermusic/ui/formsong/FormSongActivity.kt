@@ -64,6 +64,7 @@ class FormSongActivity : BaseActivity(), StepperNavListener {
             it?.let {
                 Log.d("vinh", viewModel.message!!)
                 Toast.makeText(this, viewModel.message, Toast.LENGTH_SHORT).show()
+                if (it) finish()
             }
             viewModel.addStatus.postValue(null)
         }

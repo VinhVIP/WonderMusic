@@ -1,5 +1,8 @@
 package com.team28.wondermusic.base.activities
 
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.view.Gravity
 import android.view.Window
 import android.view.WindowManager
@@ -9,6 +12,22 @@ import com.team28.wondermusic.base.dialogs.ConfirmDialog
 import com.team28.wondermusic.base.dialogs.ErrorDialog
 
 open class BaseActivity : AppCompatActivity() {
+
+    fun isOnline(): Boolean {
+        val connectivityManager = getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        val capabilities =
+            connectivityManager.getNetworkCapabilities(connectivityManager.activeNetwork)
+        if (capabilities != null) {
+            if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR)) {
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)) {
+                return true
+            } else if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET)) {
+                return true
+            }
+        }
+        return false
+    }
 
     fun setStatusBarGradiant(bgDrawable: Int) {
         val window: Window = this.window

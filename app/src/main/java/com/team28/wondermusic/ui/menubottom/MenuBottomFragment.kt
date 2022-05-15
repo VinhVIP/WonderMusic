@@ -113,7 +113,7 @@ class MenuBottomFragment : BaseDialogFragment(), MenuBottomClickListener {
         ),
         MenuBottom("Xem album", R.drawable.ic_album, ALBUM),
         MenuBottom("Xem nghệ sĩ", R.drawable.ic_singers, SINGERS),
-        MenuBottom("Tải về", R.drawable.ic_download, DOWNLOAD),
+//        MenuBottom("Tải về", R.drawable.ic_download, DOWNLOAD),
     )
 
     override fun onMenuClick(menu: MenuBottom) {

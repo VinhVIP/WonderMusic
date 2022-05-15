@@ -4,6 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.team28.wondermusic.base.network.NetworkResult
 import com.team28.wondermusic.base.viewmodels.BaseViewModel
+import com.team28.wondermusic.common.AppSharedPreferences
+import com.team28.wondermusic.common.DataLocal
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.data.repositories.AccountRepository
 import com.team28.wondermusic.data.repositories.SongRepository
@@ -14,7 +16,8 @@ import javax.inject.Inject
 @HiltViewModel
 class PlayerViewModel @Inject constructor(
     private val songRepository: SongRepository,
-    private val accountRepository: AccountRepository
+    private val accountRepository: AccountRepository,
+    private val appSharedPreferences: AppSharedPreferences
 ) : BaseViewModel() {
 
     var audioSessionId = MutableLiveData(0)
@@ -40,6 +43,37 @@ class PlayerViewModel @Inject constructor(
 
     // Recommend Song
     var recommendSongs = MutableLiveData<List<Song>>()
+
+    var isShuffle = MutableLiveData(false)
+    var isRepeat = MutableLiveData(false)
+
+    fun setShuffle(value: Boolean) {
+        viewModelScope.launch {
+            appSharedPreferences.setShuffle(value)
+            isShuffle.postValue(value)
+            DataLocal.IS_SHUFFLE = value
+        }
+    }
+
+    fun getShuffle() {
+        viewModelScope.launch {
+            isShuffle.postValue(appSharedPreferences.isShuffle())
+        }
+    }
+
+    fun setRepeat(value: Boolean) {
+        viewModelScope.launch {
+            appSharedPreferences.setRepeat(value)
+            isRepeat.postValue(value)
+            DataLocal.IS_REPEAT = value
+        }
+    }
+
+    fun getRepeat() {
+        viewModelScope.launch {
+            isRepeat.postValue(appSharedPreferences.isRepeat())
+        }
+    }
 
     fun getRecommendSong() {
         song.value?.let {

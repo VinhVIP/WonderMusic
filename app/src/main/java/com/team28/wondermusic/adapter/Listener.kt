@@ -49,7 +49,7 @@ class EventBusModel {
 
     data class SongListEvent(val songList: ArrayList<Song>)
 
-    data class SongInfoEvent(val song: Song)
+    data class SongInfoEvent(val song: Song?)
 
     data class AudioSessionIdEvent(val sessionId: Int)
 

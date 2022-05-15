@@ -29,6 +29,7 @@
 
     <!-- Màu icon -->
     <color name="icon_tint">#CC18191F</color>
+    <color name="icon_tint_highlight">#77538C</color>
 
     <!-- Màu ripple effect -->
     <color name="ripple">#F49B32</color>

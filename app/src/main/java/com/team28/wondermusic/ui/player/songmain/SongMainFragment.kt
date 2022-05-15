@@ -35,12 +35,11 @@ class SongMainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = FragmentSongMainBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
 
-    override fun onStart() {
-        super.onStart()
         animation()
+        equalizer()
+
+        return binding.root
     }
 
     private fun animationRotate(rotate:Boolean){
@@ -130,14 +129,14 @@ class SongMainFragment : Fragment() {
             showPlaylistFragment()
         }
 
-        equalizer()
     }
 
     private fun equalizer() {
         binding.btnEqualizer.setOnClickListener {
             Intent(AudioEffect.ACTION_DISPLAY_AUDIO_EFFECT_CONTROL_PANEL).apply {
+                Log.d("vinh", "send audio session id: ${viewModel.audioSessionId.value} - ${requireActivity().packageName}")
                 putExtra(AudioEffect.EXTRA_AUDIO_SESSION, viewModel.audioSessionId.value)
-                putExtra(AudioEffect.EXTRA_PACKAGE_NAME, requireContext().packageName)
+                putExtra(AudioEffect.EXTRA_PACKAGE_NAME, requireActivity().packageName)
                 putExtra(AudioEffect.EXTRA_CONTENT_TYPE, AudioEffect.CONTENT_TYPE_MUSIC)
             }.also {
                 startActivityForResult(it, 113)

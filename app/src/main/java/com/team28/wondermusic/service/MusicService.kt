@@ -28,6 +28,7 @@ import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.EventBusModel.*
 import com.team28.wondermusic.broadcast.MusicBroadcast
 import com.team28.wondermusic.common.Constants
+import com.team28.wondermusic.common.DataLocal
 import com.team28.wondermusic.data.database.entities.singersToString
 import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.ui.player.PlayerActivity
@@ -87,10 +88,10 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
             song?.let {
                 if (action == ACTION_ADD_SONG_NEXT) {
                     addSongNext(it)
-                    return START_STICKY
+                    return START_NOT_STICKY
                 } else if (action == ACTION_ADD_SONG_TAIL) {
                     addSongTail(it)
-                    return START_STICKY
+                    return START_NOT_STICKY
                 }
             }
         }
@@ -102,6 +103,11 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
 
             songs?.let {
                 songList = songs
+
+                if (DataLocal.IS_SHUFFLE) {
+                    Log.d("vinhdm", "shuffle")
+                    songList = it.shuffled() as ArrayList<Song>
+                }
 
                 // Khi cập nhật danh sách phát thì phải lưu lại vị trí của bài hát đang phát hiện tại
                 // trong danh sách mới được cập nhật
@@ -131,14 +137,15 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
                 next()
             }
             ACTION_CLEAR -> {
+                sendSongInfoToWidget(null)
                 EventBus.getDefault().postSticky(ClearMusic())
                 stopSelf()
             }
         }
-        return START_STICKY
+        return START_NOT_STICKY
     }
 
-    private fun sendSongInfoToWidget(song: SongWidget) {
+    private fun sendSongInfoToWidget(song: SongWidget?) {
         val appWidgetManager = AppWidgetManager.getInstance(this)
         val ids = appWidgetManager.getAppWidgetIds(ComponentName(this, MusicWidget::class.java))
 
@@ -224,7 +231,7 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
         mediaPlayer?.seekTo(event.timeMillis)
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN)
+    @Subscribe(threadMode = ThreadMode.BACKGROUND)
     fun onRequestSongInfo(event: RequestSongEvent) {
         if (currentSongIndex != -1 && currentSongIndex < songList.size) {
             EventBus.getDefault().postSticky(SongInfoEvent(songList[currentSongIndex]))
@@ -260,10 +267,15 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
             currentSongIndex++
             changeMusic(currentSongIndex)
         } else {
-            Log.d("vinh", "dung lai dc roi")
-            mediaPlayer?.pause()
-            EventBus.getDefault().postSticky(MusicPlayingEvent(false))
-            sendNotification()
+            if (DataLocal.IS_REPEAT) {
+                currentSongIndex = 0
+                changeMusic(currentSongIndex)
+            } else {
+                Log.d("vinh", "dung lai dc roi")
+                mediaPlayer?.pause()
+                EventBus.getDefault().postSticky(MusicPlayingEvent(false))
+                sendNotification()
+            }
         }
     }
 
@@ -296,6 +308,7 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
         jobTime?.cancel()
 
         Log.d("VINHMUSIC", "destroy music")
+        EventBus.getDefault().postSticky(SongInfoEvent(null))
         EventBus.getDefault().unregister(this)
     }
 
@@ -325,7 +338,7 @@ class MusicService : Service(), MediaPlayer.OnPreparedListener {
 
     private fun sendNotification() {
         GlobalScope.launch {
-            var bitmap: Bitmap
+            val bitmap: Bitmap
             val loader = ImageLoader(this@MusicService)
             val request = ImageRequest.Builder(this@MusicService)
                 .data(songList[currentSongIndex].image)

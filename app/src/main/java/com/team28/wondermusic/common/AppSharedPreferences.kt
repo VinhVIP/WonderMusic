@@ -20,6 +20,8 @@ class AppSharedPreferences @Inject constructor(@ApplicationContext context: Cont
         const val PASSWORD = "PASSWORD"
         const val ACCESS_TOKEN = "ACCESS_TOKEN"
         const val USER = "USER"
+        const val SHUFFLE = "SHUFFLE"
+        const val REPEAT = "REPEAT"
     }
 
     private var pref: SharedPreferences =
@@ -73,6 +75,24 @@ class AppSharedPreferences @Inject constructor(@ApplicationContext context: Cont
 
     fun getAccessToken(): String {
         return pref.getString(ACCESS_TOKEN, null) ?: ""
+    }
+
+    fun setShuffle(isShuffle: Boolean) {
+        editor.putBoolean(SHUFFLE, isShuffle)
+        editor.commit()
+    }
+
+    fun isShuffle(): Boolean {
+        return pref.getBoolean(SHUFFLE, false)
+    }
+
+    fun setRepeat(isRepeat: Boolean) {
+        editor.putBoolean(REPEAT, isRepeat)
+        editor.commit()
+    }
+
+    fun isRepeat(): Boolean {
+        return pref.getBoolean(REPEAT, false)
     }
 
 }

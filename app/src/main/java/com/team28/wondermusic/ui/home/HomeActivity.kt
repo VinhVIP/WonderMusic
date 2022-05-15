@@ -17,6 +17,7 @@ import com.team28.wondermusic.adapter.EventBusModel
 import com.team28.wondermusic.adapter.EventBusModel.MusicPlayingEvent
 import com.team28.wondermusic.adapter.EventBusModel.SongInfoEvent
 import com.team28.wondermusic.adapter.ViewPagerAdapter
+import com.team28.wondermusic.base.activities.BaseActivity
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.DataLocal
 import com.team28.wondermusic.common.Helper
@@ -37,7 +38,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 @AndroidEntryPoint
-class HomeActivity : AppCompatActivity() {
+class HomeActivity : BaseActivity() {
     private lateinit var binding: ActivityHomeBinding
 
     private val viewModel by viewModels<HomeViewModel>()
@@ -47,16 +48,9 @@ class HomeActivity : AppCompatActivity() {
         Helper.setStatusBarGradiant(this, R.drawable.bg_main)
         EventBus.getDefault().register(this)
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
-            if (!task.isSuccessful) {
-                Log.d("vinh", "Fetching FCM registration token failed", task.exception)
-                return@OnCompleteListener
-            }
-
-            val token = task.result
-            Log.d("vinhtoken", token)
-            viewModel.sendAccountDevice(token)
-        })
+        if (!isOnline()) {
+            showErrorDialog("Không có kết nối internet")
+        }
     }
 
     override fun onStop() {
@@ -81,6 +75,21 @@ class HomeActivity : AppCompatActivity() {
         }
         clickEvents()
         observers()
+
+        deviceToken()
+    }
+
+    private fun deviceToken() {
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.d("vinh", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            val token = task.result
+            Log.d("vinhtoken", token)
+            viewModel.sendAccountDevice(token)
+        })
     }
 
     private fun observers() {
@@ -176,7 +185,7 @@ class HomeActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true)
     fun onSongInfo(event: SongInfoEvent) {
-        Log.d("vinh", "home recieve song: ${event.song.name}")
+        Log.d("vinh", "home recieve song: ${event.song?.name}")
         viewModel.song.postValue(event.song)
     }
 

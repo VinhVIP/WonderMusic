@@ -58,6 +58,8 @@ class AccountActivity : BaseActivity(), SongClickListener, PlaylistClickListener
         }
 
         binding.btnLogout.setOnClickListener {
+            Helper.sendMusicAction(this, MusicService.ACTION_CLEAR)
+
             viewModel.logout()
             Intent(this, LoginActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
@@ -94,6 +96,10 @@ class AccountActivity : BaseActivity(), SongClickListener, PlaylistClickListener
         super.onStart()
         fetchData()
         Log.d("vinhabc", "onStart")
+
+        if (!isOnline()) {
+            showErrorDialog("Không có kết nối internet")
+        }
     }
 
     override fun onResume() {

@@ -5,12 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.slider.Slider
 import com.team28.wondermusic.R
 import com.team28.wondermusic.adapter.EventBusModel.*
+import com.team28.wondermusic.adapter.ViewPagerAdapter
+import com.team28.wondermusic.base.activities.BaseActivity
 import com.team28.wondermusic.common.Constants
 import com.team28.wondermusic.common.Helper
 import com.team28.wondermusic.data.database.entities.singersToString
@@ -19,7 +21,6 @@ import com.team28.wondermusic.data.models.Song
 import com.team28.wondermusic.databinding.ActivityPlayerBinding
 import com.team28.wondermusic.service.MusicService
 import com.team28.wondermusic.ui.comment.CommentActivity
-import com.team28.wondermusic.adapter.ViewPagerAdapter
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.songinfo.SongInfoFragment
 import com.team28.wondermusic.ui.player.songlyrics.SongLyricsFragment
@@ -33,7 +34,7 @@ import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
 
 @AndroidEntryPoint
-class PlayerActivity : AppCompatActivity() {
+class PlayerActivity : BaseActivity() {
 
     private lateinit var binding: ActivityPlayerBinding
     private val viewModel by viewModels<PlayerViewModel>()
@@ -44,6 +45,10 @@ class PlayerActivity : AppCompatActivity() {
         super.onStart()
         EventBus.getDefault().register(this)
         binding.sliderSong.valueTo = 10000f
+
+        if (!isOnline()) {
+            showErrorDialog("Không có kết nối internet")
+        }
     }
 
     override fun onStop() {
@@ -59,31 +64,32 @@ class PlayerActivity : AppCompatActivity() {
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true)
     fun onSongInfo(event: SongInfoEvent) {
-        val song = event.song
-        Log.d("vinh", "recieve song: ${song.name}")
-        viewModel.song.postValue(song)
+        event.song?.let { song ->
+            Log.d("vinh", "recieve song: ${song.name}")
+            viewModel.song.postValue(song)
 
-        binding.toolbar.apply {
-            tvSongName.text = song.name
-            tvSingerName.text = song.singersToString()
+            binding.toolbar.apply {
+                tvSongName.text = song.name
+                tvSingerName.text = song.singersToString()
 
-            btnMore.setOnClickListener {
-                MenuBottomFragment().apply {
-                    arguments = Bundle().apply {
-                        putParcelable(Constants.Song, viewModel.song.value)
-                    }
-                }.show(supportFragmentManager, null)
+                btnMore.setOnClickListener {
+                    MenuBottomFragment().apply {
+                        arguments = Bundle().apply {
+                            putParcelable(Constants.Song, viewModel.song.value)
+                        }
+                    }.show(supportFragmentManager, null)
+                }
             }
+
+            runOnUiThread {
+                binding.tvSongDuration.text = "..."
+            }
+
+            // Tăng số lượt nghe bài hát
+            viewModel.listen(song)
+
+            viewModel.getSong(song)
         }
-
-        runOnUiThread {
-            binding.tvSongDuration.text = "..."
-        }
-
-        // Tăng số lượt nghe bài hát
-        viewModel.listen(song)
-
-        viewModel.getSong(song)
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true)
@@ -160,6 +166,49 @@ class PlayerActivity : AppCompatActivity() {
             )
         }
 
+        getSettings()
+    }
+
+    private fun getSettings() {
+        viewModel.getShuffle()
+
+        binding.btnShuffle.setOnClickListener {
+            val value = viewModel.isShuffle.value ?: false
+            viewModel.setShuffle(!value)
+        }
+
+        binding.btnRepeat.setOnClickListener {
+            val value = viewModel.isRepeat.value ?: false
+            viewModel.setRepeat(!value)
+        }
+
+        viewModel.isShuffle.observe(this) {
+            if (it) {
+                binding.btnShuffle.setColorFilter(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.icon_tint_highlight
+                    )
+                )
+            } else {
+                binding.btnShuffle.setColorFilter(ContextCompat.getColor(this, R.color.icon_tint))
+
+            }
+        }
+
+        viewModel.isRepeat.observe(this) {
+            if (it) {
+                binding.btnRepeat.setColorFilter(
+                    ContextCompat.getColor(
+                        this,
+                        R.color.icon_tint_highlight
+                    )
+                )
+            } else {
+                binding.btnRepeat.setColorFilter(ContextCompat.getColor(this, R.color.icon_tint))
+
+            }
+        }
     }
 
     private fun action() {
