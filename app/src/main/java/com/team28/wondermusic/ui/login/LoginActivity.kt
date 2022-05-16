@@ -34,6 +34,7 @@ class LoginActivity : BaseActivity() {
             it?.let {
                 if (it) {
                     startActivity(Intent(this, HomeActivity::class.java))
+                    finish()
                 } else {
                     showErrorDialog(viewModel.message!!)
                 }

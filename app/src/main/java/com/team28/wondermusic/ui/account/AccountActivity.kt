@@ -7,6 +7,7 @@ import android.view.MotionEvent
 import android.view.View
 import androidx.activity.viewModels
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
@@ -33,6 +34,7 @@ import com.team28.wondermusic.ui.login.LoginActivity
 import com.team28.wondermusic.ui.menubottom.MenuBottomFragment
 import com.team28.wondermusic.ui.player.PlayerActivity
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class AccountActivity : BaseActivity(), SongClickListener, PlaylistClickListener,
@@ -58,8 +60,7 @@ class AccountActivity : BaseActivity(), SongClickListener, PlaylistClickListener
         }
 
         binding.btnLogout.setOnClickListener {
-            Helper.sendMusicAction(this, MusicService.ACTION_CLEAR)
-
+//            Helper.sendMusicAction(this@AccountActivity, MusicService.ACTION_CLEAR)
             viewModel.logout()
             Intent(this, LoginActivity::class.java).apply {
                 addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
