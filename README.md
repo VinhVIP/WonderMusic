@@ -24,6 +24,6 @@
 - Retrofit, Moshi
 - Một số thư viện khác: Picasso, RoundedImageView, MPAndroidChart, coil, Klaxon, Shimmer, android-stepper,...
 
-## Một số hình ảnh
+## Video Demo
 
-![]()
+https://drive.google.com/uc?export=view&id=1CBZSqGi7D0Khlm52-FWFjOxWQrV-gC-j
