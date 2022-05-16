@@ -127,10 +127,12 @@ class ChangeProfileFragment : DialogFragment() {
     private var fileChooser: ActivityResultLauncher<String> = registerForActivityResult(
         ActivityResultContracts.GetContent()
     ) { uri ->
-        val file: File? = FileUtils.from(requireContext(), uri!!)
-        file?.let {
-            Picasso.get().load(it).resize(200, 200).into(binding.imgAvatar)
-            viewModel.avatarFile = it
+        uri?.let {
+            val file: File? = FileUtils.from(requireContext(), uri)
+            file?.let {
+                Picasso.get().load(it).resize(200, 200).into(binding.imgAvatar)
+                viewModel.avatarFile = it
+            }
         }
     }
 }
