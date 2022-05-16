@@ -23,6 +23,11 @@ class AlbumFragment : BaseDialogFragment(), AlbumClickListener {
 
     private lateinit var albumAdapter: AlbumAdapter
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        viewModel.getAllMyAlbum()
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
