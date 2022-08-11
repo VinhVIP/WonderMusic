@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.team28.wondermusic">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.vinh.wondermusic">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -8,7 +9,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".CustomApplication"
+        android:name="com.vinh.wondermusic.CustomApplication"
         android:allowBackup="true"
         android:icon="@drawable/icon_music"
         android:label="@string/app_name"
@@ -16,19 +17,33 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WonderMusic"
         android:usesCleartextTraffic="true">
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
+        <provider
+            android:name="androidx.startup.InitializationProvider"
+            android:authorities="${applicationId}.androidx-startup"
+            tools:node="remove" />
+
         <activity
-            android:name=".activities.TricksActivity"
+            android:name="com.vinh.wondermusic.activities.TricksActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.search.SearchActivity"
+            android:name="com.vinh.wondermusic.ui.search.SearchActivity"
             android:exported="false"
             android:theme="@style/NoAnimTheme" />
         <activity
-            android:name=".ui.type.TypeActivity"
+            android:name="com.vinh.wondermusic.ui.type.TypeActivity"
             android:exported="false" />
 
         <receiver
-            android:name=".widget.MusicWidget"
+            android:name="com.vinh.wondermusic.widget.MusicWidget"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -39,9 +54,9 @@
                 android:resource="@xml/music_widget_info" />
         </receiver>
 
-        <service android:name=".service.MusicService" />
+        <service android:name="com.vinh.wondermusic.service.MusicService" />
         <service
-            android:name=".service.NotificationService"
+            android:name="com.vinh.wondermusic.service.NotificationService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -49,7 +64,7 @@
         </service>
 
         <receiver
-            android:name=".broadcast.MusicBroadcast"
+            android:name="com.vinh.wondermusic.broadcast.MusicBroadcast"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -58,40 +73,40 @@
         </receiver>
 
         <activity
-            android:name=".ui.forgetpassword.ForgetPasswordActivity"
+            android:name="com.vinh.wondermusic.ui.forgetpassword.ForgetPasswordActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.notification.NotificationActivity"
+            android:name="com.vinh.wondermusic.ui.notification.NotificationActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.comment.reply.CommentReplyActivity"
+            android:name="com.vinh.wondermusic.ui.comment.reply.CommentReplyActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.formsong.FormSongActivity"
+            android:name="com.vinh.wondermusic.ui.formsong.FormSongActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.account.AccountActivity"
+            android:name="com.vinh.wondermusic.ui.account.AccountActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.comment.CommentActivity"
+            android:name="com.vinh.wondermusic.ui.comment.CommentActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.home.HomeActivity"
+            android:name="com.vinh.wondermusic.ui.home.HomeActivity"
             android:exported="true" />
         <activity
-            android:name=".ui.player.PlayerActivity"
+            android:name="com.vinh.wondermusic.ui.player.PlayerActivity"
             android:excludeFromRecents="true"
             android:exported="false"
-            android:parentActivityName=".ui.home.HomeActivity"
+            android:parentActivityName="com.vinh.wondermusic.ui.home.HomeActivity"
             android:taskAffinity="" />
         <activity
-            android:name=".ui.signup.SignupActivity"
+            android:name="com.vinh.wondermusic.ui.signup.SignupActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.login.LoginActivity"
+            android:name="com.vinh.wondermusic.ui.login.LoginActivity"
             android:exported="false" />
         <activity
-            android:name=".ui.splash.SplashActivity"
+            android:name="com.vinh.wondermusic.ui.splash.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.App.Starting">
             <intent-filter>

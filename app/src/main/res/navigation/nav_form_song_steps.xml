@@ -7,25 +7,25 @@
 
     <fragment
         android:id="@+id/step_1_dest"
-        android:name="com.team28.wondermusic.ui.formsong.Step1Fragment"
+        android:name="com.vinh.wondermusic.ui.formsong.Step1Fragment"
         android:label="Step 1"
         tools:layout="@layout/fragment_step1" />
     <fragment
         android:id="@+id/step_2_dest"
-        android:name="com.team28.wondermusic.ui.formsong.Step2Fragment"
+        android:name="com.vinh.wondermusic.ui.formsong.Step2Fragment"
         android:label="Step 2"
         tools:layout="@layout/fragment_step2" />
     <fragment
         android:id="@+id/step_3_dest"
-        android:name="com.team28.wondermusic.ui.formsong.Step3Fragment"
+        android:name="com.vinh.wondermusic.ui.formsong.Step3Fragment"
         android:label="Step 3"
         tools:layout="@layout/fragment_step3" />
     <fragment
         android:id="@+id/step_4_dest"
-        android:name="com.team28.wondermusic.ui.formsong.Step4Fragment"
+        android:name="com.vinh.wondermusic.ui.formsong.Step4Fragment"
         android:label="Step4Fragment" />
     <fragment
         android:id="@+id/step_5_dest"
-        android:name="com.team28.wondermusic.ui.formsong.Step5Fragment"
+        android:name="com.vinh.wondermusic.ui.formsong.Step5Fragment"
         android:label="Step5Fragment" />
 </navigation>

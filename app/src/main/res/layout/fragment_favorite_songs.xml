@@ -41,10 +41,11 @@
     </RelativeLayout>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:layout_below="@id/layoutTop"
         android:id="@+id/recyclerSong"
         android:layout_width="match_parent"
+        android:layout_below="@id/layoutTop"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         tools:listitem="@layout/item_song_lite" />
 
     <com.google.android.material.progressindicator.CircularProgressIndicator
@@ -56,6 +57,19 @@
         android:layout_gravity="center"
         android:indeterminate="true"
         android:visibility="visible"
+        android:layout_margin="12dp"
         app:indicatorColor="@color/highlight" />
+
+    <TextView
+        android:id="@+id/tvAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutTop"
+        android:layout_margin="12dp"
+        android:gravity="center"
+        android:text="Bạn chưa yêu thích bài hát nào"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:visibility="gone" />
 
 </RelativeLayout>

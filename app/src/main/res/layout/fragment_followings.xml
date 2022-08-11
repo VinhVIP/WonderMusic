@@ -45,4 +45,16 @@
         android:layout_height="wrap_content"
         tools:listitem="@layout/item_account" />
 
+    <TextView
+        android:id="@+id/tvAlert"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/layoutTop"
+        android:layout_margin="12dp"
+        android:gravity="center"
+        android:text="Bạn chưa theo dõi tài khoản nào"
+        android:textColor="@color/text_secondary"
+        android:textSize="14sp"
+        android:visibility="gone" />
+
 </LinearLayout>
