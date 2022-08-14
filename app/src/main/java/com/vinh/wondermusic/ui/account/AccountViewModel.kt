@@ -31,6 +31,8 @@ class AccountViewModel @Inject constructor(
     var playlists = MutableLiveData<List<Playlist>>()
 
     var updateStatus = MutableLiveData(false)
+    var status = MutableLiveData<Boolean?>(null)
+
 
     fun logout() {
         appSharedPreferences.logOut()
@@ -95,5 +97,33 @@ class AccountViewModel @Inject constructor(
         viewModelScope.launch {
             playlists.postValue(accountRepository.getPlaylistsOfAccount(dataAccount.idAccount))
         }
+    }
+
+    fun lockAccount(account: Account) {
+        isLoading.postValue(true)
+        parentJob = viewModelScope.launch {
+            val result = accountRepository.lockAccount(account.idAccount)
+            if (result is NetworkResult.Success) {
+                message = result.body.message
+            } else if (result is NetworkResult.Error) {
+                message = result.responseError.message
+            }
+            status.postValue(result is NetworkResult.Success)
+        }
+        registerEventParentJobFinish()
+    }
+
+    fun unlockAccount(account: Account) {
+        isLoading.postValue(true)
+        parentJob = viewModelScope.launch {
+            val result = accountRepository.unlockAccount(account.idAccount)
+            if (result is NetworkResult.Success) {
+                message = result.body.message
+            } else if (result is NetworkResult.Error) {
+                message = result.responseError.message
+            }
+            status.postValue(result is NetworkResult.Success)
+        }
+        registerEventParentJobFinish()
     }
 }

@@ -110,4 +110,21 @@ class AccountRepository @Inject constructor(
         }
     }
 
+
+    suspend fun getLockAccounts(): List<Account> = withContext(dispatcher) {
+        accountRemoteService.getLockAccounts()
+    }
+
+
+    suspend fun lockAccount(idAccount: Int): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            accountRemoteService.lockAccount(idAccount)
+        }
+    }
+
+    suspend fun unlockAccount(idAccount: Int): NetworkResult<MessageJson> {
+        return withContext(dispatcher) {
+            accountRemoteService.unlockAccount(idAccount)
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.vinh.wondermusic.data.apis
 
+import com.vinh.wondermusic.base.network.NetworkHelper
 import com.vinh.wondermusic.common.Config.ApiVersion
 import com.vinh.wondermusic.data.models.*
 import okhttp3.MultipartBody
@@ -88,4 +89,21 @@ interface AccountAPI {
 
     @PUT("$ApiVersion/account/change/password")
     suspend fun changePassword(@Body modal: ChangePasswordModal): Response<MessageJson>
+
+    @GET("$ApiVersion/account/block/list")
+    suspend fun getLockAccounts(
+        @HeaderMap header: Map<String, String> = NetworkHelper.getAuthorizationHeader()
+    ): Response<ListAccountJson>
+
+    @PUT("$ApiVersion/account/{idAccount}/block")
+    suspend fun lockAccount(
+        @Path("idAccount") idAccount: Int,
+        @HeaderMap header: Map<String, String> = NetworkHelper.getAuthorizationHeader()
+    ): Response<MessageJson>
+
+    @PUT("$ApiVersion/account/{idAccount}/unblock")
+    suspend fun unlockAccount(
+        @Path("idAccount") idAccount: Int,
+        @HeaderMap header: Map<String, String> = NetworkHelper.getAuthorizationHeader()
+    ): Response<MessageJson>
 }

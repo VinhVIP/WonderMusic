@@ -70,6 +70,7 @@
     </LinearLayout>
 
     <ImageView
+        style="@style/ImageViewRippleEffect"
         android:id="@+id/songMenuMore"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

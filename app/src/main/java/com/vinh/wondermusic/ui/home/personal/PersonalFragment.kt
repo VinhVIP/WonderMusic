@@ -15,7 +15,8 @@ import com.vinh.wondermusic.data.models.MenuClickListener
 import com.vinh.wondermusic.data.models.MenuIndividual
 import com.vinh.wondermusic.data.models.MenuIndividualType.*
 import com.vinh.wondermusic.databinding.FragmentIndividualBinding
-import com.vinh.wondermusic.ui.admin.ManagerTypeActivity
+import com.vinh.wondermusic.ui.admin.account.LockAccountActivity
+import com.vinh.wondermusic.ui.admin.type.ManagerTypeActivity
 import com.vinh.wondermusic.ui.formsong.FormSongActivity
 import com.vinh.wondermusic.ui.home.personal.album.AlbumFragment
 import com.vinh.wondermusic.ui.home.personal.album.FormAlbumDialogFragment
@@ -46,6 +47,7 @@ class PersonalFragment : Fragment(), MenuClickListener {
         super.onCreate(savedInstanceState)
         if (DataLocal.myAccount.role == 1) {
             menus.add(MenuIndividual("Quản lý thể loại", R.drawable.ic_admin, MANAGE_TYPE))
+            menus.add(MenuIndividual("Tài khoản bị khóa", R.drawable.ic_admin, MANAGE_LOCK_ACCOUNT))
         }
     }
 
@@ -97,6 +99,9 @@ class PersonalFragment : Fragment(), MenuClickListener {
             ALBUM -> showFragment(AlbumFragment())
             MANAGE_TYPE -> {
                 startActivity(Intent(requireContext(), ManagerTypeActivity::class.java))
+            }
+            MANAGE_LOCK_ACCOUNT -> {
+                startActivity(Intent(requireContext(), LockAccountActivity::class.java))
             }
         }
     }

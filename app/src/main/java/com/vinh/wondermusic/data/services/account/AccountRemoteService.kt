@@ -152,4 +152,21 @@ class AccountRemoteService @Inject constructor(
     suspend fun changePassword(modal: ChangePasswordModal): NetworkResult<MessageJson> {
         return callApi { accountAPI.changePassword(modal) }
     }
+
+    suspend fun getLockAccounts(): List<Account> {
+        val result = callApi { accountAPI.getLockAccounts() }
+        return if (result is NetworkResult.Success) {
+            result.body.data.toListAccount()
+        } else {
+            emptyList()
+        }
+    }
+
+    suspend fun lockAccount(idAccount: Int): NetworkResult<MessageJson> {
+        return callApi { accountAPI.lockAccount(idAccount) }
+    }
+
+    suspend fun unlockAccount(idAccount: Int): NetworkResult<MessageJson> {
+        return callApi { accountAPI.unlockAccount(idAccount) }
+    }
 }

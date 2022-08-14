@@ -1,4 +1,4 @@
-package com.vinh.wondermusic.ui.admin.form_type
+package com.vinh.wondermusic.ui.admin.type.form_type
 
 import android.app.Dialog
 import android.graphics.Color
@@ -13,7 +13,7 @@ import androidx.fragment.app.activityViewModels
 import com.vinh.wondermusic.common.Constants
 import com.vinh.wondermusic.data.models.Type
 import com.vinh.wondermusic.databinding.FragmentFormTypeBinding
-import com.vinh.wondermusic.ui.admin.ManageTypeViewModel
+import com.vinh.wondermusic.ui.admin.type.ManageTypeViewModel
 
 class FormTypeFragment : DialogFragment() {
 

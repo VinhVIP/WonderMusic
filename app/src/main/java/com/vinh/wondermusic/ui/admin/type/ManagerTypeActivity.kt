@@ -1,4 +1,4 @@
-package com.vinh.wondermusic.ui.admin
+package com.vinh.wondermusic.ui.admin.type
 
 import android.os.Bundle
 import android.view.Menu
@@ -16,7 +16,7 @@ import com.vinh.wondermusic.common.Helper
 import com.vinh.wondermusic.common.SimpleDividerItemDecoration
 import com.vinh.wondermusic.data.models.Type
 import com.vinh.wondermusic.databinding.ActivityManagerTypeBinding
-import com.vinh.wondermusic.ui.admin.form_type.FormTypeFragment
+import com.vinh.wondermusic.ui.admin.type.form_type.FormTypeFragment
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

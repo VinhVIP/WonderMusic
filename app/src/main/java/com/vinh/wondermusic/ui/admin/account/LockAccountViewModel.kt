@@ -1,38 +1,38 @@
-package com.vinh.wondermusic.ui.admin
+package com.vinh.wondermusic.ui.admin.account
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.vinh.wondermusic.base.network.NetworkResult
 import com.vinh.wondermusic.base.viewmodels.BaseViewModel
+import com.vinh.wondermusic.data.models.Account
 import com.vinh.wondermusic.data.models.Type
-import com.vinh.wondermusic.data.repositories.SongRepository
-import com.vinh.wondermusic.data.repositories.TypeRepository
+import com.vinh.wondermusic.data.repositories.AccountRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ManageTypeViewModel @Inject constructor(
-    private val songRepository: SongRepository,
-    private val typeRepository: TypeRepository,
+class LockAccountViewModel @Inject constructor(
+    private val accountRepository: AccountRepository
 ) : BaseViewModel() {
 
-    var types = MutableLiveData<List<Type>>()
+    var lockAccounts = MutableLiveData<List<Account>>()
 
     var message: String? = null
     var status = MutableLiveData<Boolean?>(null)
 
-
-    fun getTypes() {
-        viewModelScope.launch {
-            types.postValue(songRepository.getAllTypes())
-        }
-    }
-
-    fun addType(type: Type) {
+    fun getLocksAccount() {
         isLoading.postValue(true)
         parentJob = viewModelScope.launch {
-            val result = typeRepository.addType(type)
+            lockAccounts.postValue(accountRepository.getLockAccounts())
+        }
+        registerEventParentJobFinish()
+    }
+
+    fun lockAccount(account: Account) {
+        isLoading.postValue(true)
+        parentJob = viewModelScope.launch {
+            val result = accountRepository.lockAccount(account.idAccount)
             if (result is NetworkResult.Success) {
                 message = result.body.message
             } else if (result is NetworkResult.Error) {
@@ -43,24 +43,10 @@ class ManageTypeViewModel @Inject constructor(
         registerEventParentJobFinish()
     }
 
-    fun updateType(type: Type) {
+    fun unlockAccount(account: Account) {
         isLoading.postValue(true)
         parentJob = viewModelScope.launch {
-            val result = typeRepository.updateType(type)
-            if (result is NetworkResult.Success) {
-                message = result.body.message
-            } else if (result is NetworkResult.Error) {
-                message = result.responseError.message
-            }
-            status.postValue(result is NetworkResult.Success)
-        }
-        registerEventParentJobFinish()
-    }
-
-    fun deleteType(type: Type) {
-        isLoading.postValue(true)
-        parentJob = viewModelScope.launch {
-            val result = typeRepository.deleteType(type)
+            val result = accountRepository.unlockAccount(account.idAccount)
             if (result is NetworkResult.Success) {
                 message = result.body.message
             } else if (result is NetworkResult.Error) {

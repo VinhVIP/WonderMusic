@@ -5,7 +5,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MotionEvent
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -190,6 +192,28 @@ class AccountActivity : BaseActivity(), SongClickListener, PlaylistClickListener
             binding.layoutAction.visibility = View.VISIBLE
         }
 
+        if (account.accountStatus == 1) {
+            binding.tvAccountName.setTextColor(ContextCompat.getColor(this, R.color.text_secondary))
+            binding.tvEmail.setTextColor(ContextCompat.getColor(this, R.color.text_secondary))
+        } else {
+            binding.tvAccountName.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+            binding.tvEmail.setTextColor(ContextCompat.getColor(this, R.color.text_primary))
+        }
+
+        if(account.role == 1){
+            binding.tvAccountName.setTextColor(ContextCompat.getColor(this, R.color.red))
+        }
+
+        if (DataLocal.myAccount.role == 1 && DataLocal.myAccount.idAccount != account.idAccount) {
+            binding.btnLockAccount.visibility = View.VISIBLE
+
+            if (account.accountStatus == 0) {
+                binding.btnLockAccount.setImageResource(R.drawable.ic_lock)
+            } else {
+                binding.btnLockAccount.setImageResource(R.drawable.ic_unlock)
+            }
+        }
+
         binding.apply {
             if (account.avatar.isNotEmpty()) Picasso.get().load(account.avatar)
                 .placeholder(R.drawable.ic_user_colorful).fit()
@@ -204,6 +228,14 @@ class AccountActivity : BaseActivity(), SongClickListener, PlaylistClickListener
             tvDateCreated.text = Helper.toDateString(account.dateCreated)
 
             btnFollow.text = if (account.followStatus) "Đã theo dõi" else "Theo dõi"
+
+            btnLockAccount.setOnClickListener {
+                if (account.accountStatus == 0) {
+                    viewModel.lockAccount(account)
+                } else {
+                    viewModel.unlockAccount(account)
+                }
+            }
         }
     }
 
@@ -234,6 +266,18 @@ class AccountActivity : BaseActivity(), SongClickListener, PlaylistClickListener
             if (it) {
                 viewModel.getAccountInfo()
                 viewModel.updateStatus.value = false
+            }
+        }
+
+        viewModel.status.observe(this) {
+            it?.let {
+                if (it) {
+                    viewModel.getAccountInfo()
+                    Toast.makeText(this, viewModel.message, Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, viewModel.message, Toast.LENGTH_SHORT).show()
+                }
+                viewModel.status.postValue(null)
             }
         }
     }
