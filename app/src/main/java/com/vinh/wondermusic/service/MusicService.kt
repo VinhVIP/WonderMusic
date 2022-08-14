@@ -17,14 +17,23 @@ import android.widget.Toast
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.app.TaskStackBuilder
-import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DefaultDataSource
+import androidx.media3.datasource.DefaultDataSourceFactory
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
+import androidx.media3.exoplayer.source.MediaSource
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
+import androidx.media3.exoplayer.trackselection.AdaptiveTrackSelection
+import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
+import androidx.media3.exoplayer.trackselection.TrackSelection
+import androidx.media3.exoplayer.upstream.BandwidthMeter
+import androidx.media3.exoplayer.upstream.DefaultBandwidthMeter
 import androidx.media3.extractor.DefaultExtractorsFactory
+import androidx.media3.extractor.ExtractorsFactory
+import androidx.media3.extractor.mp3.Mp3Extractor
 import coil.ImageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
@@ -43,6 +52,15 @@ import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
 import org.greenrobot.eventbus.ThreadMode
+import java.lang.Throwable
+import kotlin.Boolean
+import kotlin.Exception
+import kotlin.Int
+import kotlin.OptIn
+import kotlin.also
+import kotlin.apply
+import kotlin.let
+import kotlin.run
 
 
 class MusicService : Service() {
@@ -208,7 +226,10 @@ class MusicService : Service() {
                     } else {
                         EventBus.getDefault()
                             .postSticky(
-                                MusicTimeEvent(player.currentPosition, player.duration)
+                                MusicTimeEvent(
+                                    player.currentPosition,
+                                    player.duration,
+                                )
                             )
                     }
                 }
@@ -224,17 +245,17 @@ class MusicService : Service() {
             player = ExoPlayer.Builder(this)
                 .setMediaSourceFactory(
                     DefaultMediaSourceFactory(this@MusicService)
-                        .setLiveTargetOffsetMs(1000)
-                        .setLiveMinOffsetMs(500)
-                        .setLiveMaxOffsetMs(300000)
+//                        .setLiveTargetOffsetMs(1000)
+//                        .setLiveMinOffsetMs(500)
+//                        .setLiveMaxOffsetMs(300000)
                 ).build().also {
                     var mediaItem = MediaItem.fromUri(song.link)
-                    if (song.songFile != null) {
-                        if (song.songFile!!.exists()) {
-                            Log.d("vinhmus", "${song.songFile?.path}")
-                            mediaItem = MediaItem.fromUri(song.songFile!!.toUri())
-                        }
-                    }
+//                    if (song.songFile != null) {
+//                        if (song.songFile!!.exists()) {
+//                            Log.d("vinhmus", "${song.songFile?.path}")
+//                            mediaItem = MediaItem.fromUri(song.songFile!!.toUri())
+//                        }
+//                    }
 
                     val dataSourceFactory: DataSource.Factory =
                         DefaultDataSource.Factory(this)
@@ -254,6 +275,13 @@ class MusicService : Service() {
                     Log.d("vnhtime", "send init")
                     sendInit(it)
                 }
+
+            player?.addListener(object : Player.Listener {
+                override fun onIsPlayingChanged(isPlaying: Boolean) {
+                    super.onIsPlayingChanged(isPlaying)
+                    EventBus.getDefault().post(MusicPlayingEvent(isPlaying))
+                }
+            })
         } catch (e: Exception) {
             e.printStackTrace()
             Toast.makeText(this, "Can't play this song", Toast.LENGTH_SHORT).show()

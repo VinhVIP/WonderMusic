@@ -2,7 +2,6 @@ package com.vinh.wondermusic.di
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
-import com.vinh.wondermusic.common.Config
 import com.vinh.wondermusic.common.DataLocal
 import com.vinh.wondermusic.data.apis.*
 import dagger.Module
@@ -107,4 +106,8 @@ object NetworkModule {
         return retrofit.create(AlbumAPI::class.java)
     }
 
+    @Provides
+    fun provideTypeAPI(@Named("MainSite") retrofit: Retrofit): TypeAPI {
+        return retrofit.create(TypeAPI::class.java)
+    }
 }

@@ -10,18 +10,20 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.GridLayoutManager
 import com.vinh.wondermusic.R
 import com.vinh.wondermusic.adapter.MenuIndividualAdapter
+import com.vinh.wondermusic.common.DataLocal
 import com.vinh.wondermusic.data.models.MenuClickListener
 import com.vinh.wondermusic.data.models.MenuIndividual
 import com.vinh.wondermusic.data.models.MenuIndividualType.*
 import com.vinh.wondermusic.databinding.FragmentIndividualBinding
-import com.vinh.wondermusic.ui.home.personal.playlist.FormPlaylistFragment
+import com.vinh.wondermusic.ui.admin.ManagerTypeActivity
 import com.vinh.wondermusic.ui.formsong.FormSongActivity
-import com.vinh.wondermusic.ui.home.personal.album.FormAlbumDialogFragment
 import com.vinh.wondermusic.ui.home.personal.album.AlbumFragment
+import com.vinh.wondermusic.ui.home.personal.album.FormAlbumDialogFragment
 import com.vinh.wondermusic.ui.home.personal.favoritesongs.FavoriteSongsFragment
 import com.vinh.wondermusic.ui.home.personal.followers.FollowersFragment
 import com.vinh.wondermusic.ui.home.personal.followings.FollowingsFragment
 import com.vinh.wondermusic.ui.home.personal.mysongs.MySongsFragment
+import com.vinh.wondermusic.ui.home.personal.playlist.FormPlaylistFragment
 import com.vinh.wondermusic.ui.home.personal.playlist.PlaylistFragment
 
 class PersonalFragment : Fragment(), MenuClickListener {
@@ -39,6 +41,13 @@ class PersonalFragment : Fragment(), MenuClickListener {
         MenuIndividual("Playlist", R.drawable.playlist, PLAYLIST),
         MenuIndividual("Album", R.drawable.album, ALBUM),
     )
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        if (DataLocal.myAccount.role == 1) {
+            menus.add(MenuIndividual("Quản lý thể loại", R.drawable.ic_admin, MANAGE_TYPE))
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -86,6 +95,9 @@ class PersonalFragment : Fragment(), MenuClickListener {
             FOLLOWING -> showFragment(FollowingsFragment())
             PLAYLIST -> showFragment(PlaylistFragment())
             ALBUM -> showFragment(AlbumFragment())
+            MANAGE_TYPE -> {
+                startActivity(Intent(requireContext(), ManagerTypeActivity::class.java))
+            }
         }
     }
 

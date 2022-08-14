@@ -17,6 +17,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WonderMusic"
         android:usesCleartextTraffic="true">
+        <activity
+            android:name=".ui.admin.ManagerTypeActivity"
+            android:exported="false" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"

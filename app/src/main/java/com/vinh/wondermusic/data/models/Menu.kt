@@ -1,6 +1,6 @@
 package com.vinh.wondermusic.data.models
 
-enum class MenuIndividualType { FOLLOWER, FOLLOWING, SONG, FAVORITE, PLAYLIST, ALBUM }
+enum class MenuIndividualType { FOLLOWER, FOLLOWING, SONG, FAVORITE, PLAYLIST, ALBUM, MANAGE_TYPE }
 
 data class MenuIndividual(val title: String, val drawableRes: Int, val type: MenuIndividualType)
 
