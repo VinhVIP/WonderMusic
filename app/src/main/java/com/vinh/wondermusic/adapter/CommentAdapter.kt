@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.squareup.picasso.Picasso
 import com.vinh.wondermusic.R
+import com.vinh.wondermusic.common.DataLocal
 import com.vinh.wondermusic.common.Helper
 import com.vinh.wondermusic.data.models.Comment
 import com.vinh.wondermusic.databinding.ItemCommentWithReplyBinding
@@ -55,6 +56,10 @@ class CommentAdapter(private val listener: CommentClickListener) :
                 dot1.visibility = View.VISIBLE
                 dot2.visibility = View.VISIBLE
                 btnEditComment.visibility = View.VISIBLE
+                btnDeleteComment.visibility = View.VISIBLE
+            }
+
+            if (DataLocal.myAccount.role == 1) {
                 btnDeleteComment.visibility = View.VISIBLE
             }
 
