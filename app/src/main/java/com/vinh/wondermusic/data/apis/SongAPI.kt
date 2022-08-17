@@ -29,7 +29,7 @@ interface SongAPI {
     @PUT("$ApiVersion/song/{idSong}")
     suspend fun updateSong(
         @Path("idSong") idSong: Int,
-        @Part songFile: MultipartBody.Part?,
+//        @Part songFile: MultipartBody.Part?,
         @Part img: MultipartBody.Part?,
         @Part("name_song") name: RequestBody,
         @Part("description") description: RequestBody,

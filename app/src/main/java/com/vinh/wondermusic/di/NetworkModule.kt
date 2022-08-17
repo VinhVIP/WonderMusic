@@ -2,6 +2,7 @@ package com.vinh.wondermusic.di
 
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
+import com.vinh.wondermusic.common.Config
 import com.vinh.wondermusic.common.DataLocal
 import com.vinh.wondermusic.data.apis.*
 import dagger.Module
@@ -70,8 +71,8 @@ object NetworkModule {
         moshiConverterFactory: MoshiConverterFactory
     ): Retrofit {
         return Retrofit.Builder().addConverterFactory(moshiConverterFactory)
-            .baseUrl("http://192.168.1.8:8000/")
-//            .baseUrl(Config.MainSite)
+//            .baseUrl("http://192.168.1.8:8000/")
+            .baseUrl(Config.MainSite)
             .client(okHttpClient)
             .build()
     }

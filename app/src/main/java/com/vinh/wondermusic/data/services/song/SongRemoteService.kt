@@ -167,17 +167,17 @@ class SongRemoteService @Inject constructor(
 
     suspend fun updateSong(song: SongPost): NetworkResult<MessageJson> {
         return callApi {
-            var songMultipart: MultipartBody.Part? = null
+//            var songMultipart: MultipartBody.Part? = null
             var imageMultipart: MultipartBody.Part? = null
 
-            song.songFile?.let {
-                val songFileRequestBody = it.asRequestBody("audio/mpeg".toMediaTypeOrNull())
-                songMultipart = MultipartBody.Part.createFormData(
-                    "song",
-                    song.songFile.name,
-                    songFileRequestBody
-                )
-            }
+//            song.songFile?.let {
+//                val songFileRequestBody = it.asRequestBody("audio/mpeg".toMediaTypeOrNull())
+//                songMultipart = MultipartBody.Part.createFormData(
+//                    "song",
+//                    song.songFile.name,
+//                    songFileRequestBody
+//                )
+//            }
 
             song.imageSong?.let {
                 val imageFileRequestBody = it.asRequestBody("image/*".toMediaTypeOrNull())
@@ -190,7 +190,7 @@ class SongRemoteService @Inject constructor(
 
             songAPI.updateSong(
                 idSong = song.idSong!!,
-                songFile = songMultipart,
+//                songFile = songMultipart,
                 img = imageMultipart,
                 name = song.songName.toRequestBody(MultipartBody.FORM),
                 description = song.description!!.toRequestBody(MultipartBody.FORM),

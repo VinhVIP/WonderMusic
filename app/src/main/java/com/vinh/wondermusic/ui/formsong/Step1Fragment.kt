@@ -50,10 +50,17 @@ class Step1Fragment : Fragment() {
             fragment.show(requireActivity().supportFragmentManager, "album")
         }
         binding.btnChooseMusic.setOnClickListener {
-            try {
-                fileChooser.launch("audio/mpeg")
-            } catch (ex: ActivityNotFoundException) {
-                Toast.makeText(context, "Vui lòng cài đặt File Manager", Toast.LENGTH_SHORT).show()
+            if (viewModel.isFormAdd()) {
+                try {
+                    fileChooser.launch("audio/mpeg")
+                } catch (ex: ActivityNotFoundException) {
+                    Toast.makeText(context, "Vui lòng cài đặt File Manager", Toast.LENGTH_SHORT)
+                        .show()
+                }
+            } else {
+                Toast.makeText(context, "Không thể chỉnh sửa file bài hát", Toast.LENGTH_SHORT)
+                    .show()
+
             }
         }
     }

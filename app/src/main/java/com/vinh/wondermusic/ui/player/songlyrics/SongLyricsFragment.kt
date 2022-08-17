@@ -2,11 +2,12 @@ package com.vinh.wondermusic.ui.player.songlyrics
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.activityViewModels
 import com.vinh.wondermusic.adapter.EventBusModel.MusicTimeSeekEvent
 import com.vinh.wondermusic.adapter.LyricAdapter
 import com.vinh.wondermusic.adapter.LyricsClickListener
@@ -17,14 +18,16 @@ import com.vinh.wondermusic.data.models.convertToLineLyric
 import com.vinh.wondermusic.databinding.FragmentSongLyricsBinding
 import com.vinh.wondermusic.service.MusicService
 import com.vinh.wondermusic.ui.player.PlayerViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.*
 import org.greenrobot.eventbus.EventBus
 
+@AndroidEntryPoint
 class SongLyricsFragment : Fragment(), LyricsClickListener {
 
     private lateinit var binding: FragmentSongLyricsBinding
 
-    private val viewModel by viewModels<PlayerViewModel>({ requireActivity() })
+    private val viewModel by activityViewModels<PlayerViewModel>()
 
     private lateinit var lyricAdapter: LyricAdapter
     private lateinit var centerLayoutManager: CenterLayoutManager
@@ -55,12 +58,12 @@ class SongLyricsFragment : Fragment(), LyricsClickListener {
         super.onViewCreated(view, savedInstanceState)
 
         viewModel.song.observe(requireActivity()) {
-                songLyrics = getSongLyrics(it.lyrics)
-                lyricAdapter.setData(songLyrics)
-                binding.recyclerLyrics.adapter = lyricAdapter
+            songLyrics = getSongLyrics(it.lyrics)
+            lyricAdapter.setData(songLyrics)
+            binding.recyclerLyrics.adapter = lyricAdapter
         }
 
-        viewModel.currentSongTime.observe(requireActivity()) { time ->
+        viewModel.currentSongTime.observe(viewLifecycleOwner) { time ->
             binding.recyclerLyrics.post {
                 if (viewModel.isUserTouchedSlider) {
                     scrollLyrics(time)

@@ -6,7 +6,7 @@ object Config {
 
     const val JsonPlaceHolder = "https://jsonplaceholder.typicode.com/"
 
-    const val MainSite = "https://wonder-music-api.herokuapp.com/api/v0/"
+    const val MainSite = "https://wonder-music.herokuapp.com/"
 
     const val ApiVersion = "/api/v1"
 

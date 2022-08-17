@@ -36,23 +36,10 @@ class HighLightViewModel @Inject constructor(
     var songDrawables = MutableLiveData<ArrayList<Drawable?>>()
 
     fun fetchData() {
-        // TODO: Lấy top song
         parentJob = viewModelScope.launch {
             val songs = songRepository.getTop100Songs()
             topSongs.postValue(songs)
-
-            // Load từ database local trước
-//            val songs = songRepository.getBestSongs()
-//            Log.d("vinhsong", "size: ${songs.size}")
-//            topSongs.postValue(songs)
             topSongsChart.postValue(songRepository.getTop3Songs())
-//
-//            val fetchSongs = songRepository.getAndSaveBestSongs()
-//            if (fetchSongs.isNotEmpty()) {
-//                topSongs.postValue(fetchSongs)
-//
-//                fetchSongs.forEach { saveImage(it) }
-//            }
         }
         registerEventParentJobFinish()
     }

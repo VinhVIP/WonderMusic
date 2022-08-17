@@ -105,7 +105,7 @@ class PlayerActivity : BaseActivity() {
         if (!isSeekBarPressed) binding.sliderSong.value = timeEvent.time.toFloat()
         binding.sliderSong.valueTo = timeEvent.duration.toFloat()
 
-        viewModel.currentSongTime.postValue((timeEvent.time / 1000).toInt())
+        viewModel.currentSongTime.postValue(timeEvent.time.toInt())
     }
 
     @Subscribe(threadMode = ThreadMode.BACKGROUND, sticky = true)
