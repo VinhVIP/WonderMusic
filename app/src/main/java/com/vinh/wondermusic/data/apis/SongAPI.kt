@@ -74,6 +74,14 @@ interface SongAPI {
     @GET("$ApiVersion/song/top-3-listen")
     suspend fun getTop3Songs(): Response<ListTopListenSongs>
 
+    @GET("$ApiVersion/song/top-listen")
+    suspend fun getTopListenInRange(
+        @Query("start_date") startDate: String,
+        @Query("end_date") endDate: String,
+        @Query("all") all: Int,
+        @Query("type") type: String
+    ): Response<ListSongJson>
+
     @GET("$ApiVersion/account/songs_following")
     suspend fun getSongsOfFollowing(@Query("page") page: Int): Response<ListSongJson>
 

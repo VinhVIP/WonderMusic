@@ -18,6 +18,9 @@
         android:theme="@style/Theme.WonderMusic"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".ui.statistic.StatisticActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.admin.account.LockAccountActivity"
             android:exported="false" />
         <activity

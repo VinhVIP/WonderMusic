@@ -104,6 +104,20 @@ class SongRemoteService @Inject constructor(
         }
     }
 
+    suspend fun getTopListenInRangeDate(
+        startDate: String,
+        endDate: String,
+        all: Int,
+        type: String
+    ): List<Song> {
+        val result = callApi { songAPI.getTopListenInRange(startDate, endDate, all, type) }
+        return if (result is NetworkResult.Success) {
+            result.body.data.toListSong()
+        } else {
+            emptyList()
+        }
+    }
+
     suspend fun listen(idSong: Int): NetworkResult<MessageJson> {
         return callApi { songAPI.listen(idSong) }
     }

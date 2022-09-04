@@ -13,8 +13,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.squareup.picasso.Picasso
 import com.vinh.wondermusic.R
 import com.vinh.wondermusic.adapter.EventBusModel
-import com.vinh.wondermusic.adapter.EventBusModel.MusicPlayingEvent
-import com.vinh.wondermusic.adapter.EventBusModel.SongInfoEvent
+import com.vinh.wondermusic.adapter.EventBusModel.*
 import com.vinh.wondermusic.adapter.ViewPagerAdapter
 import com.vinh.wondermusic.base.activities.BaseActivity
 import com.vinh.wondermusic.common.Constants
@@ -212,6 +211,8 @@ class HomeActivity : BaseActivity() {
             Picasso.get().load(DataLocal.myAccount.avatar).placeholder(R.drawable.ic_user_colorful)
                 .fit().into(binding.toolbar.imgAvatar)
         }
+
+        EventBus.getDefault().post(RequestSongEvent())
     }
 
     private fun setupViewPager() {

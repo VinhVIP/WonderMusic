@@ -69,6 +69,16 @@ class SongRepository @Inject constructor(
         }
     }
 
+    suspend fun getTopListenInRangeDate(
+        startDate: String,
+        endDate: String,
+        all: Int,
+        type: String
+    ): List<Song> =
+        withContext(dispatcher) {
+            songRemoteService.getTopListenInRangeDate(startDate, endDate, all, type)
+        }
+
     suspend fun getTop3Songs(): List<SongListen> = withContext(dispatcher) {
         songRemoteService.getTop3Songs()
     }

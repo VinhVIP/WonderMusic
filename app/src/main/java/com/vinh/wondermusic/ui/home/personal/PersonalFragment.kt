@@ -26,6 +26,7 @@ import com.vinh.wondermusic.ui.home.personal.followings.FollowingsFragment
 import com.vinh.wondermusic.ui.home.personal.mysongs.MySongsFragment
 import com.vinh.wondermusic.ui.home.personal.playlist.FormPlaylistFragment
 import com.vinh.wondermusic.ui.home.personal.playlist.PlaylistFragment
+import com.vinh.wondermusic.ui.statistic.StatisticActivity
 
 class PersonalFragment : Fragment(), MenuClickListener {
 
@@ -48,6 +49,7 @@ class PersonalFragment : Fragment(), MenuClickListener {
         if (DataLocal.myAccount.role == 1) {
             menus.add(MenuIndividual("Quản lý thể loại", R.drawable.ic_admin, MANAGE_TYPE))
             menus.add(MenuIndividual("Tài khoản bị khóa", R.drawable.ic_admin, MANAGE_LOCK_ACCOUNT))
+            menus.add(MenuIndividual("Thống kê", R.drawable.ic_admin, STATISTIC))
         }
     }
 
@@ -102,6 +104,9 @@ class PersonalFragment : Fragment(), MenuClickListener {
             }
             MANAGE_LOCK_ACCOUNT -> {
                 startActivity(Intent(requireContext(), LockAccountActivity::class.java))
+            }
+            STATISTIC -> {
+                startActivity(Intent(requireContext(), StatisticActivity::class.java))
             }
         }
     }
